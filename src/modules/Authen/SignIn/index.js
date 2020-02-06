@@ -21,6 +21,9 @@ import {
 } from "react-router-dom";
 import { createBrowserHistory } from 'history';
 import Container from '@material-ui/core/Container';
+import {login} from '../reducer'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -56,7 +59,14 @@ const useStyles = makeStyles(theme => ({
 
 function SignIn(props) {
   const classes = useStyles();
-  const {history} = props
+  const {history, login, authen} = props
+  console.log(history)
+  useEffect(()=>{
+    console.log('authen.isLoading', authen.isLoading)
+    if(authen.isLoading){
+      history.push('/app2/hello',{hello : 'hello1111'})
+    }
+  },[authen.isLoading])
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -98,13 +108,14 @@ function SignIn(props) {
             className={classes.submit}
             onClick={()=>{
               history.replace('/app2/hello')
+              // login()
             }}
           >
             Sign In
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link href="#" variant="body2" onClick={()=>{login()}}>
                 Forgot password?
               </Link>
             </Grid>
@@ -119,5 +130,20 @@ function SignIn(props) {
     </Container>
   );
 }
+const mapStateToProps = state => ({
+  authen: state.authen
+})
 
-export default withRouter(SignIn)
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      login
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(SignIn))

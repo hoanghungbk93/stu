@@ -15,40 +15,47 @@ import {
 } from "react-router-dom";
 import ReactDOM from 'react-dom'
 import Button from '@material-ui/core/Button';
+import { Provider } from 'react-redux'
+import configureStore from './app/store'
+
+
+const store = configureStore()
 
 function App(props) {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [date, setDate] = useState('')
-  const {history} = props
+  const { history } = props
   function handleChange(date) {
     console.log(`Selected Date: ${date ? date.format('YYYY-MM-DD') : 'None'}`);
     setDate(date)
   };
   return <Redirect to="/login" />;
 }
-function Hello(props){
-  const {history} = props
-  return(
+function Hello(props) {
+  const { history, location } = props
+  console.log('location', location)
+  return (
     <div>
-    <p>Hello</p>
-    <Button onClick={()=>{
-      history.push('/app2/hello2')
-    }}>
-    Hello
+      <p>Hello</p>
+      <Button onClick={() => {
+        history.push('/app2/hello2')
+      }}>
+        {location && location.state && location.state.hello ? location.state.hello : 'Hello'}
     </Button>
     </div>
   )
 }
-function Hello2(props){
-  const {history} = props
-  return(
+function Hello2(props) {
+  const { history, location } = props
+  console.log('location', location)
+  return (
     <div>
-    <p>Hello2</p>
-    <Button onClick={()=>{
-      history.push('/app2/hello')
-    }}>
-    Hello2
+      <p>Hello2</p>
+      <Button onClick={() => {
+        history.push('/app2/hello')
+      }}>
+        Hello2
     </Button>
     </div>
   )
@@ -57,40 +64,45 @@ function App2(props) {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [date, setDate] = useState('')
-  const {history} = props
+  const { history } = props
   console.log('props.match.path', props.match.path)
   function handleChange(date) {
     console.log(`Selected Date: ${date ? date.format('YYYY-MM-DD') : 'None'}`);
     setDate(date)
   };
-  return <div>
-        <Switch>
-          
-          <Route path={`${props.match.path}/hello`} component={Hello} >
-            {/* <SignIn/> */}
-          </Route>
-          
-          <Route path={`${props.match.path}/hello2`} component={Hello2}>
-          </Route>
-          {/* <Route path='/app2' component={App2}>
+  return (
+  
+    <div>
+      <Switch>
+
+        <Route path={`${props.match.path}/hello`} component={Hello} >
+          {/* <SignIn/> */}
+        </Route>
+
+        <Route path={`${props.match.path}/hello2`} component={Hello2}>
+        </Route>
+        {/* <Route path='/app2' component={App2}>
           </Route> */}
-        </Switch>
-      </div>
+      </Switch>
+    </div>
+  
+  )
 }
 
 function Stack(props) {
   return (
+    <Provider store={store}>
     <Router>
       <div>
         <Switch>
-          
+
           <Route path='/login' component={SignIn} >
             {/* <SignIn/> */}
           </Route>
           <Route path='/signup' component={SignUp} >
             {/* <SignIn/> */}
           </Route>
-          
+
           <Route path='/app2' component={App2}>
           </Route>
           <Route path='/' component={App}>
@@ -98,6 +110,7 @@ function Stack(props) {
         </Switch>
       </div>
     </Router>
+    </Provider>
   )
 }
 

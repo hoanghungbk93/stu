@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 // import { DatePicker, message } from 'antd';
-import SignIn from './modules/Authen/SignIn'
-import SignUp from './modules/Authen/SignUp'
+import SignIn from './SignIn'
 import {
   BrowserRouter as Router,
   Switch,
@@ -85,9 +84,6 @@ function Stack(props) {
         <Switch>
           
           <Route path='/login' component={SignIn} >
-            {/* <SignIn/> */}
-          </Route>
-          <Route path='/signup' component={SignUp} >
             {/* <SignIn/> */}
           </Route>
           

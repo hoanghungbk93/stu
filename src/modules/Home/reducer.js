@@ -27,7 +27,8 @@ const initialState = Model(null)
 
 
 export const login = () => async dispatch => {
-  dispatch(setLoading(true))
+  const data = await fetch('http://b8b12af8.ngrok.io/api/stuuser')
+  dispatch(setLoading(data))
 }
 
 

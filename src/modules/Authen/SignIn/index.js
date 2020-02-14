@@ -24,18 +24,6 @@ import Container from '@material-ui/core/Container';
 import {login} from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -61,12 +49,18 @@ function SignIn(props) {
   const classes = useStyles();
   const {history, login, authen} = props
   console.log(history)
+  // useEffect(()=>{
+  //   console.log('authen.isLoading', authen.isLoading)
+  //   if(authen.isLoading){
+      
+  //   }
+  // },[authen.isLoading])
   useEffect(()=>{
-    console.log('authen.isLoading', authen.isLoading)
-    if(authen.isLoading){
-      history.push('/app2/hello',{hello : 'hello1111'})
+    console.log('authen.isLogined', authen.isLogined)
+    if(authen.isLogined){
+      history.replace('/admin')
     }
-  },[authen.isLoading])
+  },[authen.isLogined])
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -107,8 +101,8 @@ function SignIn(props) {
             color="primary"
             className={classes.submit}
             onClick={()=>{
-              history.replace('/app2/hello')
-              // login()
+              // history.replace('/home')
+              login()
             }}
           >
             Sign In

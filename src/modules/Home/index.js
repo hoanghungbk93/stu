@@ -1,3 +1,3 @@
 export { default as Home } from './List'
 export { default as HomeDetail } from './Detail'
-export { default as TableList } from './List/Table'
+export { default as HomeTable } from './Table'

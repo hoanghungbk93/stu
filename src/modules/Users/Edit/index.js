@@ -3,33 +3,20 @@ import { post } from 'axios';
 import { Helmet } from 'react-helmet';
 import UserForm from '../private-component/UserForm';
 import Page from '../private-component/Page';
-
-class UserAdd extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log('UserAdd')
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
+import {editUser} from '../reducer'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+function UserEdit (props) {
+  const { history, authen, user, editUser} = props
+  function handleSubmit(user) {
+        history.goBack();
   }
 
-  handleSubmit(user) {
-    post('/api/users', user)
-      .then(({ data: u }) => {
-        const { history } = this.props;
-
-        history.push(`/users/${u.id}`);
-      });
-  }
-
-  handleCancel(e) {
+  function handleCancel(e) {
     e.preventDefault();
-
-    const { history } = this.props;
-
-    history.push('/users');
+    history.goBack();
   }
 
-  render() {
     return (
       <Page title="Edit User" columns={3}>
         <Helmet>
@@ -37,12 +24,29 @@ class UserAdd extends React.Component {
         </Helmet>
 
         <UserForm
-          handleSubmit={this.handleSubmit}
-          handleCancel={this.handleCancel}
+          handleSubmit={handleSubmit}
+          handleCancel={handleCancel}
+          submitText='Save'
         />
       </Page>
     );
-  }
 }
 
-export default UserAdd;
+const mapStateToProps = state => ({
+  authen: state.authen,
+  user: state.user
+})
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      editUser,
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserEdit)

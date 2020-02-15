@@ -11,6 +11,8 @@ import {
   LOADING,
   setLoading,
   setLogin,
+  setUserInfo,
+  USER_INFO,
   LOGIN
 } from './action-type'
 // import Constants from 'utils/Constants'
@@ -26,37 +28,46 @@ import {
 // I18n.defaultLocale = 'en'
 const initialState = Model(null)
 
-export const login = () => async dispatch => {
-  //login success
-  // try{
-  //   let response = await fetch('http://40b15634.ngrok.io/api/stuuser');
-  //   if (response.ok) { // if HTTP-status is 200-299
-  //     // get the response body (the method explained below)
-  //     let json = await response.json();
-  //     console.log('json', json)
-  //   } else {
-  //     alert("HTTP-Error: " + response.status);
-  //   }
-  //   // const data = fetch('http://b8b12af8.ngrok.io/api/stuuser').then(response => {
-  //   //   console.log('response', response)
-  //   // }).catch(
-  //   //   err=> {
-  //   //     console.log('errr', err)
-  //   //   }
-  //   // )
-  //   // debugger
-  //   dispatch(setLogin(true))
-  //   // dispatch(setLoading(true))
-  // } catch(err){
-  //   console.log('err', err)
-  // }
-  dispatch(setLogin(true))
+export const login = (header, param) => async dispatch => {
+  console.log('param', param)
+  const params = JSON.stringify({
+    _name : param.userName,
+    _pass: param.password
+  })
+  
+  try{
+    
+    fetch(`http://cc83189a.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+      console.log('response', response)  
+      return response.json();
+    }).then((myJson) => {
+      if(myJson[0]){
+        dispatch(setUserInfo(myJson[0]))
+        dispatch(setLogin(true))
+      } else{
+        dispatch(setLogin(false))
+      }
+      console.log('myJson', myJson)
+    }).catch(
+      err=> {
+        dispatch(setLogin(false))
+        console.log('errr', err)
+      }
+    )
+    // if(data[0].sta)
+    // dispatch(setLoading(true))
+  } catch(err){
+    dispatch(setLogin(false))
+    console.log('err', err)
+  }
+  
 }
 
 
 const actions = {
   [LOADING]: (state, action) => state.setLoading(action.payload),
   [LOGIN]: (state, action) => state.setLogin(action.payload),
+  [USER_INFO]: (state, action) => state.setUserInfo(action.payload),
 }
 
 export default handleActions(actions, initialState)

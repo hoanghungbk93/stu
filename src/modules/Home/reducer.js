@@ -10,6 +10,10 @@ import Model from './model'
 import {
   LOADING,
   setLoading,
+  APPROVE,
+  CANCEL,
+  setApprove,
+  setCancel
 } from './action-type'
 // import Constants from 'utils/Constants'
 // import Storage from 'utils/Storage'
@@ -25,15 +29,20 @@ import {
 
 const initialState = Model(null)
 
-
-export const login = () => async dispatch => {
+export const approve = (header, params) => async dispatch => {
   const data = await fetch('http://b8b12af8.ngrok.io/api/stuuser')
-  dispatch(setLoading(data))
+  dispatch(setApprove(true))
+}
+export const cancel = (header, params) => async dispatch => {
+  const data = await fetch('http://b8b12af8.ngrok.io/api/stuuser')
+  dispatch(setCancel(data))
 }
 
 
 const actions = {
-  [LOADING]: (state, action) => state.setLoading(action.payload)
+  [LOADING]: (state, action) => state.setLoading(action.payload),
+  [APPROVE]: (state, action) => state.setApprove(action.payload),
+  [CANCEL]: (state, action) => state.setCancel(action.payload),
 }
 
 export default handleActions(actions, initialState)

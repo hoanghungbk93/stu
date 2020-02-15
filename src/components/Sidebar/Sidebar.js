@@ -26,6 +26,7 @@ export default function Sidebar(props) {
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
   const { color, logo, image, logoText, routes, history } = props;
+  console.log('history', history)
   const initialMenuList = []
   routes.forEach(element => {
     if(element.submenus) initialMenuList.push(false)

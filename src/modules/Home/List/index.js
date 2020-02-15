@@ -18,7 +18,7 @@ import styles from "../../../assets/jss/material-dashboard-react/layouts/adminSt
 import bgImage from "../../../assets/img/sidebar-2.jpg";
 import logo from "../../../assets/img/stuLogo.png";
 let ps;
-
+console.log('routes', routes)
 const switchRoutes = (
   <Switch>
     {routes.map((prop, index) => {
@@ -31,7 +31,7 @@ const switchRoutes = (
         );
       }
     )}
-    {/* <Redirect from="/admin" to="/admin/table" /> */}
+    <Redirect from="/admin" to="/admin/table" />
   </Switch>
 );
 
@@ -64,7 +64,7 @@ export default function Admin(props) {
     setMobileOpen(!mobileOpen);
   };
   const getRoute = () => {
-    return window.location.pathname !== "/admin/maps";
+    return window.location.pathname !== "/admin";
   };
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
@@ -110,10 +110,10 @@ export default function Admin(props) {
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {getRoute() ? (
           <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
+            <div className={classes.container}>{routes && switchRoutes}</div>
           </div>
         ) : (
-          <div className={classes.map}>{switchRoutes}</div>
+          <div className={classes.map}>{routes && switchRoutes}</div>
         )}
         {getRoute() ? <Footer /> : null}
         {/* <FixedPlugin

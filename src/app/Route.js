@@ -27,7 +27,9 @@ import Business from "@material-ui/icons/Business";
 // core components/views for Admin layout
 // import DashboardPage from "views/Dashboard/Dashboard.js";
 // import UserProfile from "views/UserProfile/UserProfile.js";
-import {HomeDetail , Home, TableList} from "../modules/Home";
+import {Home} from "../modules/Home";
+import HomeTable from "../modules/Home/Table"
+import HomeDetail from "../modules/Home/Detail"
 import {Users, UserAdd, UserEdit} from "../modules/Users";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 // import Typography from "views/Typography/Typography.js";
@@ -38,31 +40,31 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 // core components/views for RTL layout
 // import RTLPage from "views/RTLPage/RTLPage.js";
 
-const dashboardRoutes = [
+const routes = [
   {
     path: "/admin/table",
     name: "TRANG CHỦ",
     icon: HomeIcon,
-    component: TableList,
+    component: HomeTable,
     isVisible: true,
     submenus: [
       {
         name: 'Yêu cầu xuất kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Yêu cầu mua hàng',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Phiếu nhập kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Phiếu xuất kho',
@@ -73,34 +75,34 @@ const dashboardRoutes = [
     ]
   },
   {
-    path: "/new",
+    path: "/admin/addNewRequirement",
     name: "TẠO MỚI YÊU CẦU",
     icon: AddCircle,
-    component: TableList,
+    component: HomeTable,
     submenus: [
       {
         name: 'Yêu cầu xuất kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Yêu cầu mua hàng',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Phiếu nhập kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Phiếu xuất kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
     ],
     isVisible: true
@@ -115,25 +117,25 @@ const dashboardRoutes = [
         name: 'Yêu cầu xuất kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Yêu cầu mua hàng',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Phiếu nhập kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
       {
         name: 'Phiếu xuất kho',
         path: '',
         icon: Person,
-        component: TableList
+        component: HomeTable
       },
     ],
     isVisible: true
@@ -146,7 +148,7 @@ const dashboardRoutes = [
     isVisible: true
   },
   {
-    path: '/admin/detail',
+    path: '/admin/manager',
     component: AssignmentIcon,
     name: "QUẢN LÍ DỰ ÁN",
     icon: AssignmentIcon,
@@ -160,6 +162,13 @@ const dashboardRoutes = [
     isVisible: false
   },
   {
+    path: '/admin/edit',
+    component: UserEdit,
+    name: "QUẢN LÍ VẬT TƯ",
+    icon: Business,
+    isVisible: false
+  },
+  {
     path: '/admin/detail',
     component: HomeDetail,
     name: "HomeDetail",
@@ -168,4 +177,4 @@ const dashboardRoutes = [
   },
 ];
 
-export default dashboardRoutes;
+export default routes;

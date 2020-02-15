@@ -1,157 +1,108 @@
 import React from 'react';
-import { Table, Menu, Icon, Button } from 'semantic-ui-react';
+import { Menu, Icon, Button } from 'semantic-ui-react';
 import { get } from 'axios';
 import times from 'lodash.times';
 import { Helmet } from 'react-helmet';
 import { Link, Route } from 'react-router-dom';
 import Page from '../private-component/Page';
 import UserInfo from '../private-component/UserInfo';
-
+import GridItem from "../../../components/Grid/GridItem.js";
+import GridContainer from "../../../components/Grid/GridContainer.js";
+import Table from "../private-component/Table";
+import Card from "../../../components/Card/Card.js";
+import CardHeader from "../../../components/Card/CardHeader.js";
+import CardBody from "../../../components/Card/CardBody.js";
+import data from '../../../asset/testData/dataTest'
+import {useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import styles from "../../../assets/jss/material-dashboard-react/layouts/adminStyle.js";
+import {getListUser} from '../reducer'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 const TOTAL_PER_PAGE = 10;
+const useStyles = makeStyles(styles);
 
-class Users extends React.Component {
-  constructor(props) {
-    super(props);
+const users = [
+  {
+  id: 1,
+  name: 'Hung',
+  email: 'hehe@gmail.com',
+  password: 'hahaha',
+},
+  {
+  id: 1,
+  name: 'Hung',
+  email: 'hehe@gmail.com',
+  password: 'hahaha',
+},
+  {
+  id: 1,
+  name: 'Hung',
+  email: 'hehe@gmail.com',
+  password: 'hahaha',
+},
+  {
+  id: 1,
+  name: 'Hung',
+  email: 'hehe@gmail.com',
+  password: 'hahaha',
+}
+]
 
-    this.state = {
-      users: [
-        {
-        id: 1,
-        name: 'Hung',
-        email: 'hehe@gmail.com',
-        password: 'hahaha',
-      },
-        {
-        id: 1,
-        name: 'Hung',
-        email: 'hehe@gmail.com',
-        password: 'hahaha',
-      },
-        {
-        id: 1,
-        name: 'Hung',
-        email: 'hehe@gmail.com',
-        password: 'hahaha',
-      },
-        {
-        id: 1,
-        name: 'Hung',
-        email: 'hehe@gmail.com',
-        password: 'hahaha',
-      }
-      ],
-      page: 0,
-      totalPages: 0,
-    };
-    this.incrementPage = this.incrementPage.bind(this);
-    this.decrementPage = this.decrementPage.bind(this);
-    this.setPage = this.setPage.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-  }
+function Users(props) {
 
-  componentDidMount() {
-    // this.getUsers();
-  }
-
-  componentWillReceiveProps({ location = {} }) {
-    if (location.pathname === '/users' && location.pathname !== this.props.location.pathname) {
-      this.getUsers();
-    }
-  }
-
-  getUsers() {
-    get('/api/users')
-      .then(({ data }) => {
-        const { users } = data;
-        const totalPages = Math.ceil(users.length / TOTAL_PER_PAGE);
-
-        this.setState({
-          users: data.users,
-          page: 0,
-          totalPages,
-        });
-      });
-  }
-
-  setPage(page) {
-    return () => {
-      this.setState({ page });
-    };
-  }
-
-  decrementPage() {
-    const { page } = this.state;
-
-    this.setState({ page: page - 1 });
-  }
-
-  incrementPage() {
-    const { page } = this.state;
-
-    this.setState({ page: page + 1 });
-  }
-
-  handleDelete(userId) {
-    const { users } = this.state;
-
-    this.setState({
-      users: users.filter(u => u.id !== userId),
-    });
-  }
-
-  render() {
-    const { users, page, totalPages } = this.state;
-    const startIndex = page * TOTAL_PER_PAGE;
+    // const { users, page, totalPages } = this.state;
+    // const startIndex = page * TOTAL_PER_PAGE;
+    const history = useHistory()
+    const classes = useStyles();
+    const {getListUser} = props
     return (
-      <Page title="Users">
-        <Helmet>
-          <title>CMS | Users</title>
-        </Helmet>
-
-        <Table celled striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Email</Table.HeaderCell>
-              <Table.HeaderCell>Phone</Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {users.slice(startIndex, startIndex + TOTAL_PER_PAGE).map(user => (
-              <Table.Row key={user.id}>
-                <Table.Cell>
-                  <Link to={`/users/${user.id}`}>{user.name}</Link>
-                </Table.Cell>
-                <Table.Cell>{user.email}</Table.Cell>
-                <Table.Cell>{user.phone}</Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-          <Table.Footer>
-            <Table.Row>
-              <Table.HeaderCell colSpan={6}>
-                <Menu floated="right" pagination>
-                  {page !== 0 && <Menu.Item as="a" icon onClick={this.decrementPage}>
-                    <Icon name="left chevron" />
-                  </Menu.Item>}
-                  {times(totalPages, n =>
-                    (<Menu.Item as="a" key={n} active={n === page} onClick={this.setPage(n)}>
-                      {n + 1}
-                    </Menu.Item>),
-                  )}
-                  {page !== (totalPages - 1) && <Menu.Item as="a" icon onClick={this.incrementPage}>
-                    <Icon name="right chevron" />
-                  </Menu.Item>}
-                </Menu>
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Footer>
-        </Table>
-        <Button positive onClick={()=>{ this.props.history.push('/admin/addNew')}}>New User</Button>
-        <Route path="/admin/addNew" component={UserInfo} />
-      </Page>
+      <div>
+      <GridContainer>
+      <GridItem xs={12} sm={12} md={12}>
+        <Card>
+          <CardHeader color="primary">
+            <h4 className={classes.cardTitleWhite}>Danh sách users</h4>
+          </CardHeader>
+          <CardBody>
+            <Table
+              tableHeaderColor="primary"
+              tableHead={["TT", "Tên", "Email"]}
+              tableData={users.map((e, i)=>{
+                let tempArr= [i+1]
+                Object.keys(e).forEach((key, index) =>{
+                  if(index>0 && index< 3)
+                  tempArr.push(e[key])
+                })
+                return tempArr
+              })}
+              history={history}
+            />
+          </CardBody>
+        </Card>
+      </GridItem>
+    </GridContainer>
+    <Button positive onClick={()=>{ history.push('/admin/addNew')}}>New User</Button>
+    <Route path="/admin/addNew" component={UserInfo} />
+    </div>
     );
-  }
 }
 
-export default Users;
+const mapStateToProps = state => ({
+  authen: state.authen,
+  user: state.user
+})
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      getListUser,
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users)

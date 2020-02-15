@@ -7,15 +7,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import Button from "@material-ui/core/Button";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 // core components
-import styles from "../../assets/jss/material-dashboard-react/components/tableStyle.js";
-
+import styles from "../../../../assets/jss/material-dashboard-react/components/detailTableStyle.js";
+import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
-  debugger
+  
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, history } = props;
+  const { tableHead, tableData, tableHeaderColor, history, approve, cancel} = props;
   const [activeRow, setActiveRow] = useState(0)
   return (
     <div className={classes.tableResponsive}>
@@ -24,6 +26,7 @@ export default function CustomTable(props) {
           <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
             <TableRow className={classes.tableHeadRow}>
               {tableHead.map((prop, key) => {
+                
                 return (
                   <TableCell
                     className={classes.tableCell + " " + classes.tableHeadCell}
@@ -39,9 +42,7 @@ export default function CustomTable(props) {
         <TableBody>
           {tableData.map((prop, key) => {
             return (
-              <TableRow key={key} className={classes.tableBodyRow} onClick={()=>{
-                      history.push('/admin/detail',{prop})
-                    }}
+              <TableRow key={key} className={classes.tableBodyRow}
                     hover
                     selected
                   //   onMouseMove={()=>{
@@ -51,12 +52,37 @@ export default function CustomTable(props) {
                   // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
                   >
                 {prop.map((e, key) => {
+                  if(key === 8) return (
+                  <TableCell
+                    className={classes.tableCell + " " + classes.tableHeadCell}
+                    key={key}
+                  >
+                    <TextField
+                    id="standard-textarea"
+                    placeholder="Lý do từ chối"
+                    multiline
+                    contentEditable = {false}
+                  />
+                  </TableCell>
+                );
                   return (
                     <TableCell className={classes.tableCell} key={key} >
                       {e}
                     </TableCell>
                   );
                 })}
+                <TableCell className={classes.tableCell} key={key} >
+                <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
+                  <Button color="primary" onClick={()=>{
+                    approve()
+                  }}
+                  >Duyệt</Button>
+                  <Button onClick={()=>{
+                    cancel()
+                  }}
+                  >Từ chối</Button>
+                </ButtonGroup>
+                </TableCell>
               </TableRow>
             );
           })}

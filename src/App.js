@@ -11,9 +11,23 @@ import {
 } from "react-router-dom";
 import { Provider } from 'react-redux'
 import configureStore from './app/store'
+// import routes from './app/Route'
 import { Home } from './modules/Home'
 const store = configureStore()
-
+// const switchRoutes = (
+//   <Switch>
+//     {routes.map((prop, index) => {
+//         return (
+//           <Route
+//             path={prop.path}
+//             component={prop.component}
+//             key={index}
+//           />
+//         );
+//       }
+//     )}
+//   </Switch>
+// );
 function Stack(props) {
   
   return (
@@ -23,6 +37,7 @@ function Stack(props) {
           </Route>
           <Route path='/admin' component={Home}>
           </Route> 
+          {/* {switchRoutes} */}
           <Redirect from = '/' to="/login" />         
     </Router>
     </Provider>

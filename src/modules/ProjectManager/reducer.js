@@ -28,7 +28,7 @@ export const editProject = (header, params) => async dispatch => {
   console.log('editPROJECT params', params)
   try {
     debugger
-    fetch(`http://f7abb73c.ngrok.io/api/stuPROJECT/updateProject`, {
+    fetch(`http://3cd87079.ngrok.io/api/stuPROJECT/updateProject`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -68,7 +68,7 @@ export const resetEditProjectSucess = () => async dispatch => {
 export const getListProject = (header, params) => async dispatch => {
   try {
 
-    fetch(`http://f7abb73c.ngrok.io/api/stuPROJECT/getallProject`).then((response) => {
+    fetch(`http://3cd87079.ngrok.io/api/stuPROJECT/getallProject`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

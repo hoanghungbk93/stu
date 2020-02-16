@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "../../../components/CustomButtons/Button.js";
 import styles from "../../../assets/jss/material-dashboard-react/layouts/adminStyle.js";
-import { getListUser, resetEditUserSucess, deleteUser, resetDeleteUserSuccess } from '../reducer'
+import { getListUser, resetEditUserSucess, deleteUser, resetDeleteUserSuccess, resetAddUserSucess } from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CardFooter from "../../../components/Card/CardFooter.js";
@@ -24,7 +24,7 @@ function Alert(props) {
 
 function Users(props) {
 
-  const { location, getListUser, user, resetEditUserSucess, deleteUser, resetDeleteUserSuccess } = props
+  const { location, getListUser, user, resetEditUserSucess, resetAddUserSucess, deleteUser, resetDeleteUserSuccess } = props
   const {listUser, deleteSuccess} = user
   const history = useHistory()
   const classes = useStyles();
@@ -36,7 +36,7 @@ function Users(props) {
     if(deleteSuccess === true){
       setOpen(true);
       getListUser()
-    } else if(deleteSuccess === true){
+    } else if(deleteSuccess === false){
       setOpen(true);
     }
   }, [ deleteSuccess ])
@@ -50,6 +50,7 @@ function Users(props) {
 
   useEffect(()=>{
     if(initial){
+      resetAddUserSucess()
       resetEditUserSucess()
       getListUser()
       setInitial(false)
@@ -111,7 +112,8 @@ const mapDispatchToProps = dispatch => {
       getListUser,
       resetEditUserSucess,
       deleteUser,
-      resetDeleteUserSuccess
+      resetDeleteUserSuccess,
+      resetAddUserSucess
     },
     dispatch
   )

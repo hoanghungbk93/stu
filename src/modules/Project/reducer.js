@@ -6,18 +6,17 @@ import Model from './model'
 // import { Authen } from '../../api'
 // import TokenStore from 'utils/TokenStore'
 // import Helpers from 'utils/Helpers'
-import UserApi from '../../api/User'
 import {
   LOADING,
   setLoading,
-  ADD_USER_SUCCESS,
-  EDIT_USER_SUCCESS,
-  LIST_USER,
+  ADD_PROJECT_SUCCESS,
+  EDIT_PROJECT_SUCCESS,
+  LIST_PROJECT,
   DELETE_SUCCESS,
   setDeleteSuccess,
-  setAddUserSuccess,
-  setEditUserSuccess,
-  setListUser
+  setAddProjectSuccess,
+  setEditProjectSuccess,
+  setListProject
 } from './action-type'
 // import Constants from 'utils/Constants'
 // import Storage from 'utils/Storage'
@@ -33,11 +32,11 @@ import {
 
 const initialState = Model(null)
 
-export const addUser = (header, params) => async dispatch => {
-  console.log('editUser params', params)
+export const addProject = (header, params) => async dispatch => {
+  console.log('addProject params', params)
   try {
     debugger
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/adduser`, {
+    fetch(`http://3cd87079.ngrok.io/api/studa/addnewda`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -52,16 +51,16 @@ export const addUser = (header, params) => async dispatch => {
     }).then((myJson) => {
       console.log('myJson', myJson)
       if (myJson) {
-        dispatch(setAddUserSuccess(true))
+        dispatch(setAddProjectSuccess(true))
         dispatch(setLoading(false))
       } else {
-        dispatch(setAddUserSuccess(false))
+        dispatch(setAddProjectSuccess(false))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err => {
-        dispatch(setAddUserSuccess(false))
+        dispatch(setAddProjectSuccess(false))
         dispatch(setLoading(false))
         console.log('errr', err)
       }
@@ -69,16 +68,16 @@ export const addUser = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setAddUserSuccess(false))
+    dispatch(setAddProjectSuccess(false))
     dispatch(setLoading(false))
     console.log('err', err)
   }
 }
-export const deleteUser = (header, userId) => async dispatch => {
-  console.log('deleteUser ', userId)
+export const deleteProject = (header, projectId) => async dispatch => {
+  console.log('deleteProject ', projectId)
   try {
     debugger
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
+    fetch(`http://3cd87079.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -110,10 +109,10 @@ export const deleteUser = (header, userId) => async dispatch => {
     console.log('err', err)
   }
 }
-export const editUser = (header, params) => async dispatch => {
+export const editProject = (header, params) => async dispatch => {
   try {
     debugger
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/updateuser`, {
+    fetch(`http://3cd87079.ngrok.io/api/studa/updateda`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -125,16 +124,16 @@ export const editUser = (header, params) => async dispatch => {
     }).then((myJson) => {
       console.log('myJson', myJson)
       if (myJson) {
-        dispatch(setEditUserSuccess(true))
+        dispatch(setEditProjectSuccess(true))
         dispatch(setLoading(false))
       } else {
-        dispatch(setEditUserSuccess(false))
+        dispatch(setEditProjectSuccess(false))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err => {
-        dispatch(setEditUserSuccess(false))
+        dispatch(setEditProjectSuccess(false))
         dispatch(setLoading(false))
         console.log('errr', err)
       }
@@ -142,40 +141,35 @@ export const editUser = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setEditUserSuccess(false))
+    dispatch(setEditProjectSuccess(false))
     dispatch(setLoading(false))
     console.log('err', err)
   }
 }
-export const resetEditUserSucess = () => async dispatch => {
+export const resetEditProjectSucess = () => async dispatch => {
 
-  dispatch(setEditUserSuccess(null))
+  dispatch(setEditProjectSuccess(null))
 
 }
-export const resetDeleteUserSuccess = () => async dispatch => {
+export const resetDeleteProjectSuccess = () => async dispatch => {
 
   dispatch(setDeleteSuccess(null))
 
 }
-export const resetAddUserSucess = () => async dispatch => {
+export const resetAddProjectSucess = () => async dispatch => {
 
-  dispatch(setAddUserSuccess(null))
+  dispatch(setAddProjectSuccess(null))
 
 }
-export const getListUser = (header, userId) => async dispatch => {
-  // const response = await UserApi.get('/api/stuuser');
-  // console.log('getListUser response', response)
-  // if(response){
-  //   dispatch(setListUser(response))
-  // }
+export const getListProject = (header, projectuserId) => async dispatch => {
   try {
 
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/getalluser`).then((response) => {
+    fetch(`http://3cd87079.ngrok.io/api/studa/getallda`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
       if (myJson[0]) {
-        dispatch(setListUser(myJson))
+        dispatch(setListProject(myJson))
         dispatch(setLoading(false))
       } else {
         dispatch(setLoading(false))
@@ -187,8 +181,6 @@ export const getListUser = (header, userId) => async dispatch => {
         console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   } catch (err) {
     dispatch(setLoading(false))
     console.log('err', err)
@@ -199,9 +191,9 @@ export const getListUser = (header, userId) => async dispatch => {
 
 const actions = {
   [LOADING]: (state, action) => state.setLoading(action.payload),
-  [ADD_USER_SUCCESS]: (state, action) => state.setAddUserSuccess(action.payload),
-  [EDIT_USER_SUCCESS]: (state, action) => state.setEditUserSuccess(action.payload),
-  [LIST_USER]: (state, action) => state.setListUser(action.payload),
+  [ADD_PROJECT_SUCCESS]: (state, action) => state.setAddProjectSuccess(action.payload),
+  [EDIT_PROJECT_SUCCESS]: (state, action) => state.setEditProjectSuccess(action.payload),
+  [LIST_PROJECT]: (state, action) => state.setListProject(action.payload),
   [DELETE_SUCCESS]: (state, action) => state.setDeleteSuccess(action.payload),
 }
 

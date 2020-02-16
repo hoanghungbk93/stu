@@ -6,18 +6,17 @@ import Model from './model'
 // import { Authen } from '../../api'
 // import TokenStore from 'utils/TokenStore'
 // import Helpers from 'utils/Helpers'
-import UserApi from '../../api/User'
 import {
   LOADING,
   setLoading,
-  ADD_USER_SUCCESS,
-  EDIT_USER_SUCCESS,
-  LIST_USER,
+  ADD_PRODUCT_SUCCESS,
+  EDIT_PRODUCT_SUCCESS,
+  LIST_PRODUCT,
   DELETE_SUCCESS,
   setDeleteSuccess,
-  setAddUserSuccess,
-  setEditUserSuccess,
-  setListUser
+  setAddProductSuccess,
+  setEditProductSuccess,
+  setListProduct
 } from './action-type'
 // import Constants from 'utils/Constants'
 // import Storage from 'utils/Storage'
@@ -33,11 +32,11 @@ import {
 
 const initialState = Model(null)
 
-export const addUser = (header, params) => async dispatch => {
-  console.log('editUser params', params)
+export const addProduct = (header, params) => async dispatch => {
+  console.log('addProduct params', params)
   try {
     debugger
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/adduser`, {
+    fetch(`http://3cd87079.ngrok.io/api/stuvt/addvt`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -52,16 +51,16 @@ export const addUser = (header, params) => async dispatch => {
     }).then((myJson) => {
       console.log('myJson', myJson)
       if (myJson) {
-        dispatch(setAddUserSuccess(true))
+        dispatch(setAddProductSuccess(true))
         dispatch(setLoading(false))
       } else {
-        dispatch(setAddUserSuccess(false))
+        dispatch(setAddProductSuccess(false))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err => {
-        dispatch(setAddUserSuccess(false))
+        dispatch(setAddProductSuccess(false))
         dispatch(setLoading(false))
         console.log('errr', err)
       }
@@ -69,16 +68,16 @@ export const addUser = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setAddUserSuccess(false))
+    dispatch(setAddProductSuccess(false))
     dispatch(setLoading(false))
     console.log('err', err)
   }
 }
-export const deleteUser = (header, userId) => async dispatch => {
-  console.log('deleteUser ', userId)
+export const deleteProduct = (header, ProductId) => async dispatch => {
+  console.log('deleteProduct ', ProductId)
   try {
     debugger
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
+    fetch(`http://3cd87079.ngrok.io/api/stuvt/deletevt/?id=${ProductId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -110,10 +109,11 @@ export const deleteUser = (header, userId) => async dispatch => {
     console.log('err', err)
   }
 }
-export const editUser = (header, params) => async dispatch => {
+export const editProduct = (header, params) => async dispatch => {
+  console.log('editProduct', params)
   try {
     debugger
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/updateuser`, {
+    fetch(`http://3cd87079.ngrok.io/api/stuvt/updatevt`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -125,16 +125,16 @@ export const editUser = (header, params) => async dispatch => {
     }).then((myJson) => {
       console.log('myJson', myJson)
       if (myJson) {
-        dispatch(setEditUserSuccess(true))
+        dispatch(setEditProductSuccess(true))
         dispatch(setLoading(false))
       } else {
-        dispatch(setEditUserSuccess(false))
+        dispatch(setEditProductSuccess(false))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err => {
-        dispatch(setEditUserSuccess(false))
+        dispatch(setEditProductSuccess(false))
         dispatch(setLoading(false))
         console.log('errr', err)
       }
@@ -142,40 +142,35 @@ export const editUser = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setEditUserSuccess(false))
+    dispatch(setEditProductSuccess(false))
     dispatch(setLoading(false))
     console.log('err', err)
   }
 }
-export const resetEditUserSucess = () => async dispatch => {
+export const resetEditProductSucess = () => async dispatch => {
 
-  dispatch(setEditUserSuccess(null))
+  dispatch(setEditProductSuccess(null))
 
 }
-export const resetDeleteUserSuccess = () => async dispatch => {
+export const resetDeleteProductSuccess = () => async dispatch => {
 
   dispatch(setDeleteSuccess(null))
 
 }
-export const resetAddUserSucess = () => async dispatch => {
+export const resetAddProductSucess = () => async dispatch => {
 
-  dispatch(setAddUserSuccess(null))
+  dispatch(setAddProductSuccess(null))
 
 }
-export const getListUser = (header, userId) => async dispatch => {
-  // const response = await UserApi.get('/api/stuuser');
-  // console.log('getListUser response', response)
-  // if(response){
-  //   dispatch(setListUser(response))
-  // }
+export const getListProduct = (header, ProductuserId) => async dispatch => {
   try {
 
-    fetch(`http://3cd87079.ngrok.io/api/stuuser/getalluser`).then((response) => {
+    fetch(`http://3cd87079.ngrok.io/api/stuvt/getallvt`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
       if (myJson[0]) {
-        dispatch(setListUser(myJson))
+        dispatch(setListProduct(myJson))
         dispatch(setLoading(false))
       } else {
         dispatch(setLoading(false))
@@ -187,8 +182,6 @@ export const getListUser = (header, userId) => async dispatch => {
         console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   } catch (err) {
     dispatch(setLoading(false))
     console.log('err', err)
@@ -199,9 +192,9 @@ export const getListUser = (header, userId) => async dispatch => {
 
 const actions = {
   [LOADING]: (state, action) => state.setLoading(action.payload),
-  [ADD_USER_SUCCESS]: (state, action) => state.setAddUserSuccess(action.payload),
-  [EDIT_USER_SUCCESS]: (state, action) => state.setEditUserSuccess(action.payload),
-  [LIST_USER]: (state, action) => state.setListUser(action.payload),
+  [ADD_PRODUCT_SUCCESS]: (state, action) => state.setAddProductSuccess(action.payload),
+  [EDIT_PRODUCT_SUCCESS]: (state, action) => state.setEditProductSuccess(action.payload),
+  [LIST_PRODUCT]: (state, action) => state.setListProduct(action.payload),
   [DELETE_SUCCESS]: (state, action) => state.setDeleteSuccess(action.payload),
 }
 

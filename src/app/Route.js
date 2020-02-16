@@ -31,6 +31,8 @@ import {Home} from "../modules/Home";
 import HomeTable from "../modules/Home/Table"
 import HomeDetail from "../modules/Home/Detail"
 import {Users, UserAdd, UserEdit} from "../modules/Users";
+import {Projects, ProjectAdd, ProjectEdit} from "../modules/Project";
+import {Products, ProductAdd, ProductEdit} from "../modules/Product";
 import AssignmentIcon from '@material-ui/icons/Assignment';
 // import Typography from "views/Typography/Typography.js";
 // import Icons from "views/Icons/Icons.js";
@@ -148,13 +150,6 @@ const routes = [
     isVisible: true
   },
   {
-    path: '/admin/manager',
-    component: AssignmentIcon,
-    name: "QUẢN LÍ DỰ ÁN",
-    icon: AssignmentIcon,
-    isVisible: true
-  },
-  {
     path: '/admin/addNew',
     component: UserAdd,
     name: "QUẢN LÍ VẬT TƯ",
@@ -169,12 +164,54 @@ const routes = [
     isVisible: false
   },
   {
+    path: '/admin/project',
+    component: Projects,
+    name: "QUẢN LÍ DỰ ÁN",
+    icon: AssignmentIcon,
+    isVisible: true
+  },
+  {
+    path: '/admin/addNewProject',
+    component: ProjectAdd,
+    name: "QUẢN LÍ VẬT TƯ",
+    icon: Business,
+    isVisible: false
+  },
+  {
+    path: '/admin/editProject',
+    component: ProjectEdit,
+    name: "QUẢN LÍ VẬT TƯ",
+    icon: Business,
+    isVisible: false
+  },
+  {
+    path: '/admin/product',
+    component: Products,
+    name: "QUẢN LÍ VẬT TƯ",
+    icon: AssignmentIcon,
+    isVisible: true
+  },
+  {
+    path: '/admin/addNewProduct',
+    component: ProductAdd,
+    name: "QUẢN LÍ VẬT TƯ",
+    icon: Business,
+    isVisible: false
+  },
+  {
+    path: '/admin/editProduct',
+    component: ProductEdit,
+    name: "QUẢN LÍ VẬT TƯ",
+    icon: Business,
+    isVisible: false
+  },
+  {
     path: '/admin/detail',
     component: HomeDetail,
     name: "HomeDetail",
     icon: Business,
     isVisible: false
-  },
+  }
 ];
 
 export default routes;

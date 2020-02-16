@@ -13,7 +13,7 @@ import CardFooter from "../../../components/Card/CardFooter.js";
 import Snackbar from '@material-ui/core/Snackbar';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { addUser } from '../reducer'
+import { addProject } from '../reducer'
 import MuiAlert from '@material-ui/lab/Alert';
 const styles = {
   cardCategoryWhite: {
@@ -38,21 +38,21 @@ const useStyles = makeStyles(styles);
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-function UserAdd(props) {
+function ProjectAdd(props) {
   const classes = useStyles();
-  const { history, authen, user, addUser } = props
-  const {addUserSuccess} = user
-  const [userName, setUserName] = useState('')
+  const { history, authen, project, addProject } = props
+  const {addProjectSuccess} = project
+  const [projectName, setProjectName] = useState('')
   const [password, setPassword] = useState('')
-  const [department, setDepartment] = useState('')
+  const [projectCode, setProjectCode] = useState('')
   const [open, setOpen] = React.useState(false);
   const [type, setType] = useState(0)
   const {header} = authen
   useEffect(()=>{
-    if(addUserSuccess !== null){
+    if(addProjectSuccess !== null){
       setOpen(true);
     }
-  },[addUserSuccess])
+  },[addProjectSuccess])
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -65,8 +65,8 @@ function UserAdd(props) {
   return (
     <div>
     <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={addUserSuccess === true ? "success" : "error"}>
-          {addUserSuccess === true ? `Thêm người dùng thành công!` : `Thêm người dùng thất bại!`}
+        <Alert onClose={handleClose} severity={addProjectSuccess === true ? "success" : "error"}>
+          {addProjectSuccess === true ? `Thêm dự án thành công!` : `Thêm dự án thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -74,73 +74,44 @@ function UserAdd(props) {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Thêm mới người dùng</h4>
-              <p className={classes.cardCategoryWhite}>Hoàn thành thông tin người dùng</p>
+              <h4 className={classes.cardTitleWhite}>Thêm mới dự án</h4>
+              <p className={classes.cardCategoryWhite}>Hoàn thành thông tin dự án</p>
             </CardHeader>
             <CardBody>
               <GridContainer>
-
                 <GridItem xs={12} sm={12} md={3}>
                   <CustomInput
-                    labelText="Username"
-                    id="username"
+                    labelText="Tên dự án"
+                    id="projectname"
                     formControlProps={{
                       fullWidth: true
                     }}
                     onChange={(event)=>{
-                      console.log('Username', event.target.value)
-                      setUserName(event.target.value)
+                      console.log('Projectname', event.target.value)
+                      setProjectName(event.target.value)
                       }}
-                      value={userName}
+                      value={projectName}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Department"
+                    labelText="Mã dự án"
                     id="email-address"
                     formControlProps={{
                       fullWidth: true
                     }}
                     onChange={(event)=>{
-                      setDepartment(event.target.value)
+                      setProjectCode(event.target.value)
                       console.log('Email address', event.target.value)
                       }}
-                      value={department}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Type"
-                    id="user-type"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    onChange={(event)=>{
-                      console.log('Type', event.target.value)
-                      setType(event.target.value)
-                      }}
-                      value={type}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Password"
-                    id="password"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    onChange={(event)=>{
-                      console.log('Password', event.target.value)
-                      setPassword(event.target.value)
-                      }}
-                      value={password}
+                      value={projectCode}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={()=>{
-                addUser(header, {name: userName, bp: department, loai: type, mk: password})
+                addProject(header, {tda: projectName, mda: projectCode})
               }}>Thêm</Button>
             </CardFooter>
           </Card>
@@ -153,13 +124,13 @@ function UserAdd(props) {
 
 const mapStateToProps = state => ({
   authen: state.authen,
-  user: state.user
+  project: state.project
 })
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addUser,
+      addProject,
     },
     dispatch
   )
@@ -168,4 +139,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(UserAdd)
+)(ProjectAdd)

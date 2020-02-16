@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Button from "../../../components/CustomButtons/Button.js";
 import {
   Switch,
   Route,
@@ -19,12 +20,13 @@ import {
   withRouter,
   Redirect
 } from "react-router-dom";
-import { createBrowserHistory } from 'history';
+import ContentLoader, { Facebook, Instagram } from 'react-content-loader'
 import Container from '@material-ui/core/Container';
 import { login } from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { green } from '@material-ui/core/colors';
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,12 +45,19 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  fabProgress: {
+    color: green[500],
+    position: 'absolute',
+    top: -6,
+    left: -6,
+    zIndex: 1,
+  },
 }));
 
 function SignIn(props) {
   const classes = useStyles();
   const { history, login, authen } = props
-  const { isLogined, userInfo } = authen
+  const { isLogined, userInfo, isLoading } = authen
   console.log(history)
   // useEffect(()=>{
   //   console.log('authen.isLoading', authen.isLoading)
@@ -58,13 +67,13 @@ function SignIn(props) {
   // },[authen.isLoading])
   const [userName, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  // useEffect(() => {
-  //   console.log('authen.isLogined', authen.isLogined)
-  //   if (isLogined === true) {
-  //     debugger
-  //     history.replace('/admin')
-  //   }
-  // }, [isLogined])
+  useEffect(() => {
+    console.log('authen.isLogined', authen.isLogined)
+    if (isLogined === true) {
+      debugger
+      history.replace('/admin')
+    }
+  }, [isLogined])
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -86,10 +95,10 @@ function SignIn(props) {
             name="email"
             autoComplete="email"
             autoFocus
-            // onChange={(event) => {
-            //   setUsername(event.target.value)
-            //   // console.log('Email address', event.target.value)
-            // }}
+            onChange={(event) => {
+              setUsername(event.target.value)
+              // console.log('Email address', event.target.value)
+            }}
           />
           <TextField
             variant="outlined"
@@ -101,44 +110,30 @@ function SignIn(props) {
             type="password"
             id="password"
             autoComplete="current-password"
-            // onChange={(event) => {
-            //   setPassword(event.target.value)
-            //   // console.log('Email address', event.target.value)
-            // }}
+            onChange={(event) => {
+              setPassword(event.target.value)
+              // console.log('Email address', event.target.value)
+            }}
           />
 
           <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            // disabled
-            // onClick={() => {
-            //   debugger
-            //   // login({}, {
-            //   //   userName,
-            //   //   password
-            //   // })
-            // }}
+            color='primary'
+            size='lg'
+            style={{width: '100%'}}
+            onClick={() => {
+              login({}, {
+                userName,
+                password
+              })
+            }}
           >
             Sign In
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2" onClick={() => { login({}, { userName, password }) }}>
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/SignUp" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-          {/* { <p style={{color : 'red', width: '100%', textAlign: 'center'}}>{isLogined === false ? 'Login Failure' : ''}</p>} */}
+          { <p style={{color : 'red', width: '100%', textAlign: 'center'}}>{isLogined === false ? 'Login Failure' : ''}</p>}
+          
         </form>
       </div>
+      {isLoading && <Instagram></Instagram>}
     </Container>
   );
 }

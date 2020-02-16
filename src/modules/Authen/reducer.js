@@ -30,6 +30,7 @@ const initialState = Model(null)
 
 export const login = (header, param) => async dispatch => {
   console.log('param', param)
+  dispatch(setLoading(true))
   const params = JSON.stringify({
     _name : param.userName,
     _pass: param.password
@@ -37,20 +38,23 @@ export const login = (header, param) => async dispatch => {
   
   try{
     
-    fetch(`http://cc83189a.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
-      console.log('response', response)  
-      return response.json();
+    fetch(`http://89061351.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+      if(!response.ok) throw new Error(response.status);
+      else return response.json();
     }).then((myJson) => {
       if(myJson[0]){
         dispatch(setUserInfo(myJson[0]))
+        dispatch(setLoading(false))
         dispatch(setLogin(true))
       } else{
         dispatch(setLogin(false))
+        dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err=> {
         dispatch(setLogin(false))
+        dispatch(setLoading(false))
         console.log('errr', err)
       }
     )
@@ -58,9 +62,9 @@ export const login = (header, param) => async dispatch => {
     // dispatch(setLoading(true))
   } catch(err){
     dispatch(setLogin(false))
+    dispatch(setLoading(false))
     console.log('err', err)
   }
-  
 }
 
 

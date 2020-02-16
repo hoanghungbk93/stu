@@ -49,7 +49,6 @@ function UserAdd(props) {
   const {addUserSuccess, editUserSuccess, listUser} = user
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
-  const [department, setDepartment] = useState('')
   const [open, setOpen] = React.useState(false);
   const [type, setType] = useState(0)
   const {header} = authen
@@ -96,7 +95,6 @@ function UserAdd(props) {
                       console.log('Username', event.target.value)
                       setUserName(event.target.value)
                       }}
-                      value={userName}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -107,10 +105,8 @@ function UserAdd(props) {
                       fullWidth: true
                     }}
                     onChange={(event)=>{
-                      setDepartment(event.target.value)
                       console.log('Email address', event.target.value)
                       }}
-                      value={department}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -124,7 +120,6 @@ function UserAdd(props) {
                       console.log('Type', event.target.value)
                       setType(event.target.value)
                       }}
-                      value={type}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
@@ -138,14 +133,13 @@ function UserAdd(props) {
                       console.log('Password', event.target.value)
                       setPassword(event.target.value)
                       }}
-                      value={password}
                   />
                 </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={()=>{
-                addUser(header, {name: userName, bp: department, loai: type, mk: password})
+                addUser(header, {userName, password, type})
               }}>Create User</Button>
             </CardFooter>
           </Card>

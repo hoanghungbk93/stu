@@ -38,7 +38,7 @@ export const login = (header, param) => async dispatch => {
   
   try{
     
-    fetch(`http://89061351.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+    fetch(`http://f7abb73c.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
       if(!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {

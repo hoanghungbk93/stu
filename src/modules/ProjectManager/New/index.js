@@ -78,8 +78,8 @@ function UserAdd(props) {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>Thêm mới dự án</h4>
+              <p className={classes.cardCategoryWhite}>Thêm mới người dùng</p>
             </CardHeader>
             <CardBody>
               <GridContainer>

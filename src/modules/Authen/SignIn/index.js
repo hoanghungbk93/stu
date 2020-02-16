@@ -82,7 +82,7 @@ function SignIn(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Đăng nhập
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -91,7 +91,7 @@ function SignIn(props) {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Tên đăng nhập"
             name="email"
             autoComplete="email"
             autoFocus
@@ -106,7 +106,7 @@ function SignIn(props) {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Mật khẩu"
             type="password"
             id="password"
             autoComplete="current-password"
@@ -127,7 +127,7 @@ function SignIn(props) {
               })
             }}
           >
-            Sign In
+            Đăng nhập
           </Button>
           { <p style={{color : 'red', width: '100%', textAlign: 'center'}}>{isLogined === false ? 'Login Failure' : ''}</p>}
           

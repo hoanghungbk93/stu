@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "../../../components/Grid/GridItem.js";
 import GridContainer from "../../../components/Grid/GridContainer.js";
@@ -9,13 +8,9 @@ import CustomInput from "../../../components/CustomInput/CustomInput.js";
 import Button from "../../../components/CustomButtons/Button.js";
 import Card from "../../../components/Card/Card.js";
 import CardHeader from "../../../components/Card/CardHeader.js";
-import CardAvatar from "../../../components/Card/CardAvatar.js";
 import CardBody from "../../../components/Card/CardBody.js";
 import CardFooter from "../../../components/Card/CardFooter.js";
-import SnackbarContent from "../../../components/Snackbar/SnackbarContent.js";
 import Snackbar from '@material-ui/core/Snackbar';
-import avatar from "../../../assets/img/faces/marc.jpg";
-import { editUser } from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { addUser } from '../reducer'
@@ -46,7 +41,7 @@ function Alert(props) {
 function UserAdd(props) {
   const classes = useStyles();
   const { history, authen, user, addUser } = props
-  const {addUserSuccess, editUserSuccess, listUser} = user
+  const {addUserSuccess} = user
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [department, setDepartment] = useState('')
@@ -54,7 +49,7 @@ function UserAdd(props) {
   const [type, setType] = useState(0)
   const {header} = authen
   useEffect(()=>{
-    if(addUserSuccess){
+    if(addUserSuccess !== null){
       setOpen(true);
     }
   },[addUserSuccess])
@@ -70,8 +65,8 @@ function UserAdd(props) {
   return (
     <div>
     <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success">
-          This is a success message!
+        <Alert onClose={handleClose} severity={addUserSuccess === true ? "success" : "error"}>
+          {addUserSuccess === true ? `Thêm người dùng thành công!` : `Thêm người dùng thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -79,8 +74,8 @@ function UserAdd(props) {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>Thêm mới người dùng</h4>
+              <p className={classes.cardCategoryWhite}>Hoàn thành thông tin người dùng</p>
             </CardHeader>
             <CardBody>
               <GridContainer>

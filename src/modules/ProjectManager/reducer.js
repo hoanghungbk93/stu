@@ -17,17 +17,6 @@ import {
   setEditProjectSuccess,
   setListProject
 } from './action-type'
-// import Constants from 'utils/Constants'
-// import Storage from 'utils/Storage'
-// import AsyncStorage from '@react-native-community/async-storage'
-
-// const locales = RNLocalize.getLocales()
-
-// I18n.locale = locales[0].languageTag
-
-// I18n.fallbacks = true
-// I18n.missingBehaviour = 'guess'
-// I18n.defaultLocale = 'en'
 
 const initialState = Model(null)
 
@@ -39,7 +28,7 @@ export const editProject = (header, params) => async dispatch => {
   console.log('editPROJECT params', params)
   try {
     debugger
-    fetch(`http://89061351.ngrok.io/api/stuPROJECT/updateProject`, {
+    fetch(`http://3cd87079.ngrok.io/api/stuPROJECT/updateProject`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -65,8 +54,6 @@ export const editProject = (header, params) => async dispatch => {
         console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   } catch (err) {
     dispatch(setEditProjectSuccess(false))
     dispatch(setLoading(false))
@@ -79,14 +66,9 @@ export const resetEditProjectSucess = () => async dispatch => {
 
 }
 export const getListProject = (header, params) => async dispatch => {
-  // const response = await PROJECTApi.get('/api/stuPROJECT');
-  // console.log('getListPROJECT response', response)
-  // if(response){
-  //   dispatch(setListPROJECT(response))
-  // }
   try {
 
-    fetch(`http://89061351.ngrok.io/api/stuPROJECT/getallProject`).then((response) => {
+    fetch(`http://3cd87079.ngrok.io/api/stuPROJECT/getallProject`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -103,8 +85,6 @@ export const getListProject = (header, params) => async dispatch => {
         console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   } catch (err) {
     dispatch(setLoading(false))
     console.log('err', err)

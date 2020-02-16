@@ -4,7 +4,6 @@ import times from 'lodash.times';
 import { Helmet } from 'react-helmet';
 import { Link, Route } from 'react-router-dom';
 import Page from '../private-component/Page';
-import UserInfo from '../private-component/UserInfo';
 import GridItem from "../../../components/Grid/GridItem.js";
 import GridContainer from "../../../components/Grid/GridContainer.js";
 import Table from "../private-component/Table";
@@ -44,7 +43,7 @@ function Users(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Danh sách users</h4>
+              <h4 className={classes.cardTitleWhite}>Danh sách dự án</h4>
             </CardHeader>
             <CardBody>
               <Table
@@ -65,9 +64,8 @@ function Users(props) {
         </GridItem>
       </GridContainer>
       <CardFooter>
-      <Button color="primary" onClick={() => { history.push('/admin/addNew') }}>New User</Button>
+      <Button color="primary" onClick={() => { history.push('/admin/addNew') }}>Thêm dự án</Button>
       </CardFooter>
-      <Route path="/admin/addNew" component={UserInfo} />
     </div>
   );
 }

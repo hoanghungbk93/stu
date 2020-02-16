@@ -13,6 +13,8 @@ import {
   ADD_USER_SUCCESS,
   EDIT_USER_SUCCESS,
   LIST_USER,
+  DELETE_SUCCESS,
+  setDeleteSuccess,
   setAddUserSuccess,
   setEditUserSuccess,
   setListUser
@@ -35,7 +37,7 @@ export const addUser = (header, params) => async dispatch => {
   console.log('editUser params', params)
   try {
     debugger
-    fetch(`http://89061351.ngrok.io/api/stuuser/adduser`, {
+    fetch(`http://3cd87079.ngrok.io/api/stuuser/adduser`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -72,11 +74,46 @@ export const addUser = (header, params) => async dispatch => {
     console.log('err', err)
   }
 }
-export const editUser = (header, params) => async dispatch => {
-  console.log('editUser params', params)
+export const deleteUser = (header, userId) => async dispatch => {
+  console.log('deleteUser ', userId)
   try {
     debugger
-    fetch(`http://89061351.ngrok.io/api/stuuser/updateuser`, {
+    fetch(`http://3cd87079.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
+      method: 'DELETE',
+    }).then((response) => {
+      debugger
+      console.log('responseaa', response)
+      if(!response.ok) throw new Error(response.status);
+      else return response.json();
+    }).then((myJson) => {
+      console.log('myJson', myJson)
+      if (myJson) {
+        dispatch(setDeleteSuccess(true))
+        dispatch(setLoading(false))
+      } else {
+        dispatch(setDeleteSuccess(false))
+        dispatch(setLoading(false))
+      }
+      console.log('myJson', myJson)
+    }).catch(
+      err => {
+        dispatch(setDeleteSuccess(false))
+        dispatch(setLoading(false))
+        console.log('errr', err)
+      }
+    )
+    // if(data[0].sta)
+    // dispatch(setLoading(true))
+  } catch (err) {
+    dispatch(setDeleteSuccess(false))
+    dispatch(setLoading(false))
+    console.log('err', err)
+  }
+}
+export const editUser = (header, params) => async dispatch => {
+  try {
+    debugger
+    fetch(`http://3cd87079.ngrok.io/api/stuuser/updateuser`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -115,7 +152,17 @@ export const resetEditUserSucess = () => async dispatch => {
   dispatch(setEditUserSuccess(null))
 
 }
-export const getListUser = (header, params) => async dispatch => {
+export const resetDeleteUserSuccess = () => async dispatch => {
+
+  dispatch(setDeleteSuccess(null))
+
+}
+export const resetAddUserSucess = () => async dispatch => {
+
+  dispatch(setAddUserSuccess(null))
+
+}
+export const getListUser = (header, userId) => async dispatch => {
   // const response = await UserApi.get('/api/stuuser');
   // console.log('getListUser response', response)
   // if(response){
@@ -123,7 +170,7 @@ export const getListUser = (header, params) => async dispatch => {
   // }
   try {
 
-    fetch(`http://89061351.ngrok.io/api/stuuser/getalluser`).then((response) => {
+    fetch(`http://3cd87079.ngrok.io/api/stuuser/getalluser`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -146,6 +193,7 @@ export const getListUser = (header, params) => async dispatch => {
     dispatch(setLoading(false))
     console.log('err', err)
   }
+  
 }
 
 
@@ -154,6 +202,7 @@ const actions = {
   [ADD_USER_SUCCESS]: (state, action) => state.setAddUserSuccess(action.payload),
   [EDIT_USER_SUCCESS]: (state, action) => state.setEditUserSuccess(action.payload),
   [LIST_USER]: (state, action) => state.setListUser(action.payload),
+  [DELETE_SUCCESS]: (state, action) => state.setDeleteSuccess(action.payload),
 }
 
 export default handleActions(actions, initialState)

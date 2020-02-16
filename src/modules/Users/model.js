@@ -5,6 +5,7 @@ function Authen(record) {
   this.isLoading = pathOr(false, ['isLoading'], record)
   this.addUserSuccess = pathOr(null, ['addUserSuccess'], record)
   this.editUserSuccess = pathOr(null, ['editUserSuccess'], record)
+  this.deleteSuccess = pathOr(null, ['deleteSuccess'], record)
   this.listUser = pathOr([], ['listUser'], record)
 }
 
@@ -20,6 +21,9 @@ Authen.prototype = {
   },
   setListUser: function(value) {
     return assocPath(['listUser'], value, this)
+  },
+  setDeleteSuccess: function(value) {
+    return assocPath(['deleteSuccess'], value, this)
   }
 }
 

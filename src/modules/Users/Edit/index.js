@@ -8,7 +8,6 @@ import CustomInput from "../../../components/CustomInput/CustomInput.js";
 import Button from "../../../components/CustomButtons/Button.js";
 import Card from "../../../components/Card/Card.js";
 import CardHeader from "../../../components/Card/CardHeader.js";
-import CardAvatar from "../../../components/Card/CardAvatar.js";
 import CardBody from "../../../components/Card/CardBody.js";
 import CardFooter from "../../../components/Card/CardFooter.js";
 import Snackbar from '@material-ui/core/Snackbar';
@@ -71,7 +70,7 @@ function UserEdit(props) {
     <div>
     <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={editUserSuccess === true ? "success" : "error"}>
-          {editUserSuccess === true ? `Edit User success!` : `Edit User failure!`}
+          {editUserSuccess === true ? `Sửa thông người dùng thành công!` : `Sửa thông tin người dùng thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -79,8 +78,8 @@ function UserEdit(props) {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
+              <h4 className={classes.cardTitleWhite}>Sửa thông tin người dùng</h4>
+              <p className={classes.cardCategoryWhite}>Hoàn thành sửa thông tin người dùng</p>
             </CardHeader>
             <CardBody>
               <GridContainer>

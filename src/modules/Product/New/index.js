@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState, createRef } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -15,6 +15,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { addProduct } from '../reducer'
 import MuiAlert from '@material-ui/lab/Alert';
+import Dropzone from 'react-dropzone';
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -41,7 +42,7 @@ function Alert(props) {
 function ProductAdd(props) {
   const classes = useStyles();
   const { history, authen, product, addProduct } = props
-  const {addProductSuccess} = product
+  const { addProductSuccess } = product
   const [productName, setProductName] = useState('')
   const [password, setPassword] = useState('')
   const [productCode, setProductCode] = useState('')
@@ -52,12 +53,13 @@ function ProductAdd(props) {
   const [unit, setUnit] = useState('')
   const [distributor, setDistributor] = useState('')
   const [total, setTotal] = useState(0)
-  const {header} = authen
-  useEffect(()=>{
-    if(addProductSuccess !== null){
+  const { header } = authen
+  const dropzoneRef = createRef()
+  useEffect(() => {
+    if (addProductSuccess !== null) {
       setOpen(true);
     }
-  },[addProductSuccess])
+  }, [addProductSuccess])
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -69,7 +71,7 @@ function ProductAdd(props) {
 
   return (
     <div>
-    <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={addProductSuccess === true ? "success" : "error"}>
           {addProductSuccess === true ? `Thêm vật tư thành công!` : `Thêm vật tư thất bại!`}
         </Alert>
@@ -91,11 +93,11 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       console.log('Productname', event.target.value)
                       setProductName(event.target.value)
-                      }}
-                      value={productName}
+                    }}
+                    value={productName}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -105,11 +107,11 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       setProductCode(event.target.value)
                       console.log('Email address', event.target.value)
-                      }}
-                      value={productCode}
+                    }}
+                    value={productCode}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -119,11 +121,11 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       setInformation(event.target.value)
                       console.log('Email address', event.target.value)
-                      }}
-                      value={information}
+                    }}
+                    value={information}
                   />
                 </GridItem>
               </GridContainer>
@@ -135,11 +137,11 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       console.log('Productname', event.target.value)
                       setManufacture(event.target.value)
-                      }}
-                      value={manufacture}
+                    }}
+                    value={manufacture}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -149,11 +151,11 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       setUnit(event.target.value)
                       console.log('Email address', event.target.value)
-                      }}
-                      value={unit}
+                    }}
+                    value={unit}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -163,14 +165,14 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       setTotal(event.target.value)
                       console.log('Email address', event.target.value)
-                      }}
-                      value={total}
+                    }}
+                    value={total}
                   />
                 </GridItem>
-              </GridContainer> 
+              </GridContainer>
 
               <GridContainer>
                 <GridItem xs={12} sm={12} md={3}>
@@ -180,32 +182,51 @@ function ProductAdd(props) {
                     formControlProps={{
                       fullWidth: true
                     }}
-                    onChange={(event)=>{
+                    onChange={(event) => {
                       console.log('Productname', event.target.value)
                       setDistributor(event.target.value)
-                      }}
-                      value={distributor}
+                    }}
+                    value={distributor}
                   />
                 </GridItem>
-              </GridContainer>          
-              
+              </GridContainer>
+
             </CardBody>
             <CardFooter>
-              <Button color="primary" onClick={()=>{
+              <Button color="primary" onClick={() => {
                 addProduct(header, {
-                 tvt: productName, 
-                 mvt: productCode, 
-                 ts: information,
-                 hsx: manufacture,
-                 dv: unit,
-                 sl: Number(total),
-                 ncc: distributor
-                 })
+                  tvt: productName,
+                  mvt: productCode,
+                  ts: information,
+                  hsx: manufacture,
+                  dv: unit,
+                  sl: Number(total),
+                  ncc: distributor
+                })
               }}>Thêm</Button>
+              <Button color="primary" onClick={() => {
+                dropzoneRef.current && dropzoneRef.current.open()
+              }}>Đính kèm</Button>
             </CardFooter>
           </Card>
         </GridItem>
+        
       </GridContainer>
+      <Dropzone onDrop={files => console.log(files)} ref={dropzoneRef}>
+                {({ getRootProps, getInputProps }) => (
+                  <div className="container">
+                    <div
+                      {...getRootProps({
+                        className: 'dropzone',
+                        onDrop: event => event.stopPropagation()
+                      })}
+                    >
+                      <input {...getInputProps()} />
+                      <p>Drag 'n' drop some files here, or click to select files</p>
+                    </div>
+                  </div>
+                )}
+              </Dropzone>
     </div>
   );
 }

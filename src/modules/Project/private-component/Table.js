@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,16 +9,23 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 // core components
 import styles from "../../../assets/jss/material-dashboard-react/components/tableStyle.js";
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import AlertDialogSlide from '../../../components/ConfirmDialog'
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
   debugger
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, history } = props;
-  const [activeRow, setActiveRow] = useState(0)
+  const { tableHead, tableData, tableHeaderColor, history, deleteProject, listProject, resetDeleteProjectSuccess } = props;
+  const [selectedId, setSelectedId] = useState(-1)
+  const [openDialog, setOpenDialog] = React.useState(false);
   return (
     <div className={classes.tableResponsive}>
+      <AlertDialogSlide
+        title="Bạn có muốn xoá dự án này không"
+        action={() => deleteProject({}, selectedId)}
+        open={openDialog} setOpen={setOpenDialog}
+      ></AlertDialogSlide>
       <Table className={classes.table}>
         {tableHead !== undefined ? (
           <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
@@ -39,17 +46,12 @@ export default function CustomTable(props) {
         <TableBody>
           {tableData.map((prop, key) => {
             return (
-              <TableRow key={key} className={classes.tableBodyRow} onClick={()=>{
-                      history.push('/admin/edit',{order : prop[0]})
-                    }}
-                    hover
-                    selected
-                  //   onMouseMove={()=>{
-                  //   setActiveRow(key)
-                  //   console.log('hihi', key)
-                  // }}
-                  // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
-                  >
+              <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
+                history.push('/admin/editProject', { order: prop[0] })
+              }}
+                hover
+                selected
+              >
                 {prop.map((e, key) => {
                   return (
                     <TableCell className={classes.tableCell} key={key} >
@@ -57,6 +59,14 @@ export default function CustomTable(props) {
                     </TableCell>
                   );
                 })}
+                <TableCell className={classes.tableCell} key={key} >
+                  <DeleteIcon onClick={(e) => {
+                    resetDeleteProjectSuccess()
+                    e.stopPropagation();
+                    setSelectedId(listProject[key].id)
+                    setOpenDialog(true)
+                  }}></DeleteIcon>
+                </TableCell>
               </TableRow>
             );
           })}

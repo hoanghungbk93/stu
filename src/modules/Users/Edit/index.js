@@ -70,7 +70,7 @@ function UserEdit(props) {
     <div>
     <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={editUserSuccess === true ? "success" : "error"}>
-          {editUserSuccess === true ? `Sửa thông người dùng thành công!` : `Sửa thông tin người dùng thất bại!`}
+          {editUserSuccess === true ? `Sửa thông tin người dùng thành công!` : `Sửa thông tin người dùng thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -145,7 +145,7 @@ function UserEdit(props) {
             <CardFooter>
               <Button color="primary" onClick={()=>{
                 editUser({}, {id : userInfo.id, name: userName, bp: department, loai: type, mk: password})
-              }}>Save</Button>
+              }}>Lưu</Button>
             </CardFooter>
           </Card>
         </GridItem>

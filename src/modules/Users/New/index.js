@@ -141,7 +141,7 @@ function UserAdd(props) {
             <CardFooter>
               <Button color="primary" onClick={()=>{
                 addUser(header, {name: userName, bp: department, loai: type, mk: password})
-              }}>Create User</Button>
+              }}>Thêm</Button>
             </CardFooter>
           </Card>
         </GridItem>

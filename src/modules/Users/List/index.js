@@ -95,7 +95,10 @@ function Users(props) {
         </GridItem>
       </GridContainer>
       <CardFooter>
-      <Button color="primary" onClick={() => { history.push('/admin/addNew') }}>Thêm người dùng</Button>
+      <Button color="primary" onClick={() => { 
+        resetDeleteUserSuccess()
+        history.push('/admin/addNew') 
+        }}>Thêm người dùng</Button>
       </CardFooter>
     </div>
   );

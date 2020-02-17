@@ -95,7 +95,10 @@ function Projects(props) {
         </GridItem>
       </GridContainer>
       <CardFooter>
-      <Button color="primary" onClick={() => { history.push('/admin/addNewProject') }}>Thêm dự án</Button>
+      <Button color="primary" onClick={() => { 
+        resetDeleteProjectSuccess()
+        history.push('/admin/addNewProject') 
+        }}>Thêm dự án</Button>
       </CardFooter>
     </div>
   );

@@ -13,7 +13,7 @@ import Icon from "@material-ui/core/Icon";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import styles from "../../assets/jss/material-dashboard-react/components/sidebarStyle.js";
-
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
@@ -71,14 +71,19 @@ export default function Sidebar(props) {
           });
         } else {
           listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path)
+            [" " + classes[color]]: activeRoute(prop.path)
           });
         }
         const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
+          [" " + classes.whiteFont]: activeRoute(prop.path)
         });
         return (
-              <div style ={{justifyContent: 'center', alignItems: 'center'}}>
+          <NavLink
+            to={prop.path}
+            className={activePro + classes.item}
+            activeClassName="active"
+            key={key}
+          >
               <ListItem button className={classes.itemLink + listItemClasses} onClick={()=>handleClick(key, prop.path)}>
               {typeof prop.icon === "string" ? (
                 <Icon
@@ -110,7 +115,7 @@ export default function Sidebar(props) {
               {
                 prop.submenus.map(e => {
                   return(
-                  <ListItem button className={classes.itemLink + listItemClasses} onClick={()=>handleClose(key)}>
+                  <ListItem button className={classes.itemLink} onClick={()=>handleClose(key)}>
                   <ListItemText primary={e.name} className={classNames(classes.itemText, whiteFontClasses, {
                   [classes.itemTextRTL]: props.rtlActive
                 })}
@@ -121,7 +126,7 @@ export default function Sidebar(props) {
               }
               </List>}
                 </div>
-            </div>
+            </NavLink>
 
         );
       })}
@@ -148,7 +153,7 @@ export default function Sidebar(props) {
       <Hidden mdUp implementation="css">
         <Drawer
           variant="temporary"
-          anchor={props.rtlActive ? "left" : "right"}
+          anchor={"right"}
           open={props.open}
           classes={{
             paper: classNames(classes.drawerPaper, {
@@ -176,7 +181,7 @@ export default function Sidebar(props) {
       </Hidden>
       <Hidden smDown implementation="css">
         <Drawer
-          anchor={props.rtlActive ? "right" : "left"}
+          anchor={"left"}
           variant="permanent"
           open
           classes={{

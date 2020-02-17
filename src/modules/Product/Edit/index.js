@@ -170,6 +170,7 @@ function ProductEdit(props) {
                       console.log('Email address', event.target.value)
                       }}
                       value={total}
+                    
                   />
                 </GridItem>
               </GridContainer> 

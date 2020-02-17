@@ -64,14 +64,14 @@ function ProductAdd(props) {
     if (reason === 'clickaway') {
       return;
     }
-
+    console.log('onclose new')
     setOpen(false);
     history.goBack()
   };
 
   return (
     <div>
-      <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+      <Snackbar open={open} autoHideDuration={1000} onClose={() => handleClose()}>
         <Alert onClose={handleClose} severity={addProductSuccess === true ? "success" : "error"}>
           {addProductSuccess === true ? `Thêm vật tư thành công!` : `Thêm vật tư thất bại!`}
         </Alert>

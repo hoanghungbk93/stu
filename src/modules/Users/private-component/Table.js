@@ -47,6 +47,7 @@ export default function CustomTable(props) {
           {tableData.map((prop, key) => {
             return (
               <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
+                resetDeleteUserSuccess()
                 history.push('/admin/edit', { order: prop[0] })
               }}
                 hover

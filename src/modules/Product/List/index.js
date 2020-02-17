@@ -35,6 +35,7 @@ function Products(props) {
   useEffect(()=>{
     if(deleteSuccess === true){
       setOpen(true);
+      console.log('hehe')
       getListProduct()
     } else if(deleteSuccess === false){
       setOpen(true);
@@ -45,6 +46,7 @@ function Products(props) {
     if (reason === 'clickaway') {
       return;
     }
+    console.log('onclose')
     setOpen(false);
   };
 
@@ -95,7 +97,12 @@ function Products(props) {
         </GridItem>
       </GridContainer>
       <CardFooter>
-      <Button color="primary" onClick={() => { history.push('/admin/addNewProduct') }}>Thêm vật tư</Button>
+      <Button color="primary" onClick={() => { 
+        resetDeleteProductSuccess()
+        history.push('/admin/addNewProduct')
+         }}>
+         Thêm vật tư
+         </Button>
       </CardFooter>
     </div>
   );

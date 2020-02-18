@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { SignIn } from './modules/Authen'
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   HashRouter,
@@ -15,6 +15,7 @@ import configureStore from './app/store'
 // import routes from './app/Route'
 import { Home } from './modules/Home'
 import checkSinginHOC from './components/CheckSinginHOC'
+
 const store = configureStore()
 // const switchRoutes = (
 //   <Switch>

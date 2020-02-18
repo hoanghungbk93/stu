@@ -19,6 +19,8 @@ export default function CustomTable(props) {
   const { tableHead, tableData, tableHeaderColor, history, deleteUser, listUser, resetDeleteUserSuccess } = props;
   const [selectedId, setSelectedId] = useState(-1)
   const [openDialog, setOpenDialog] = React.useState(false);
+  const { location} = props
+  console.log('location TableList', location)
   return (
     <div className={classes.tableResponsive}>
       <AlertDialogSlide
@@ -48,7 +50,8 @@ export default function CustomTable(props) {
             return (
               <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
                 resetDeleteUserSuccess()
-                history.push('/admin/edit', { order: prop[0] })
+                console.log('location prop[0]', prop[0])
+                history.push(`/admin/edit/${prop[0]}`, { order: prop[0] })
               }}
                 hover
                 selected

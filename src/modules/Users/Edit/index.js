@@ -15,6 +15,7 @@ import { editUser, resetEditUserSucess } from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import MuiAlert from '@material-ui/lab/Alert';
+import {useParams} from 'react-router-dom'
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -40,12 +41,12 @@ function Alert(props) {
 }
 function UserEdit(props) {
   const classes = useStyles();
-  const { history, authen, user, editUser, location, resetEditUserSucess } = props
-  
+  const { history, authen, user, editUser, location, match } = props
+  const {params} = match
   const {addUserSuccess, editUserSuccess, listUser} = user
-  console.log('location', location)
-  const userInfo= listUser[location.state.order-1]
-  console.log('location', userInfo)
+  console.log('order', props)
+  const userInfo= listUser[params.id-1]
+  console.log('history', history)
   const [userName, setUserName] = useState(userInfo && userInfo.name)
   const [password, setPassword] = useState(userInfo && userInfo.mk)
   const [department, setDepartment] = useState(userInfo && userInfo.bp)

@@ -4,7 +4,7 @@ import {
   HashRouter as Router,
   Switch,
   Route,
-  HashRouter,
+  // HashRouter,
   useHistory,
   withRouter,
   Redirect,

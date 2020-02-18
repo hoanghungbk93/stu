@@ -42,9 +42,11 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function TableList() {
+export default function TableList(props) {
   const classes = useStyles();
   const history = useHistory()
+  const { location} = props
+  console.log('location TableList', location)
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>

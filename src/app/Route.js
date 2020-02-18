@@ -157,7 +157,7 @@ const routes = [
     isVisible: false
   },
   {
-    path: '/admin/edit',
+    path: '/admin/edit/:id',
     component: UserEdit,
     name: "QUẢN LÍ VẬT TƯ",
     icon: Business,
@@ -178,7 +178,7 @@ const routes = [
     isVisible: false
   },
   {
-    path: '/admin/editProject',
+    path: '/admin/editProject/:id',
     component: ProjectEdit,
     name: "QUẢN LÍ VẬT TƯ",
     icon: Business,
@@ -199,7 +199,7 @@ const routes = [
     isVisible: false
   },
   {
-    path: '/admin/editProduct',
+    path: '/admin/editProduct/:id',
     component: ProductEdit,
     name: "QUẢN LÍ VẬT TƯ",
     icon: Business,

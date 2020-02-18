@@ -40,11 +40,10 @@ function Alert(props) {
 }
 function ProductEdit(props) {
   const classes = useStyles();
-  const { history, authen, product, editProduct, location } = props
+  const { history, authen, product, editProduct, match } = props
   
   const {editProductSuccess, listProduct} = product
-  console.log('location', location)
-  const productInfo= listProduct[location.state.order-1]
+  const productInfo= listProduct[match.params.id-1]
   console.log('productInfo', productInfo)
   const [productName, setProductName] = useState(productInfo && productInfo.tvt)
   const [productCode, setProductCode] = useState(productInfo && productInfo.mvt)

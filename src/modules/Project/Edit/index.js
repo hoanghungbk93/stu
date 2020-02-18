@@ -40,11 +40,10 @@ function Alert(props) {
 }
 function ProjectEdit(props) {
   const classes = useStyles();
-  const { history, authen, project, editProject, location } = props
+  const { history, authen, project, editProject, match } = props
   
   const {editProjectSuccess, listProject} = project
-  console.log('location', location)
-  const projectInfo= listProject[location.state.order-1]
+  const projectInfo= listProject[match.params.id-1]
   console.log('projectInfo', projectInfo)
   const [projectName, setProjectName] = useState(projectInfo && projectInfo.tda)
   const [projectCode, setProjectCode] = useState(projectInfo && projectInfo.mda)

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {SignIn} from './modules/Authen'
+import { SignIn } from './modules/Authen'
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,11 +8,13 @@ import {
   useHistory,
   withRouter,
   Redirect,
+  Link
 } from "react-router-dom";
 import { Provider } from 'react-redux'
 import configureStore from './app/store'
 // import routes from './app/Route'
 import { Home } from './modules/Home'
+import checkSinginHOC from './components/CheckSinginHOC'
 const store = configureStore()
 // const switchRoutes = (
 //   <Switch>
@@ -29,17 +31,19 @@ const store = configureStore()
 //   </Switch>
 // );
 function Stack(props) {
-  
+  console.log('process.env.PUBLIC_URL', process.env.PUBLIC_URL)
   return (
     <Provider store={store}>
-    <Router basename={process.env.PUBLIC_URL}>
-          <Route path={`${process.env.PUBLIC_URL}/login`} component={SignIn} >
+      <Router basename={process.env.PUBLIC_URL}>
+        <Switch>
+          <Route exact path={`${process.env.PUBLIC_URL}/`} component={SignIn} >
           </Route>
-            <Route path={`${process.env.PUBLIC_URL}/admin`} component={Home}>
-          </Route> 
+          <Route path={`${process.env.PUBLIC_URL}/admin`} component={Home}>
+          </Route>
           {/* {switchRoutes} */}
-          <Redirect from = '/' to="/login" />         
-    </Router>
+          {/* <Redirect from = '/' to="/login" />          */}
+        </Switch>
+      </Router>
     </Provider>
   )
 }

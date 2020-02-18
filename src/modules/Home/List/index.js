@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "../../../components/Navbars/Navbar.js";
 import Footer from "../../../components/Footer/Footer.js";
 import Sidebar from "../../../components/Sidebar/Sidebar.js";
+import PrivateRoute from "../../../components/PrivateRoute";
 // import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.js";
 
 import routes from "../../../app/Route.js";
@@ -17,6 +18,7 @@ import styles from "../../../assets/jss/material-dashboard-react/layouts/adminSt
 
 import bgImage from "../../../assets/img/sidebar-2.jpg";
 import logo from "../../../assets/img/stuLogo.png";
+import checkSinginHOC from '../../../components/CheckSinginHOC'
 let ps;
 console.log('routes', routes)
 const switchRoutes = (

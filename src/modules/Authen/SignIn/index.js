@@ -56,7 +56,7 @@ const useStyles = makeStyles(theme => ({
 
 function SignIn(props) {
   const classes = useStyles();
-  const { history, login, authen } = props
+  const { history, login, authen, location } = props
   const { isLogined, userInfo, isLoading } = authen
   console.log(history)
   // useEffect(()=>{
@@ -65,6 +65,8 @@ function SignIn(props) {
 
   //   }
   // },[authen.isLoading])
+  const [redirectToReferrer, setRedirectToReferer] = useState(false)
+  const { from } = location.state || { from: { pathname: '/' } }
   const [userName, setUsername] = useState('')
   const [password, setPassword] = useState('')
   useEffect(() => {
@@ -74,6 +76,11 @@ function SignIn(props) {
       history.replace('/admin')
     }
   }, [isLogined])
+  debugger
+  // if (isLogined === true) {
+    
+  //   return <Redirect to={from} />
+  // }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

@@ -32,7 +32,7 @@ function Stack(props) {
   
   return (
     <Provider store={store}>
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
           <Route path='/login' component={SignIn} >
           </Route>
           <Route path='/admin' component={Home}>

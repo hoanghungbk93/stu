@@ -2,7 +2,7 @@
   "name": "stu",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hoanghungbk93.github.io",
+  "homepage": "https://hoanghungbk93.github.io/stu",
   "dependencies": {
     "@material-ui/core": "^4.9.1",
     "@material-ui/icons": "^4.9.1",

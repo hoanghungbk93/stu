@@ -36,9 +36,9 @@ function Stack(props) {
     <Provider store={store}>
       <Router basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Route exact path={`${process.env.PUBLIC_URL}/`} component={SignIn} >
+          <Route exact path={`/`} component={SignIn} >
           </Route>
-          <Route path={`${process.env.PUBLIC_URL}/admin`} component={Home}>
+          <Route path={`/admin`} component={Home}>
           </Route>
           {/* {switchRoutes} */}
           {/* <Redirect from = '/' to="/login" />          */}

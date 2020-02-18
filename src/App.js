@@ -31,7 +31,7 @@ const store = configureStore()
 //   </Switch>
 // );
 function Stack(props) {
-  console.log('process.env.PUBLIC_URL', process.env.PUBLIC_URL)
+  console.log('process.env.PUBLIC_URL2', process.env.PUBLIC_URL)
   return (
     <Provider store={store}>
       <Router basename={process.env.PUBLIC_URL}>

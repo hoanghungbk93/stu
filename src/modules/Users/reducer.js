@@ -37,7 +37,7 @@ export const addUser = (header, params) => async dispatch => {
   console.log('editUser params', params)
   try {
     debugger
-    fetch(`https://8d407baf.ngrok.io/api/stuuser/adduser`, {
+    fetch(`http://6faf4495.ngrok.io/api/stuuser/adduser`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -78,7 +78,7 @@ export const deleteUser = (header, userId) => async dispatch => {
   console.log('deleteUser ', userId)
   try {
     debugger
-    fetch(`https://8d407baf.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
+    fetch(`http://6faf4495.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -113,7 +113,7 @@ export const deleteUser = (header, userId) => async dispatch => {
 export const editUser = (header, params) => async dispatch => {
   try {
     debugger
-    fetch(`https://8d407baf.ngrok.io/api/stuuser/updateuser`, {
+    fetch(`http://6faf4495.ngrok.io/api/stuuser/updateuser`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -170,7 +170,7 @@ export const getListUser = (header, userId) => async dispatch => {
   // }
   try {
 
-    fetch(`https://8d407baf.ngrok.io/api/stuuser/getalluser`).then((response) => {
+    fetch(`http://6faf4495.ngrok.io/api/stuuser/getalluser`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

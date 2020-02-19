@@ -36,7 +36,7 @@ export const addProject = (header, params) => async dispatch => {
   console.log('addProject params', params)
   try {
     debugger
-    fetch(`http://6faf4495.ngrok.io/api/studa/addnewda`, {
+    fetch(`https://6f0167e8.ngrok.io/api/studa/addnewda`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -77,7 +77,7 @@ export const deleteProject = (header, projectId) => async dispatch => {
   console.log('deleteProject ', projectId)
   try {
     debugger
-    fetch(`http://6faf4495.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
+    fetch(`https://6f0167e8.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -112,7 +112,7 @@ export const deleteProject = (header, projectId) => async dispatch => {
 export const editProject = (header, params) => async dispatch => {
   try {
     debugger
-    fetch(`http://6faf4495.ngrok.io/api/studa/updateda`, {
+    fetch(`https://6f0167e8.ngrok.io/api/studa/updateda`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -164,7 +164,7 @@ export const resetAddProjectSucess = () => async dispatch => {
 export const getListProject = (header, projectuserId) => async dispatch => {
   try {
 
-    fetch(`http://6faf4495.ngrok.io/api/studa/getallda`).then((response) => {
+    fetch(`https://6f0167e8.ngrok.io/api/studa/getallda`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

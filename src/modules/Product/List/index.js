@@ -64,7 +64,7 @@ function Products(props) {
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert severity={deleteSuccess === true ? "success" : "error"} 
         >
-          {deleteSuccess === true ? `Xoá vật tư thành công` : `Xoá vật tư thất bại`}
+          {deleteSuccess === true ? `Xoá vật tư thành công` : `Xoá vật tư thất bại`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -72,12 +72,12 @@ function Products(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Danh sách vật tư</h4>
+              <h4 className={classes.cardTitleWhite}>Danh sách vật tư</h4>
             </CardHeader>
             <CardBody>
               <Table
                 tableHeaderColor="primary"
-                tableHead={["TT", "Mã vật tư", , "Tên vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"]}
+                tableHead={["TT", "Mã vật tư", , "Tên vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"]}
                 tableData={listProduct.map((e, i) => {
                   let tempArr = [i + 1]
                   Object.keys(e).forEach((key, index) => {

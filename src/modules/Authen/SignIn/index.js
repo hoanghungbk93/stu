@@ -136,7 +136,7 @@ function SignIn(props) {
           >
             Đăng nhập
           </Button>
-          { <p style={{color : 'red', width: '100%', textAlign: 'center'}}>{isLogined === false ? 'Login Failure' : ''}</p>}
+          { <p style={{color : 'red', width: '100%', textAlign: 'center'}}>{isLogined === false ? 'Đăng nhập không thành công' : ''}</p>}
           
         </form>
       </div>

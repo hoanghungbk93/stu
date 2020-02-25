@@ -48,10 +48,11 @@ const useStyles = makeStyles(styles);
 
 function Detail(props) {
   const classes = useStyles();
-  const {location, history} = props
+  const {location, history, match} = props
   // const requirementDetail = location && location.state && location.state.prop
   const requirementDetail =[[1, 'Hùng', 'xxx', '24V', 'Intel', 'Cái', '100', '0','thừa']]
   console.log('props', requirementDetail)
+  console.log('props match', match)
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -67,6 +68,7 @@ function Detail(props) {
               history={history}
               approve={approve}
               cancel={cancel}
+              match={match}
             />
           </CardBody>
         </Card>

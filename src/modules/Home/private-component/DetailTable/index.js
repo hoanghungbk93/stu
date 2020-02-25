@@ -10,23 +10,75 @@ import TableCell from "@material-ui/core/TableCell";
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 // core components
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+
+import { approve, cancel } from '../../reducer'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import styles from "../../../../assets/jss/material-dashboard-react/components/detailTableStyle.js";
 import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles(styles);
-
-export default function CustomTable(props) {
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+function CustomTable(props) {
   
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, history, approve, cancel} = props;
+  const { tableHead, tableData, authen, tableHeaderColor, requirement, history, approve, cancel, match} = props;
   const [activeRow, setActiveRow] = useState(0)
+  const {params} = match
+  const {approveSuccess, cancelSuccess, listRequirement} = requirement
+  console.log('listRequirement', history.location.pathname.split('/'))
+
+  const RequirementInfo= listRequirement[Number(history.location.pathname.split('/')[3])-1]
+  console.log('RequirementInfo', RequirementInfo)
+  console.log('params', params)
+  console.log('match', match)
+  // const [RequirementName, setRequirementName] = useState(RequirementInfo && RequirementInfo.name)
+  // const [password, setPassword] = useState(RequirementInfo && RequirementInfo.mk)
+  // const [department, setDepartment] = useState(RequirementInfo && RequirementInfo.bp)
+  const [openApprove, setOpenApprove] = React.useState(false);
+  const [openCancel, setOpenCancel] = React.useState(false);
+  // const [type, setType] = useState(RequirementInfo && RequirementInfo.loai)
+  const {header} = authen
+  useEffect(()=>{
+    if(cancelSuccess !== null){
+      setOpenCancel(true);
+    }
+  },[cancelSuccess])
+  useEffect(()=>{
+    if(approveSuccess !== null){
+      setOpenApprove(true);
+    }
+  },[approveSuccess])
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenApprove(false);
+    setOpenCancel(false);
+    history.goBack()
+  };
   return (
     <div className={classes.tableResponsive}>
+    <Snackbar open={openApprove} autoHideDuration={1000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={approveSuccess === true ? "success" : "error"}>
+          {approveSuccess === true ? `Duyệt thành công!` : `Duyệt thất bại!`}
+        </Alert>
+      </Snackbar>
+      <Snackbar open={openCancel} autoHideDuration={1000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={cancelSuccess === true ? "success" : "error"}>
+          {cancelSuccess === true ? `Từ chối duyệt thành công!` : `Từ chối duyệt thất bại!`}
+        </Alert>
+      </Snackbar>
       <Table className={classes.table}>
         {tableHead !== undefined ? (
           <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
             <TableRow className={classes.tableHeadRow}>
               {tableHead.map((prop, key) => {
-                
+               
                 return (
                   <TableCell
                     className={classes.tableCell + " " + classes.tableHeadCell}
@@ -74,11 +126,13 @@ export default function CustomTable(props) {
                 <TableCell className={classes.tableCell} key={key} >
                 <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
                   <Button color="primary" onClick={()=>{
-                    approve()
+                    const newRequirement = RequirementInfo
+                    newRequirement.statusyc= RequirementInfo.statusyc === 'Chờ duyệt' ? 'Duyệt 1' : 'Duyệt 2'
+                    approve({}, newRequirement)
                   }}
                   >Duyệt</Button>
                   <Button onClick={()=>{
-                    cancel()
+                    // cancel({}, {id : RequirementInfo.id, name: RequirementName, bp: department, loai: type, mk: password})
                   }}
                   >Từ chối</Button>
                 </ButtonGroup>
@@ -109,3 +163,23 @@ CustomTable.propTypes = {
   tableHead: PropTypes.arrayOf(PropTypes.string),
   tableData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
 };
+const mapStateToProps = state => ({
+  authen: state.authen,
+  requirement: state.requirement
+})
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      approve,
+      cancel
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CustomTable)
+

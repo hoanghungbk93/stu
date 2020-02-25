@@ -30,6 +30,8 @@ import Business from "@material-ui/icons/Business";
 import {Home} from "../modules/Home";
 import HomeTable from "../modules/Home/Table"
 import HomeDetail from "../modules/Home/Detail"
+import HomeAdd from "../modules/Home/New"
+// import {HomeAdd, HomeTable, HomeDetail } from "../modules/Home"
 import {Users, UserAdd, UserEdit} from "../modules/Users";
 import {Projects, ProjectAdd, ProjectEdit} from "../modules/Project";
 import {Products, ProductAdd, ProductEdit} from "../modules/Product";
@@ -76,39 +78,39 @@ const routes = [
       },
     ]
   },
-  {
-    path: "/admin/addNewRequirement",
-    name: "TẠO MỚI YÊU CẦU",
-    icon: AddCircle,
-    component: HomeTable,
-    submenus: [
-      {
-        name: 'Yêu cầu xuất kho',
-        path: '',
-        icon: Person,
-        component: HomeTable
-      },
-      {
-        name: 'Yêu cầu mua hàng',
-        path: '',
-        icon: Person,
-        component: HomeTable
-      },
-      {
-        name: 'Phiếu nhập kho',
-        path: '',
-        icon: Person,
-        component: HomeTable
-      },
-      {
-        name: 'Phiếu xuất kho',
-        path: '',
-        icon: Person,
-        component: HomeTable
-      },
-    ],
-    isVisible: true
-  },
+  // {
+  //   path: "/admin/addNewRequirement",
+  //   name: "TẠO MỚI YÊU CẦU",
+  //   icon: AddCircle,
+  //   component: HomeTable,
+  //   submenus: [
+  //     {
+  //       name: 'Yêu cầu xuất kho',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable
+  //     },
+  //     {
+  //       name: 'Yêu cầu mua hàng',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable
+  //     },
+  //     {
+  //       name: 'Phiếu nhập kho',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable
+  //     },
+  //     {
+  //       name: 'Phiếu xuất kho',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable
+  //     },
+  //   ],
+  //   isVisible: true
+  // },
   {
     path: '/admin/history',
     component: UserAdd,
@@ -206,8 +208,15 @@ const routes = [
     isVisible: false
   },
   {
-    path: '/admin/detail',
+    path: '/admin/editRequirement',
     component: HomeDetail,
+    name: "HomeDetail",
+    icon: Business,
+    isVisible: false
+  },
+  {
+    path: '/admin/addNewRequirement',
+    component: HomeAdd,
     name: "HomeDetail",
     icon: Business,
     isVisible: false

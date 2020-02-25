@@ -1,76 +1,149 @@
-import React from "react";
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-// core components
+import React, {useState, useEffect}from 'react';
+import {Route } from 'react-router-dom';
 import GridItem from "../../../components/Grid/GridItem.js";
 import GridContainer from "../../../components/Grid/GridContainer.js";
-import Table from "../../../components/Table/Table.js";
+import Table from "../private-component/List";
 import Card from "../../../components/Card/Card.js";
 import CardHeader from "../../../components/Card/CardHeader.js";
 import CardBody from "../../../components/Card/CardBody.js";
-import data from '../../../asset/testData/dataTest'
-import {useHistory } from "react-router-dom";
-const styles = {
-  cardCategoryWhite: {
-    "&,& a,& a:hover,& a:focus": {
-      color: "rgba(255,255,255,.62)",
-      margin: "0",
-      fontSize: "14px",
-      marginTop: "0",
-      marginBottom: "0"
-    },
-    "& a,& a:hover,& a:focus": {
-      color: "#FFFFFF"
-    }
-  },
-  cardTitleWhite: {
-    color: "#FFFFFF",
-    marginTop: "0px",
-    minHeight: "auto",
-    fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-    marginBottom: "3px",
-    textDecoration: "none",
-    "& small": {
-      color: "#777",
-      fontSize: "65%",
-      fontWeight: "400",
-      lineHeight: "1"
-    }
-  }
-};
+import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import Button from "../../../components/CustomButtons/Button.js";
+import styles from "../../../assets/jss/material-dashboard-react/layouts/adminStyle.js";
+import { getListRequirement,
+  resetEditRequirementSucess,
+  deleteRequirement,
+  resetDeleteRequirementSuccess,
+  resetAddRequirementSucess,
+  resetApproveSucess,
+  resetCancleSucess
+} from '../reducer'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import CardFooter from "../../../components/Card/CardFooter.js";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(styles);
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-export default function TableList(props) {
-  const classes = useStyles();
+function Requirements(props) {
+
+  const {
+    location,
+    getListRequirement,
+    requirement,
+    resetEditRequirementSucess,
+    resetAddRequirementSucess,
+    deleteRequirement,
+    resetDeleteRequirementSuccess,
+    resetApproveSucess,
+    resetCancleSucess
+  } = props
+  const {listRequirement, deleteSuccess} = requirement
   const history = useHistory()
-  const { location} = props
-  console.log('location TableList', location)
+  const classes = useStyles();
+  const [initial, setInitial] = useState(true)
+  const [open, setOpen] = React.useState(false);
+  const [first, setFirst] = useState(false)
+
+  useEffect(()=>{
+    if(deleteSuccess === true){
+      setOpen(true);
+      getListRequirement()
+    } else if(deleteSuccess === false){
+      setOpen(true);
+    }
+  }, [ deleteSuccess ])
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
+  useEffect(()=>{
+    if(initial){
+      resetAddRequirementSucess()
+      resetEditRequirementSucess()
+      resetApproveSucess()
+      resetCancleSucess()
+      getListRequirement()
+      setInitial(false)
+    }
+  }, [initial])
+  
   return (
-    <GridContainer>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Danh sách các yêu cầu</h4>
-          </CardHeader>
-          <CardBody>
-            <Table
-              tableHeaderColor="primary"
+    <div>
+      <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
+        <Alert severity={deleteSuccess === true ? "success" : "error"} 
+        >
+          {deleteSuccess === true ? `Xoá  cầu thành công` : `Xoá  cầu thất bại`}
+        </Alert>
+      </Snackbar>
+      <GridContainer>
+
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>Danh sách  cầu</h4>
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="primary"
               tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên']}
-              tableData={data.orderList.map((e, i)=>{
+              tableData={listRequirement.map((e, i)=>{
                 let tempArr= [i+1]
                 Object.keys(e).forEach((key, index) =>{
-                  if(index<6)
+                  if(index > 0 && index<7)
                   tempArr.push(e[key])
                 })
                 return tempArr
               })}
               history={history}
-            />
-          </CardBody>
-        </Card>
-      </GridItem>
-    </GridContainer>
+                location={location}
+                deleteRequirement={deleteRequirement}
+                listRequirement={listRequirement}
+                resetDeleteRequirementSuccess={resetDeleteRequirementSuccess}
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <CardFooter>
+      <Button color="primary" onClick={() => { 
+        resetDeleteRequirementSuccess()
+        history.push('/admin/addNewRequirement') 
+        }}>Thêm yêu cầu</Button>
+      </CardFooter>
+    </div>
   );
 }
+
+const mapStateToProps = state => ({
+  authen: state.authen,
+  requirement: state.requirement
+})
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      getListRequirement,
+      resetEditRequirementSucess,
+      deleteRequirement,
+      resetDeleteRequirementSuccess,
+      resetAddRequirementSucess,
+      resetApproveSucess,
+      resetCancleSucess
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Requirements)

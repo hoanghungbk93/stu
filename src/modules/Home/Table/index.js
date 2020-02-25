@@ -40,7 +40,8 @@ function Requirements(props) {
     deleteRequirement,
     resetDeleteRequirementSuccess,
     resetApproveSucess,
-    resetCancleSucess
+    resetCancleSucess,
+    authen
   } = props
   const {listRequirement, deleteSuccess} = requirement
   const history = useHistory()
@@ -67,7 +68,9 @@ function Requirements(props) {
 
   useEffect(()=>{
     if(initial){
+      console.log('authen', authen)
       resetAddRequirementSucess()
+      debugger
       resetEditRequirementSucess()
       resetApproveSucess()
       resetCancleSucess()

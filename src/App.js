@@ -15,8 +15,8 @@ import configureStore from './app/store'
 // import routes from './app/Route'
 import { Home } from './modules/Home'
 import checkSinginHOC from './components/CheckSinginHOC'
-
-const store = configureStore()
+import { PersistGate } from 'redux-persist/integration/react'
+const {store, persistor} = configureStore()
 // const switchRoutes = (
 //   <Switch>
 //     {routes.map((prop, index) => {
@@ -35,6 +35,7 @@ function Stack(props) {
   console.log('process.env.PUBLIC_URL2', process.env.PUBLIC_URL)
   return (
     <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
       <Router basename={process.env.PUBLIC_URL}>
         <Switch>
           <Route exact path={`/`} component={SignIn} >
@@ -45,6 +46,7 @@ function Stack(props) {
           {/* <Redirect from = '/' to="/login" />          */}
         </Switch>
       </Router>
+      </PersistGate>
     </Provider>
   )
 }

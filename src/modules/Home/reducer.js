@@ -43,7 +43,7 @@ export const addRequirement = (header, params) => async dispatch => {
   try {
     debugger
     console.log('addRequirement params', params)
-    fetch(`https://7be50d96.ngrok.io/api/stuyc/addyc`, {
+    fetch(`https://a1c4e8fa.ngrok.io/api/stuyc/addyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -84,7 +84,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
   console.log('deleteRequirement ', requirementId)
   try {
     debugger
-    fetch(`https://7be50d96.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
+    fetch(`https://a1c4e8fa.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -119,7 +119,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
 export const editRequirement = (header, params) => async dispatch => {
   try {
     debugger
-    fetch(`https://7be50d96.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://a1c4e8fa.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -187,7 +187,7 @@ export const getListRequirement = (header, userId) => async dispatch => {
   // }
   try {
 
-    fetch(`https://7be50d96.ngrok.io/api/stuyc/getallyc`).then((response) => {
+    fetch(`https://a1c4e8fa.ngrok.io/api/stuyc/getallyc`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -217,7 +217,7 @@ export const approve = (header, params) => async dispatch => {
   console.log('setApproveSuccess params', params)
   try {
     debugger
-    fetch(`https://7be50d96.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://a1c4e8fa.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -256,7 +256,7 @@ export const cancel = (header, params) => async dispatch => {
   console.log('setCancelSuccess params', params)
   try {
     debugger
-    fetch(`https://7be50d96.ngrok.io/api/stuuser/adduser`, {
+    fetch(`https://a1c4e8fa.ngrok.io/api/stuuser/adduser`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {

@@ -84,7 +84,7 @@ function Requirements(props) {
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert severity={deleteSuccess === true ? "success" : "error"} 
         >
-          {deleteSuccess === true ? `Xoá  cầu thành công` : `Xoá  cầu thất bại`}
+          {deleteSuccess === true ? `Xoá yêu cầu thành công` : `Xoá yêu cầu thất bại`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -92,7 +92,7 @@ function Requirements(props) {
         <GridItem xs={12} sm={12} md={12}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Danh sách  cầu</h4>
+              <h4 className={classes.cardTitleWhite}>Danh sách yêu cầu</h4>
             </CardHeader>
             <CardBody>
               <Table

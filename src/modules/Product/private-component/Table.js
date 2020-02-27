@@ -22,7 +22,7 @@ export default function CustomTable(props) {
   return (
     <div className={classes.tableResponsive}>
       <AlertDialogSlide
-        title="Bạn có muốn xoá vật tư này không"
+        title="Bạn có muốn xoá vật tư này không"
         action={() => deleteProduct({}, selectedId)}
         open={openDialog} setOpen={setOpenDialog}
       ></AlertDialogSlide>

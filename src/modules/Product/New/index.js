@@ -81,14 +81,14 @@ function ProductAdd(props) {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Thêm mới vật tư</h4>
-              <p className={classes.cardCategoryWhite}>Hoàn thành thông tin vật tư</p>
+              <h4 className={classes.cardTitleWhite}>Thêm mới vật tư</h4>
+              <p className={classes.cardCategoryWhite}>Hoàn thành thông tin vật tư</p>
             </CardHeader>
             <CardBody>
               <GridContainer>
                 <GridItem xs={12} sm={12} md={3}>
                   <CustomInput
-                    labelText="Tên vật tư"
+                    labelText="Tên vật tư"
                     id="productname"
                     formControlProps={{
                       fullWidth: true
@@ -102,7 +102,7 @@ function ProductAdd(props) {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Mã vật tư"
+                    labelText="Mã vật tư"
                     id="productCode"
                     formControlProps={{
                       fullWidth: true

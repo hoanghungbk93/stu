@@ -48,23 +48,44 @@ const useStyles = makeStyles(styles);
 
 function Detail(props) {
   const classes = useStyles();
-  const {location, history, match} = props
+  const {location, history, match, requirement} = props
+  const {listRequirement} = requirement
+  const requirementtInfo= listRequirement[match.params.id-1]
+  console.log('requirementtInfo', requirementtInfo)
+  const lvtyc = requirementtInfo && requirementtInfo.lvtyc ? JSON.parse(requirementtInfo.lvtyc) : []
+  
   // const requirementDetail = location && location.state && location.state.prop
   const requirementDetail =[[1, 'Hùng', 'xxx', '24V', 'Intel', 'Cái', '100', '0','thừa']]
-  console.log('props', requirementDetail)
+  const requirementDetails =[] 
+  lvtyc.length > 0 &&  lvtyc.map( (e, i) => {
+    let temp = []
+    temp[0] = i + 1
+    temp[1] = e.tvt
+    temp[2] = e.mvt
+    temp[3] = e.ts
+    temp[4] = e.dv
+    temp[5] = e.hsx
+    temp[6] = e.sl
+    temp[7] = requirementtInfo.lsyc
+    temp[8] = ""
+    requirementDetails.push(temp)
+  }
+  ) 
+  console.log('requirementDetails', requirementDetails)
+  console.log('props', props)
   console.log('props match', match)
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>Detail yêu cầu</h4>
+            <h4 className={classes.cardTitleWhite}>Chi tiết yêu cầu</h4>
           </CardHeader>
           <CardBody>
             <DetailTable
               tableHeaderColor="primary"
               tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa', 'Lí do từ chối', 'Phê duyệt']}
-              tableData={requirementDetail}
+              tableData={requirementDetails}
               history={history}
               approve={approve}
               cancel={cancel}
@@ -78,7 +99,8 @@ function Detail(props) {
 }
 
 const mapStateToProps = state => ({
-  authen: state.authen
+  authen: state.authen,
+  requirement: state.requirement
 })
 
 const mapDispatchToProps = dispatch => {

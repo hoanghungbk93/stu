@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import GridItem from "../../../components/Grid/GridItem.js";
 import GridContainer from "../../../components/Grid/GridContainer.js";
+import 'date-fns';
 import CustomInput from "../../../components/CustomInput/CustomInput.js";
 import Button from "../../../components/CustomButtons/Button.js";
 import Card from "../../../components/Card/Card.js";
@@ -19,6 +20,18 @@ import List from './List'
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Model from '../../../utils/Model'
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import moment from 'moment'
+import Grid from '@material-ui/core/Grid';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -40,9 +53,14 @@ const styles = {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none"
-  }
+  },
 };
-
+const requirementOptions = [
+  'YCX',
+  'PNK',
+  'YCM',
+  'YXK',
+]
 const useStyles = makeStyles(styles);
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -68,8 +86,15 @@ function RequirementAdd(props) {
   const [currentInformation, setCurrentInformation] = useState('')
   const [currentUnit, setCurrentUnit] = useState('')
   const [currentManufacture, setCurrentManufacture] = useState('')
+  const [requirementType, setRequirementType] = useState('YCX')
   const [project, setProject] = useState('')
-  function resetState(){
+  const dateFormat = "DD-MM-YYYY"
+  const [selectedDate, setSelectedDate] = useState(moment().format(dateFormat))
+  // console.log('moment().format(dateFormat)', moment().format(dateFormat))
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
+  function resetState() {
     setCurrentProductName('')
     setCurrentProductCode('')
     setCurrentTotal(0)
@@ -78,8 +103,8 @@ function RequirementAdd(props) {
     setCurrentUnit('')
     setCurrentManufacture('')
   }
-  useEffect(()=>{
-    if(currentProductIndex !== -1){
+  useEffect(() => {
+    if (currentProductIndex !== -1) {
       const requiermentTemp = requirementList[currentProductIndex]
       setCurrentProductName(requiermentTemp.tvt)
       setCurrentProductCode(requiermentTemp.mvt)
@@ -110,7 +135,7 @@ function RequirementAdd(props) {
   };
 
 
-  function deleteSelectedIndex(index){
+  function deleteSelectedIndex(index) {
     console.log('deleteSelectedIndex', index)
     console.log('deleteSelectedIndex', requirementList)
     setRequirementList(requirementList.length === 1 ? [] : requirementList.slice(index))
@@ -141,7 +166,7 @@ function RequirementAdd(props) {
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText="Tên vật tư"
+                      labelText="Tên vật tư"
                       id="productname"
                       formControlProps={{
                         fullWidth: true
@@ -169,16 +194,16 @@ function RequirementAdd(props) {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText="Thông số"
-                      id="information"
+                      labelText="Nhà cung cấp"
+                      id="distributor"
                       formControlProps={{
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        setCurrentInformation(event.target.value)
-                        console.log('Email address', event.target.value)
+                        console.log('Productname', event.target.value)
+                        setCurrentDistributor(event.target.value)
                       }}
-                      value={currentInformation}
+                      value={currentDistributor}
                     />
                   </GridItem>
                 </GridContainer>
@@ -223,6 +248,7 @@ function RequirementAdd(props) {
                         console.log('Email address', event.target.value)
                       }}
                       value={currentTotal}
+                      error={isNaN(currentTotal)} 
                     />
                   </GridItem>
                 </GridContainer>
@@ -230,18 +256,19 @@ function RequirementAdd(props) {
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
-                      labelText="Nhà cung cấp"
-                      id="distributor"
+                      labelText="Thông số"
+                      id="information"
                       formControlProps={{
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
-                        setCurrentDistributor(event.target.value)
+                        setCurrentInformation(event.target.value)
+                        console.log('Email address', event.target.value)
                       }}
-                      value={currentDistributor}
+                      value={currentInformation}
                     />
                   </GridItem>
+
                 </GridContainer>
 
               </CardBody>
@@ -258,16 +285,16 @@ function RequirementAdd(props) {
                     ncc: currentDistributor
 
                   }
-                  if(isAddNew){
+                  if (isAddNew) {
                     setRequirementList(requirementList.concat(newProduct))
                   } else {
                     let temp = requirementList.slice()
-                    temp[currentProductIndex] = newProduct 
+                    temp[currentProductIndex] = newProduct
                     setRequirementList(temp)
                   }
                   handleCloseModal()
                 }}
-                disabled={!currentProductName || !currentProductCode || !currentTotal}
+                  disabled={!currentProductName || !currentProductCode || !currentTotal || isNaN(currentTotal)}
                 >{'Lưu'}</Button>
               </CardFooter>
             </Card>
@@ -293,8 +320,27 @@ function RequirementAdd(props) {
             </CardHeader>
             <CardBody>
               <GridContainer>
-
-                <GridItem xs={12} sm={12} md={3}>
+                <GridItem xs={12} sm={12} md={4}>
+                  <InputLabel id="demo-simple-select-label">Loại YC</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    labelText="Loại YC"
+                    value={requirementType}
+                    onChange={(event) => {
+                      setRequirementType(event.target.value)
+                    }}
+                  >
+                    {requirementOptions.map((option, index) => (
+                      <MenuItem key={index} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
                     labelText="Tên YC"
                     id="requirementname"
@@ -311,7 +357,7 @@ function RequirementAdd(props) {
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
                     labelText="Bộ phận"
-                    id="email-address"
+                    id="department"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -323,20 +369,6 @@ function RequirementAdd(props) {
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Ngày cần"
-                    id="requirement-needTime"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    onChange={(event) => {
-                      console.log('needTime', event.target.value)
-                      setNeedTime(event.target.value)
-                    }}
-                    value={needTime}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
                   <CustomInput
                     labelText="Dự án"
                     id="project"
@@ -351,6 +383,26 @@ function RequirementAdd(props) {
                   />
                 </GridItem>
               </GridContainer>
+              <GridContainer>
+                <GridItem xs={12} sm={12} md={4}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around">
+                      <KeyboardDatePicker
+                        format="dd-MM-yyyy"
+                        margin="normal"
+                        id="date-picker-dialog"
+                        // label="Date picker inline"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        KeyboardButtonProps={{
+                          'aria-label': 'change date',
+                        }}
+                      />
+                    </Grid>
+                  </MuiPickersUtilsProvider>
+                </GridItem>
+
+              </GridContainer>
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={() => {
@@ -363,7 +415,7 @@ function RequirementAdd(props) {
         </GridItem>
       </GridContainer>
       <List
-        requirementList={requirementList.length> 0 ? requirementList.map((e, i) => {
+        requirementList={requirementList.length > 0 ? requirementList.map((e, i) => {
           let tempArr = [i + 1]
           Object.keys(e).forEach((key, index) => {
             if (index < 8)
@@ -382,9 +434,10 @@ function RequirementAdd(props) {
 
       ></List>
       <Button color="primary" onClick={() => {
+        console.log('moment(needTime)', moment(needTime).format('YYYY-MM-DDTHH:MM:SS'))
         const params = Object.assign({}, Model, {
-          "myc": requirementName,
-          "nyc": needTime,
+          "myc": requirementType + requirementName,
+          "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
           "tuseryc": authen.userInfo.name,
           "bpyc": department,
           "dayc": project,

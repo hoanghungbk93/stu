@@ -101,7 +101,7 @@ function Products(props) {
         resetDeleteProductSuccess()
         history.push('/admin/addNewProduct')
          }}>
-         Thêm vật tư
+         Thêm vật tư
          </Button>
       </CardFooter>
     </div>

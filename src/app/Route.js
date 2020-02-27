@@ -208,7 +208,7 @@ const routes = [
     isVisible: false
   },
   {
-    path: '/admin/editRequirement',
+    path: '/admin/editRequirement/:id',
     component: HomeDetail,
     name: "HomeDetail",
     icon: Business,

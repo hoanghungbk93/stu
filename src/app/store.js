@@ -17,7 +17,7 @@ const persistConfig = {
   key: 'root',
   storage,
   version: 0,
-  whitelist: ['authen']
+  whitelist: ['authen', 'requirement', 'user', 'product', 'project']
 }
 const persistedReducer = persistReducer(persistConfig, reducer)
 export default () => {

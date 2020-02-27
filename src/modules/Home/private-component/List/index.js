@@ -11,6 +11,7 @@ import TableCell from "@material-ui/core/TableCell";
 import styles from "../../../../assets/jss/material-dashboard-react/components/tableStyle.js";
 import DeleteIcon from '@material-ui/icons/Delete';
 import AlertDialogSlide from '../../../../components/ConfirmDialog'
+import moment from "moment";
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
@@ -64,7 +65,7 @@ export default function CustomTable(props) {
                 {prop.map((e, key) => {
                   return (
                     <TableCell className={classes.tableCell} key={key} >
-                      {e}
+                      {key === 2 ? moment(e).format('DD-MM-YYYY') : e}
                     </TableCell>
                   );
                 })}

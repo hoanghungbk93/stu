@@ -41,10 +41,11 @@ function Requirements(props) {
     resetDeleteRequirementSuccess,
     resetApproveSucess,
     resetCancleSucess,
-    authen
+    authen,
+    history
   } = props
   const {listRequirement, deleteSuccess} = requirement
-  const history = useHistory()
+  // const history = useHistory()
   const classes = useStyles();
   const [initial, setInitial] = useState(true)
   const [open, setOpen] = React.useState(false);
@@ -97,11 +98,11 @@ function Requirements(props) {
             <CardBody>
               <Table
                 tableHeaderColor="primary"
-              tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên']}
+              tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
               tableData={listRequirement.map((e, i)=>{
                 let tempArr= [i+1]
                 Object.keys(e).forEach((key, index) =>{
-                  if(index > 0 && index<7)
+                  if(index > 0 && index<8)
                   tempArr.push(e[key])
                 })
                 return tempArr

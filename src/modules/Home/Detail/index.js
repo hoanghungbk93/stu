@@ -90,6 +90,7 @@ function Detail(props) {
               approve={approve}
               cancel={cancel}
               match={match}
+              requirementtInfo={requirementtInfo}
             />
           </CardBody>
         </Card>

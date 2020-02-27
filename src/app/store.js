@@ -17,11 +17,11 @@ const persistConfig = {
   key: 'root',
   storage,
   version: 0,
-  whitelist: ['authen', 'requirement', 'user', 'product', 'project']
+  whitelist: ['authen']
 }
 const persistedReducer = persistReducer(persistConfig, reducer)
 export default () => {
   let store = createStore(persistedReducer,undefined, middleware)
-  let persistor = persistStore(store)
+  let persistor = persistStore(store) 
   return { store : store, persistor: persistor}
 }

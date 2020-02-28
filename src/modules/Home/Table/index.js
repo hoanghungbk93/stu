@@ -71,7 +71,6 @@ function Requirements(props) {
     if(initial){
       console.log('authen', authen)
       resetAddRequirementSucess()
-      debugger
       resetEditRequirementSucess()
       resetApproveSucess()
       resetCancleSucess()

@@ -22,7 +22,7 @@ import {
 } from "react-router-dom";
 import ContentLoader, { Facebook, Instagram } from 'react-content-loader'
 import Container from '@material-ui/core/Container';
-import { login } from '../reducer'
+import { login, resetLogin } from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -56,15 +56,10 @@ const useStyles = makeStyles(theme => ({
 
 function SignIn(props) {
   const classes = useStyles();
-  const { history, login, authen, location } = props
+  const { history, login, authen, location, resetLogin } = props
   const { isLogined, userInfo, isLoading } = authen
   console.log(history)
-  // useEffect(()=>{
-  //   console.log('authen.isLoading', authen.isLoading)
-  //   if(authen.isLoading){
 
-  //   }
-  // },[authen.isLoading])
   const [redirectToReferrer, setRedirectToReferer] = useState(false)
   const { from } = location.state || { from: { pathname: '/' } }
   const [userName, setUsername] = useState('')
@@ -74,6 +69,9 @@ function SignIn(props) {
     if (isLogined === true) {
       debugger
       history.replace('/admin')
+    } else if(isLogined === false)
+    {
+      resetLogin()
     }
   }, [isLogined])
   debugger
@@ -151,7 +149,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      login
+      login,
+      resetLogin
     },
     dispatch
   )

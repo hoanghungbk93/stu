@@ -32,27 +32,27 @@ export const login = (header, param) => async dispatch => {
   console.log('param', param)
   dispatch(setLoading(true))
   const params = JSON.stringify({
-    _name : param.userName,
+    _name: param.userName,
     _pass: param.password
   })
-  
-  try{
-    
+
+  try {
+
     fetch(`https://0249c410.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
-      if(!response.ok) throw new Error(response.status);
+      if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      if(myJson[0]){
+      if (myJson[0]) {
         dispatch(setUserInfo(myJson[0]))
         dispatch(setLoading(false))
         dispatch(setLogin(true))
-      } else{
+      } else {
         dispatch(setLogin(false))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
-      err=> {
+      err => {
         dispatch(setLogin(false))
         dispatch(setLoading(false))
         console.log('errr', err)
@@ -60,18 +60,22 @@ export const login = (header, param) => async dispatch => {
     )
     // if(data[0].sta)
     // dispatch(setLoading(true))
-  } catch(err){
+  } catch (err) {
     dispatch(setLogin(false))
     dispatch(setLoading(false))
     console.log('err', err)
   }
 }
+export const resetLogin = () => async dispatch => {
+
+  dispatch(setLogin(null))
+}
 
 
 const actions = {
-  [LOADING]: (state, action) => {return {...state, isLoading: action.payload}},
-  [LOGIN]: (state, action) => {return {...state, isLogined: action.payload}},
-  [USER_INFO]: (state, action) => {return {...state, userInfo: action.payload}},
+  [LOADING]: (state, action) => { return { ...state, isLoading: action.payload } },
+  [LOGIN]: (state, action) => { return { ...state, isLogined: action.payload } },
+  [USER_INFO]: (state, action) => { return { ...state, userInfo: action.payload } },
 }
 
 export default handleActions(actions, initialState)

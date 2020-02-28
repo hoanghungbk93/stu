@@ -325,7 +325,7 @@ function RequirementAdd(props) {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    labelText="Loại YC"
+                    // labelText="Loại YC"
                     value={requirementType}
                     onChange={(event) => {
                       setRequirementType(event.target.value)

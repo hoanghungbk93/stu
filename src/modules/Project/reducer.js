@@ -36,7 +36,7 @@ export const addProject = (header, params) => async dispatch => {
   console.log('addProject params', params)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/studa/addnewda`, {
+    fetch(`https://0249c410.ngrok.io/api/studa/addnewda`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -77,7 +77,7 @@ export const deleteProject = (header, projectId) => async dispatch => {
   console.log('deleteProject ', projectId)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
+    fetch(`https://0249c410.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -112,7 +112,7 @@ export const deleteProject = (header, projectId) => async dispatch => {
 export const editProject = (header, params) => async dispatch => {
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/studa/updateda`, {
+    fetch(`https://0249c410.ngrok.io/api/studa/updateda`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -164,7 +164,7 @@ export const resetAddProjectSucess = () => async dispatch => {
 export const getListProject = (header, projectuserId) => async dispatch => {
   try {
 
-    fetch(`https://50c0e637.ngrok.io/api/studa/getallda`).then((response) => {
+    fetch(`https://0249c410.ngrok.io/api/studa/getallda`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -190,11 +190,11 @@ export const getListProject = (header, projectuserId) => async dispatch => {
 
 
 const actions = {
-  [LOADING]: (state, action) => state.setLoading(action.payload),
-  [ADD_PROJECT_SUCCESS]: (state, action) => state.setAddProjectSuccess(action.payload),
-  [EDIT_PROJECT_SUCCESS]: (state, action) => state.setEditProjectSuccess(action.payload),
-  [LIST_PROJECT]: (state, action) => state.setListProject(action.payload),
-  [DELETE_SUCCESS]: (state, action) => state.setDeleteSuccess(action.payload),
+  [LOADING]: (state, action) => {return {...state, isLoading: action.payload}},
+  [ADD_PROJECT_SUCCESS]: (state, action) => {return {...state, addProjectSuccess: action.payload}},
+  [EDIT_PROJECT_SUCCESS]: (state, action) => {return {...state, editProjectSuccess: action.payload}},
+  [LIST_PROJECT]: (state, action) => {return {...state, listProject: action.payload}},
+  [DELETE_SUCCESS]: (state, action) => {return {...state, deleteSuccess: action.payload}},
 }
 
 export default handleActions(actions, initialState)

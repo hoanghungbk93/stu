@@ -38,7 +38,7 @@ export const login = (header, param) => async dispatch => {
   
   try{
     
-    fetch(`https://50c0e637.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+    fetch(`https://0249c410.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
       if(!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
@@ -69,9 +69,9 @@ export const login = (header, param) => async dispatch => {
 
 
 const actions = {
-  [LOADING]: (state, action) => state.setLoading(action.payload),
-  [LOGIN]: (state, action) => state.setLogin(action.payload),
-  [USER_INFO]: (state, action) => state.setUserInfo(action.payload),
+  [LOADING]: (state, action) => {return {...state, isLoading: action.payload}},
+  [LOGIN]: (state, action) => {return {...state, isLogined: action.payload}},
+  [USER_INFO]: (state, action) => {return {...state, userInfo: action.payload}},
 }
 
 export default handleActions(actions, initialState)

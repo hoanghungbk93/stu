@@ -37,7 +37,7 @@ export const addUser = (header, params) => async dispatch => {
   console.log('editUser params', params)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/stuuser/adduser`, {
+    fetch(`https://0249c410.ngrok.io/api/stuuser/adduser`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -78,7 +78,7 @@ export const deleteUser = (header, userId) => async dispatch => {
   console.log('deleteUser ', userId)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
+    fetch(`https://0249c410.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -113,7 +113,7 @@ export const deleteUser = (header, userId) => async dispatch => {
 export const editUser = (header, params) => async dispatch => {
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/stuuser/updateuser`, {
+    fetch(`https://0249c410.ngrok.io/api/stuuser/updateuser`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -170,7 +170,7 @@ export const getListUser = (header, userId) => async dispatch => {
   // }
   try {
 
-    fetch(`https://50c0e637.ngrok.io/api/stuuser/getalluser`).then((response) => {
+    fetch(`https://0249c410.ngrok.io/api/stuuser/getalluser`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -198,11 +198,11 @@ export const getListUser = (header, userId) => async dispatch => {
 
 
 const actions = {
-  [LOADING]: (state, action) => state.setLoading(action.payload),
-  [ADD_USER_SUCCESS]: (state, action) => state.setAddUserSuccess(action.payload),
-  [EDIT_USER_SUCCESS]: (state, action) => state.setEditUserSuccess(action.payload),
-  [LIST_USER]: (state, action) => state.setListUser(action.payload),
-  [DELETE_SUCCESS]: (state, action) => state.setDeleteSuccess(action.payload),
+  [LOADING]: (state, action) => {return {...state, isLoading: action.payload}},
+  [ADD_USER_SUCCESS]: (state, action) => {return {...state, addUserSuccess: action.payload}},
+  [EDIT_USER_SUCCESS]: (state, action) => {return {...state, editUserSuccess: action.payload}},
+  [LIST_USER]: (state, action) => {return {...state, listUser: action.payload}},
+  [DELETE_SUCCESS]: (state, action) => {return {...state, deleteSuccess: action.payload}},
 }
 
 export default handleActions(actions, initialState)

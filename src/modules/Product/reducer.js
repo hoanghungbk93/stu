@@ -36,7 +36,7 @@ export const addProduct = (header, params) => async dispatch => {
   console.log('addProduct params', params)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/stuvt/addvt`, {
+    fetch(`https://0249c410.ngrok.io/api/stuvt/addvt`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -77,7 +77,7 @@ export const deleteProduct = (header, ProductId) => async dispatch => {
   console.log('deleteProduct ', ProductId)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/stuvt/deletevt/?id=${ProductId}`,{
+    fetch(`https://0249c410.ngrok.io/api/stuvt/deletevt/?id=${ProductId}`,{
       method: 'DELETE',
     }).then((response) => {
       debugger
@@ -113,7 +113,7 @@ export const editProduct = (header, params) => async dispatch => {
   console.log('editProduct', params)
   try {
     debugger
-    fetch(`https://50c0e637.ngrok.io/api/stuvt/updatevt`, {
+    fetch(`https://0249c410.ngrok.io/api/stuvt/updatevt`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -165,7 +165,7 @@ export const resetAddProductSucess = () => async dispatch => {
 export const getListProduct = (header, ProductuserId) => async dispatch => {
   try {
 
-    fetch(`https://50c0e637.ngrok.io/api/stuvt/getallvt`).then((response) => {
+    fetch(`https://0249c410.ngrok.io/api/stuvt/getallvt`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -191,11 +191,11 @@ export const getListProduct = (header, ProductuserId) => async dispatch => {
 
 
 const actions = {
-  [LOADING]: (state, action) => state.setLoading(action.payload),
-  [ADD_PRODUCT_SUCCESS]: (state, action) => state.setAddProductSuccess(action.payload),
-  [EDIT_PRODUCT_SUCCESS]: (state, action) => state.setEditProductSuccess(action.payload),
-  [LIST_PRODUCT]: (state, action) => state.setListProduct(action.payload),
-  [DELETE_SUCCESS]: (state, action) => state.setDeleteSuccess(action.payload),
+  [LOADING]: (state, action) => {return {...state, isLoading: action.payload}},
+  [ADD_PRODUCT_SUCCESS]: (state, action) => {return {...state, addProductSuccess: action.payload}},
+  [EDIT_PRODUCT_SUCCESS]: (state, action) => {return {...state, editProductSuccess: action.payload}},
+  [LIST_PRODUCT]: (state, action) => {return {...state, listProduct: action.payload}},
+  [DELETE_SUCCESS]: (state, action) => {return {...state, deleteSuccess: action.payload}},
 }
 
 export default handleActions(actions, initialState)

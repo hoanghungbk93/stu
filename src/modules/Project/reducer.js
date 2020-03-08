@@ -35,8 +35,7 @@ const initialState = Model(null)
 export const addProject = (header, params) => async dispatch => {
   console.log('addProject params', params)
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/studa/addnewda`, {
+    fetch(`https://5f93e07a.ngrok.io/api/studa/addnewda`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -44,7 +43,6 @@ export const addProject = (header, params) => async dispatch => {
       },
       crossDomain:true
     }).then((response) => {
-      debugger
       console.log('responseaa', response)
       if(!response.ok) throw new Error(response.status);
       else return response.json();
@@ -76,11 +74,9 @@ export const addProject = (header, params) => async dispatch => {
 export const deleteProject = (header, projectId) => async dispatch => {
   console.log('deleteProject ', projectId)
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
+    fetch(`https://5f93e07a.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
       method: 'DELETE',
     }).then((response) => {
-      debugger
       console.log('responseaa', response)
       if(!response.ok) throw new Error(response.status);
       else return response.json();
@@ -111,8 +107,7 @@ export const deleteProject = (header, projectId) => async dispatch => {
 }
 export const editProject = (header, params) => async dispatch => {
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/studa/updateda`, {
+    fetch(`https://5f93e07a.ngrok.io/api/studa/updateda`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -164,7 +159,7 @@ export const resetAddProjectSucess = () => async dispatch => {
 export const getListProject = (header, projectuserId) => async dispatch => {
   try {
 
-    fetch(`https://0249c410.ngrok.io/api/studa/getallda`).then((response) => {
+    fetch(`https://5f93e07a.ngrok.io/api/studa/getallda`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

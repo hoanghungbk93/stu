@@ -15,12 +15,11 @@ import moment from "moment";
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
-  debugger
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor, history, deleteRequirement, listRequirement, resetDeleteRequirementSuccess } = props;
   const [selectedId, setSelectedId] = useState(-1)
   const [openDialog, setOpenDialog] = React.useState(false);
-  const { location} = props
+  const { location, userType} = props
   console.log('location TableList', location)
   return (
     <div className={classes.tableResponsive}>
@@ -52,7 +51,12 @@ export default function CustomTable(props) {
               <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
                 // resetDeleteRequirementSuccess()
                 console.log('location prop[0]', prop[0])
-                history.push(`/admin/editRequirement/${prop[0]}`, { order: prop[0] })
+                if(userType === 'SubAdmin' || userType === 'admin'){
+                  history.push(`/admin/editRequirement/${prop[0]}`, { order: prop[0] })
+                }
+                else{
+                  history.push(`/admin/detailRequirement/${prop[0]}`, { order: prop[0] })
+                }
               }}
                 hover
                 selected

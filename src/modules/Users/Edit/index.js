@@ -87,7 +87,7 @@ function UserEdit(props) {
 
                 <GridItem xs={12} sm={12} md={3}>
                   <CustomInput
-                    labelText="Username"
+                    labelText="Tên đăng nhập"
                     id="username"
                     formControlProps={{
                       fullWidth: true
@@ -101,7 +101,7 @@ function UserEdit(props) {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Department"
+                    labelText="Bộ phận"
                     id="email-address"
                     formControlProps={{
                       fullWidth: true
@@ -115,7 +115,7 @@ function UserEdit(props) {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Type"
+                    labelText="Cấp bậc"
                     id="user-type"
                     formControlProps={{
                       fullWidth: true
@@ -129,7 +129,7 @@ function UserEdit(props) {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
-                    labelText="Password"
+                    labelText="Mật khẩu"
                     id="password"
                     formControlProps={{
                       fullWidth: true

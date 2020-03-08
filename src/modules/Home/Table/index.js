@@ -45,6 +45,7 @@ function Requirements(props) {
     history
   } = props
   const {listRequirement, deleteSuccess} = requirement
+  const {userInfo} = authen
   // const history = useHistory()
   const classes = useStyles();
   const [initial, setInitial] = useState(true)
@@ -54,7 +55,7 @@ function Requirements(props) {
   useEffect(()=>{
     if(deleteSuccess === true){
       setOpen(true);
-      getListRequirement()
+      getListRequirement(userInfo.id)
     } else if(deleteSuccess === false){
       setOpen(true);
     }
@@ -74,7 +75,7 @@ function Requirements(props) {
       resetEditRequirementSucess()
       resetApproveSucess()
       resetCancleSucess()
-      getListRequirement()
+      getListRequirement(userInfo.id)
       setInitial(false)
     }
   }, [initial])
@@ -96,6 +97,7 @@ function Requirements(props) {
             </CardHeader>
             <CardBody>
               <Table
+                userType={userInfo.loai}
                 tableHeaderColor="primary"
               tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
               tableData={listRequirement.map((e, i)=>{

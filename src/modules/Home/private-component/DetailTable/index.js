@@ -112,18 +112,6 @@ function CustomTable(props) {
           })}
         </TableBody>
       </Table>
-      <ButtonGroup variant="contained" color="primary" aria-label="outlined primary button group">
-        <Button color="primary" onClick={() => {
-          const newRequirement = requirementInfo
-          newRequirement.statusyc = requirementInfo.statusyc === 'Chờ duyệt' ? 'Duyệt 1' : 'Duyệt 2'
-          approve({}, newRequirement)
-        }}
-        >Duyệt</Button>
-        <Button onClick={() => {
-          // cancel({}, {id : requirementInfo.id, name: RequirementName, bp: department, loai: type, mk: password})
-        }}
-        >Từ chối</Button>
-      </ButtonGroup>
     </div>
   );
 }

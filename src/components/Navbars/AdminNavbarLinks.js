@@ -18,12 +18,17 @@ import Search from "@material-ui/icons/Search";
 // core components
 import CustomInput from "../CustomInput/CustomInput.js";
 import Button from "../CustomButtons/Button.js";
-
+import {logout} from '../../modules/Authen/reducer'
 import styles from "../../assets/jss/material-dashboard-react/components/headerLinksStyle.js";
-
+import {useHistory} from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 const useStyles = makeStyles(styles);
 
-export default function AdminNavbarLinks() {
+function AdminNavbarLinks(props) {
+  const {logout} = props
+  const history = useHistory()
+  console.log('AdminNavbarLinks', history)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
@@ -46,6 +51,9 @@ export default function AdminNavbarLinks() {
   };
   const handleCloseProfile = () => {
     setOpenProfile(null);
+  };
+  const handleLogout = () => {
+    logout(history);
   };
   return (
     <div>
@@ -207,7 +215,7 @@ export default function AdminNavbarLinks() {
                     </MenuItem>
                     <Divider light />
                     <MenuItem
-                      onClick={handleCloseProfile}
+                      onClick={handleLogout}
                       className={classes.dropdownItem}
                     >
                       Logout
@@ -222,3 +230,21 @@ export default function AdminNavbarLinks() {
     </div>
   );
 }
+const mapStateToProps = state => ({
+  authen: state.authen,
+  requirement: state.requirement
+})
+
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      logout
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdminNavbarLinks)

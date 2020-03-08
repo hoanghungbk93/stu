@@ -41,9 +41,8 @@ const initialState = Model(null)
 export const addRequirement = (header, params) => async dispatch => {
   console.log('addRequirement params', params)
   try {
-    debugger
     console.log('addRequirement params', params)
-    fetch(`https://0249c410.ngrok.io/api/stuyc/addyc`, {
+    fetch(`https://5f93e07a.ngrok.io/api/stuyc/addyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -51,7 +50,6 @@ export const addRequirement = (header, params) => async dispatch => {
       },
       crossDomain: true
     }).then((response) => {
-      debugger
       console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();
@@ -83,11 +81,9 @@ export const addRequirement = (header, params) => async dispatch => {
 export const deleteRequirement = (header, requirementId) => async dispatch => {
   console.log('deleteRequirement ', requirementId)
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
+    fetch(`https://5f93e07a.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
       method: 'DELETE',
     }).then((response) => {
-      debugger
       console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();
@@ -118,8 +114,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
 }
 export const editRequirement = (header, params) => async dispatch => {
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://5f93e07a.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -154,7 +149,6 @@ export const editRequirement = (header, params) => async dispatch => {
   }
 }
 export const resetEditRequirementSucess = () => async dispatch => {
-  debugger
   dispatch(setEditRequirementSuccess(null))
 
 }
@@ -187,7 +181,7 @@ export const getListRequirement = (header, userId) => async dispatch => {
   // }
   try {
 
-    fetch(`https://0249c410.ngrok.io/api/stuyc/getallyc`).then((response) => {
+    fetch(`https://5f93e07a.ngrok.io/api/stuyc/getallyc?_iduseryc=${userId}`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -216,8 +210,7 @@ export const getListRequirement = (header, userId) => async dispatch => {
 export const approve = (header, params) => async dispatch => {
   console.log('setApproveSuccess params', params)
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://5f93e07a.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -255,8 +248,7 @@ export const approve = (header, params) => async dispatch => {
 export const cancel = (header, params) => async dispatch => {
   console.log('setCancelSuccess params', params)
   try {
-    debugger
-    fetch(`https://0249c410.ngrok.io/api/stuuser/adduser`, {
+    fetch(`https://5f93e07a.ngrok.io/api/stuuser/updateyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -264,7 +256,6 @@ export const cancel = (header, params) => async dispatch => {
       },
       crossDomain: true
     }).then((response) => {
-      debugger
       console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();

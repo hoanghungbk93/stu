@@ -14,6 +14,9 @@ import {useHistory } from "react-router-dom";
 import {approve, cancel} from '../reducer'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import Button from "../../../components/CustomButtons/Button.js";
+import CardFooter from "../../../components/Card/CardFooter.js";
+import {getNextStatus} from '../../../utils/Helper'
 const styles = {
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
@@ -48,7 +51,7 @@ const useStyles = makeStyles(styles);
 
 function Detail(props) {
   const classes = useStyles();
-  const {location, history, match, requirement} = props
+  const {location, history, match, requirement, authen} = props
   const {listRequirement} = requirement
   const requirementtInfo= listRequirement[match.params.id-1]
   console.log('requirementtInfo', requirementtInfo)
@@ -75,6 +78,7 @@ function Detail(props) {
   console.log('props', props)
   console.log('props match', match)
   return (
+    <div>
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
@@ -84,7 +88,7 @@ function Detail(props) {
           <CardBody>
             <DetailTable
               tableHeaderColor="primary"
-              tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa', 'Lí do từ chối', 'Phê duyệt']}
+              tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa', 'Lí do từ chối']}
               tableData={requirementDetails}
               history={history}
               approve={approve}
@@ -96,6 +100,25 @@ function Detail(props) {
         </Card>
       </GridItem>
     </GridContainer>
+    <CardFooter variant="contained" color="primary" aria-label="outlined primary button group">
+        <Button color="primary" onClick={() => {
+          const newRequirement = requirementtInfo
+          newRequirement.statusyc = getNextStatus(requirementtInfo.statusyc)
+          approve({}, newRequirement)
+        }}
+        >Duyệt</Button>
+        <Button 
+          disabled={requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin' ||
+            requirementtInfo.statusyc === 'Duyệt 2' && authen.userInfo.loai === 'admin'
+          }
+        color="primary" onClick={() => {
+          const newRequirement = requirementtInfo
+          newRequirement.statusyc = 'Từ chối'
+          cancel({}, newRequirement)
+        }}
+        >Từ chối</Button>
+      </CardFooter>
+      </div>
   );
 }
 

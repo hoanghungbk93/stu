@@ -19,6 +19,7 @@ import styles from "../../../assets/jss/material-dashboard-react/layouts/adminSt
 import bgImage from "../../../assets/img/sidebar-2.jpg";
 import logo from "../../../assets/img/stuLogo.png";
 import checkSinginHOC from '../../../components/CheckSinginHOC'
+import { connect } from 'react-redux'
 let ps;
 console.log('routes', routes)
 const switchRoutes = (
@@ -38,12 +39,12 @@ const switchRoutes = (
 );
 
 const useStyles = makeStyles(styles);
-
-export default function Admin(props) {
+function Admin(props) {
   // styles
   const classes = useStyles();
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
+  const {authen} = props
   // states and functions
   const [image, setImage] = React.useState(bgImage);
   const [color, setColor] = React.useState("blue");
@@ -102,6 +103,7 @@ export default function Admin(props) {
         open={mobileOpen}
         color={color}
         {...props}
+        isAdmin={authen.userInfo.loai === 'admin'}
       />
       <div className={classes.mainPanel} ref={mainPanel}>
         <Navbar
@@ -130,3 +132,12 @@ export default function Admin(props) {
     </div>
   );
 }
+const mapStateToProps = state => ({
+  authen: state.authen,
+})
+
+
+export default connect(
+  mapStateToProps,
+  null
+)(Admin)

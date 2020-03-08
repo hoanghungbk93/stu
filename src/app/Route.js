@@ -31,6 +31,7 @@ import {Home} from "../modules/Home";
 import HomeTable from "../modules/Home/Table"
 import HomeDetail from "../modules/Home/Detail"
 import HomeAdd from "../modules/Home/New"
+import HomeUserDetail from "../modules/Home/UserDetail"
 // import {HomeAdd, HomeTable, HomeDetail } from "../modules/Home"
 import {Users, UserAdd, UserEdit} from "../modules/Users";
 import {Projects, ProjectAdd, ProjectEdit} from "../modules/Project";
@@ -51,6 +52,7 @@ const routes = [
     icon: HomeIcon,
     component: HomeTable,
     isVisible: true,
+    admin: false,
     submenus: [
       {
         name: 'Yêu cầu xuất kho',
@@ -142,14 +144,16 @@ const routes = [
         component: HomeTable
       },
     ],
-    isVisible: true
+    isVisible: true,
+    admin: false,
   },
   {
     path: '/admin/user',
     component: Users,
     name: "QUẢN LÍ NGƯỜI DÙNG",
     icon: Person,
-    isVisible: true
+    isVisible: true,
+    admin: true,
   },
   {
     path: '/admin/addNew',
@@ -170,28 +174,30 @@ const routes = [
     component: Projects,
     name: "QUẢN LÍ DỰ ÁN",
     icon: AssignmentIcon,
-    isVisible: true
+    isVisible: true,
+    admin: false,
   },
   {
     path: '/admin/addNewProject',
     component: ProjectAdd,
     name: "QUẢN LÍ VẬT TƯ",
     icon: Business,
-    isVisible: false
+    isVisible: false,
   },
   {
     path: '/admin/editProject/:id',
     component: ProjectEdit,
     name: "QUẢN LÍ VẬT TƯ",
     icon: Business,
-    isVisible: false
+    isVisible: false,
   },
   {
     path: '/admin/product',
     component: Products,
     name: "QUẢN LÍ VẬT TƯ",
     icon: AssignmentIcon,
-    isVisible: true
+    isVisible: true,
+    admin: false,
   },
   {
     path: '/admin/addNewProduct',
@@ -215,9 +221,16 @@ const routes = [
     isVisible: false
   },
   {
+    path: '/admin/detailRequirement/:id',
+    component: HomeUserDetail,
+    name: "HomeUserDetail",
+    icon: Business,
+    isVisible: false
+  },
+  {
     path: '/admin/addNewRequirement',
     component: HomeAdd,
-    name: "HomeDetail",
+    name: "HomeAddNew",
     icon: Business,
     isVisible: false
   }

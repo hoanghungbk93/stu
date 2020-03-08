@@ -67,15 +67,19 @@ function Alert(props) {
 }
 function RequirementAdd(props) {
   const classes = useStyles();
-  const { history, authen, requirement, addRequirement } = props
+  const { history, authen, requirement, addRequirement, match } = props
+  const {listRequirement} = requirement
+  const requirementtInfo= listRequirement[match.params.id-1]
+  console.log('requirementtInfo', requirementtInfo)
+  const lvtyc = requirementtInfo && requirementtInfo.lvtyc ? JSON.parse(requirementtInfo.lvtyc) : []
   const { addRequirementSuccess } = requirement
-  const [requirementName, setRequirementName] = useState('')
+  const [requirementName, setRequirementName] = useState(requirementtInfo.myc.substring(3))
   const [password, setPassword] = useState('')
-  const [department, setDepartment] = useState('')
+  const [department, setDepartment] = useState(requirementtInfo.bpyc)
   const [open, setOpen] = React.useState(false);
   const [needTime, setNeedTime] = useState(0)
   const { header } = authen
-  const [requirementList, setRequirementList] = useState([])
+  const [requirementList, setRequirementList] = useState(lvtyc)
   const [isAddNew, setIsAddNew] = useState(true)
   const [currentProductIndex, setCurrentProductIndex] = useState(-1)
   const [openModal, setOpenModal] = useState(false)
@@ -86,10 +90,12 @@ function RequirementAdd(props) {
   const [currentInformation, setCurrentInformation] = useState('')
   const [currentUnit, setCurrentUnit] = useState('')
   const [currentManufacture, setCurrentManufacture] = useState('')
-  const [requirementType, setRequirementType] = useState('YCX')
-  const [project, setProject] = useState('')
-  const dateFormat = "DD-MM-YYYY"
-  const [selectedDate, setSelectedDate] = useState(moment().format(dateFormat))
+  const [requirementType, setRequirementType] = useState(requirementtInfo.myc.substring(0,3))
+  const [project, setProject] = useState(requirementtInfo.dayc)
+  const [requirementStatus, setRequirementStatus] = useState(requirementtInfo.statusyc)
+  const dateFormat = "MM-DD-YYYY"
+  const [selectedDate, setSelectedDate] = useState(moment(requirementtInfo.nyc).format(dateFormat))
+  const disabledView = true
   // console.log('moment().format(dateFormat)', moment().format(dateFormat))
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -249,6 +255,7 @@ function RequirementAdd(props) {
                       }}
                       value={currentTotal}
                       error={isNaN(currentTotal)} 
+                      
                     />
                   </GridItem>
                 </GridContainer>
@@ -315,8 +322,7 @@ function RequirementAdd(props) {
         <GridItem xs={12} sm={12} md={8}>
           <Card>
             <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Thêm mới yêu cầu</h4>
-              <p className={classes.cardCategoryWhite}>Hoàn thành thông tin yêu cầu</p>
+              <h4 className={classes.cardTitleWhite}>Chi tiết yêu cầu</h4>
             </CardHeader>
             <CardBody>
               <GridContainer>
@@ -330,6 +336,7 @@ function RequirementAdd(props) {
                     onChange={(event) => {
                       setRequirementType(event.target.value)
                     }}
+                    disabled={disabledView}
                   >
                     {requirementOptions.map((option, index) => (
                       <MenuItem key={index} value={option}>
@@ -352,6 +359,7 @@ function RequirementAdd(props) {
                       setRequirementName(event.target.value)
                     }}
                     value={requirementName}
+                    inputProps={{disabled: disabledView}}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -363,9 +371,9 @@ function RequirementAdd(props) {
                     }}
                     onChange={(event) => {
                       setDepartment(event.target.value)
-                      console.log('Email address', event.target.value)
                     }}
                     value={department}
+                    inputProps={{disabled: disabledView}}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -380,6 +388,7 @@ function RequirementAdd(props) {
                       setProject(event.target.value)
                     }}
                     value={project}
+                    inputProps={{disabled: disabledView}}
                   />
                 </GridItem>
               </GridContainer>
@@ -388,7 +397,8 @@ function RequirementAdd(props) {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around">
                       <KeyboardDatePicker
-                        format="dd-MM-yyyy"
+                        disabled={disabledView}
+                        format="yyyy-dd-MM"
                         margin="normal"
                         id="date-picker-dialog"
                         // label="Date picker inline"
@@ -409,7 +419,10 @@ function RequirementAdd(props) {
                 setIsAddNew(true)
                 setOpenModal(true)
                 // setRequirementList(requirementList.slice().push(newProduct))
-              }}>{'Thêm vật tư'}</Button>
+                
+              }}
+              disabled={disabledView}
+              >{'Thêm vật tư'}</Button>
             </CardFooter>
           </Card>
         </GridItem>
@@ -431,6 +444,7 @@ function RequirementAdd(props) {
         setCurrentProductIndex={setCurrentProductIndex}
         setOpenModal={setOpenModal}
         deleteSelectedIndex={deleteSelectedIndex}
+        disabled={disabledView}
       ></List>
       <Button color="primary" onClick={() => {
         console.log('moment(needTime)', moment(needTime).format('YYYY-MM-DDTHH:MM:SS'))
@@ -445,7 +459,9 @@ function RequirementAdd(props) {
           "iduseryc": authen.userInfo.id,
         })
         addRequirement(header, params)
-      }}>Lưu</Button>
+      }}
+      disabled={disabledView}
+      >Lưu</Button>
       {renderModal()}
     </div>
   );

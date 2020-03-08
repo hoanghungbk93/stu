@@ -38,7 +38,7 @@ export const login = (header, param) => async dispatch => {
 
   try {
 
-    fetch(`https://0249c410.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+    fetch(`https://5f93e07a.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
@@ -66,6 +66,40 @@ export const login = (header, param) => async dispatch => {
     console.log('err', err)
   }
 }
+export const logout = (history) => async dispatch => {
+  dispatch(setLogin(null))
+  dispatch(setUserInfo(null))
+  history.push('/')
+  // try {
+
+  //   fetch(`https://5f93e07a.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+  //     if (!response.ok) throw new Error(response.status);
+  //     else return response.json();
+  //   }).then((myJson) => {
+  //     if (myJson[0]) {
+  //       // dispatch(setUserInfo(myJson[0]))
+  //       // dispatch(setLoading(false))
+  //       dispatch(setLogin(null))
+  //     } else {
+  //       // dispatch(setLogin(false))
+  //       // dispatch(setLoading(false))
+  //     }
+  //     console.log('myJson', myJson)
+  //   }).catch(
+  //     err => {
+  //       // dispatch(setLogin(false))
+  //       // dispatch(setLoading(false))
+  //       console.log('errr', err)
+  //     }
+  //   )
+  //   // if(data[0].sta)
+  //   // dispatch(setLoading(true))
+  // } catch (err) {
+  //   // dispatch(setLogin(false))
+  //   // dispatch(setLoading(false))
+  //   console.log('err', err)
+  // }
+}
 export const resetLogin = () => async dispatch => {
 
   dispatch(setLogin(null))
@@ -75,6 +109,7 @@ export const resetLogin = () => async dispatch => {
 const actions = {
   [LOADING]: (state, action) => { return { ...state, isLoading: action.payload } },
   [LOGIN]: (state, action) => { return { ...state, isLogined: action.payload } },
+  // [LOGOUT]: (state, action) => { return { ...state, isLogined: action.payload } },
   [USER_INFO]: (state, action) => { return { ...state, userInfo: action.payload } },
 }
 

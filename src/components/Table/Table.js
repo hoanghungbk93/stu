@@ -13,7 +13,6 @@ import styles from "../../assets/jss/material-dashboard-react/components/tableSt
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
-  debugger
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor, history } = props;
   const [activeRow, setActiveRow] = useState(0)

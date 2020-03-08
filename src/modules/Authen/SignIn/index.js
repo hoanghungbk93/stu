@@ -27,6 +27,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
+// Firebase App (the core Firebase SDK) is always required and must be listed first
+import { askForPermissioToReceiveNotifications } from '../../../pushNotification';
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -65,16 +67,15 @@ function SignIn(props) {
   const [userName, setUsername] = useState('')
   const [password, setPassword] = useState('')
   useEffect(() => {
+    askForPermissioToReceiveNotifications()
     console.log('authen.isLogined', authen.isLogined)
     if (isLogined === true) {
-      debugger
       history.replace('/admin')
     } else if(isLogined === false)
     {
       resetLogin()
     }
   }, [isLogined])
-  debugger
   // if (isLogined === true) {
     
   //   return <Redirect to={from} />

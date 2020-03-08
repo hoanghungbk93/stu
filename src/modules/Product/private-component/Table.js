@@ -14,7 +14,6 @@ import AlertDialogSlide from '../../../components/ConfirmDialog'
 const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
-  debugger
   const classes = useStyles();
   const { tableHead, tableData, tableHeaderColor, history, deleteProduct, listProduct, resetDeleteProductSuccess } = props;
   const [selectedId, setSelectedId] = useState(-1)

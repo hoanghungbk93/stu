@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React,{useEffect, useState} from "react";
 import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,30 +8,43 @@ import TableRow from "@material-ui/core/TableRow";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 // core components
-import styles from "../../../assets/jss/material-dashboard-react/components/tableStyle.js";
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import styles from "../../../../assets/jss/material-dashboard-react/components/detailTableStyle.js";
+import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AlertDialogSlide from '../../../components/ConfirmDialog'
 const useStyles = makeStyles(styles);
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 export default function CustomTable(props) {
+  
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, history, deleteUser, listUser, resetDeleteUserSuccess } = props;
-  const [selectedId, setSelectedId] = useState(-1)
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const { location} = props
-  console.log('location TableList', location)
+  const {
+    tableHead ,
+    requirementList,
+    tableHeaderColor,
+    setIsAddNew,
+    setCurrentProductIndex,
+    setRequirementList,
+    setOpenModal,
+    deleteSelectedIndex,
+    disabled
+  } = props;
+  // const {params} = match
+  console.log('order', props)
+  console.log('requirementList', requirementList)
+  // const RequirementInfo= listRequirement[params.id-1]
+  // console.log('history', history)
+
   return (
     <div className={classes.tableResponsive}>
-      <AlertDialogSlide
-        title="Bạn có muốn xoá người dùng này không"
-        action={() => deleteUser({}, selectedId)}
-        open={openDialog} setOpen={setOpenDialog}
-      ></AlertDialogSlide>
       <Table className={classes.table}>
         {tableHead !== undefined ? (
           <TableHead className={classes[tableHeaderColor + "TableHeader"]}>
             <TableRow className={classes.tableHeadRow}>
               {tableHead.map((prop, key) => {
+               
                 return (
                   <TableCell
                     className={classes.tableCell + " " + classes.tableHeadCell}
@@ -45,37 +58,42 @@ export default function CustomTable(props) {
           </TableHead>
         ) : null}
         <TableBody>
-          {tableData.map((prop, key) => {
+          {requirementList.length > 0 && requirementList.map((prop, key) => {
             return (
-              <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
-                resetDeleteUserSuccess()
-                console.log('location prop[0]', prop[0])
-                history.push(`/admin/edit/${prop[0]}`, { order: prop[0] })
-              }}
-                hover
-                selected
-              //   onMouseMove={()=>{
-              //   setActiveRow(key)
-              //   console.log('hihi', key)
-              // }}
-              // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
-              >
+              <TableRow key={key} className={classes.tableBodyRow}
+                    hover
+                    selected
+                    disabled
+                  //   onMouseMove={()=>{
+                  //   setActiveRow(key)
+                  //   console.log('hihi', key)
+                  // }}
+                  // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
+                  onClick={()=> {
+                    if(!disabled){
+                      setIsAddNew(false)
+                    setCurrentProductIndex(key)
+                    setOpenModal(true)
+                    }
+                    
+                  }}
+                  
+                  >
                 {prop.map((e, key) => {
                   return (
-                    <TableCell className={classes.tableCell} key={key} >
+                    <TableCell 
+                    className={classes.tableCell} key={key} >
                       {e}
                     </TableCell>
                   );
                 })}
-                <TableCell className={classes.tableCell} key={key} >
+                {!disabled && prop.length > 0 && <TableCell className={classes.tableCell} key={key} >
                   <DeleteIcon onClick={(e) => {
                     console.log('hehehehe')
-                    resetDeleteUserSuccess()
                     e.stopPropagation();
-                    setSelectedId(listUser[key].id)
-                    setOpenDialog(true)
+                    deleteSelectedIndex(key)
                   }}></DeleteIcon>
-                </TableCell>
+                </TableCell>}
               </TableRow>
             );
           })}

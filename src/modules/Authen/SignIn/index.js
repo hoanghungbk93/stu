@@ -76,9 +76,9 @@ function SignIn(props) {
       resetLogin()
     }
   }, [isLogined])
-  // useEffect(()=>{
-  //   askForPermissioToReceiveNotifications()
-  // },[])
+  useEffect(()=>{
+    askForPermissioToReceiveNotifications()
+  },[])
   // if (isLogined === true) {
     
   //   return <Redirect to={from} />

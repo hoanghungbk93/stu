@@ -12,19 +12,6 @@ export const initializeFirebase = () => {
     appId: "1:580047032879:web:27e59dd91d71fc1691acda",
     measurementId: "G-7T097KVF40"
   });
-  console.log('navigator', navigator)
-  if ('serviceWorker' in navigator) {
-    console.log('serviceWorker')
-    const swPath = `${process.env.PUBLIC_URL}/firebase-messaging-sw.js`;
-    navigator.serviceWorker.register(swPath)
-    .then(function(registration) {
-      // firebase.messaging().useServiceWorker(registration)
-      // askForPermissioToReceiveNotifications()
-      console.log('Registration successful, scope is:', registration.scope);
-    }).catch(function(err) {
-      console.log('Service worker registration failed, error:', err);
-    });
-  }
 }
 export const askForPermissioToReceiveNotifications = async () => {
   console.log('askForPermissioToReceiveNotifications')

@@ -15,10 +15,11 @@ export const initializeFirebase = () => {
   console.log('navigator', navigator)
   if ('serviceWorker' in navigator) {
     console.log('serviceWorker')
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    const swPath = `${process.env.PUBLIC_URL}/firebase-messaging-sw.js`;
+    navigator.serviceWorker.register(swPath)
     .then(function(registration) {
-      firebase.messaging().useServiceWorker(registration)
-      askForPermissioToReceiveNotifications()
+      // firebase.messaging().useServiceWorker(registration)
+      // askForPermissioToReceiveNotifications()
       console.log('Registration successful, scope is:', registration.scope);
     }).catch(function(err) {
       console.log('Service worker registration failed, error:', err);

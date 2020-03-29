@@ -34,7 +34,7 @@ const switchRoutes = (
         );
       }
     )}
-    <Redirect from="/admin" to="/admin/table" />
+    <Redirect from="/admin" to="/admin/table/1" />
   </Switch>
 );
 

@@ -42,7 +42,7 @@ export const addRequirement = (header, params) => async dispatch => {
   console.log('addRequirement params', params)
   try {
     console.log('addRequirement params', params)
-    fetch(`https://5f93e07a.ngrok.io/api/stuyc/addyc`, {
+    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/addyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -81,7 +81,7 @@ export const addRequirement = (header, params) => async dispatch => {
 export const deleteRequirement = (header, requirementId) => async dispatch => {
   console.log('deleteRequirement ', requirementId)
   try {
-    fetch(`https://5f93e07a.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
+    fetch(`https://cc44e5d1.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
       method: 'DELETE',
     }).then((response) => {
       console.log('responseaa', response)
@@ -114,7 +114,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
 }
 export const editRequirement = (header, params) => async dispatch => {
   try {
-    fetch(`https://5f93e07a.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -181,7 +181,7 @@ export const getListRequirement = (header, userId) => async dispatch => {
   // }
   try {
 
-    fetch(`https://5f93e07a.ngrok.io/api/stuyc/getallyc?_iduseryc=${userId}`).then((response) => {
+    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/getallyc?_iduseryc=${userId}`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
@@ -210,7 +210,7 @@ export const getListRequirement = (header, userId) => async dispatch => {
 export const approve = (header, params) => async dispatch => {
   console.log('setApproveSuccess params', params)
   try {
-    fetch(`https://5f93e07a.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -248,7 +248,7 @@ export const approve = (header, params) => async dispatch => {
 export const cancel = (header, params) => async dispatch => {
   console.log('setCancelSuccess params', params)
   try {
-    fetch(`https://5f93e07a.ngrok.io/api/stuuser/updateyc`, {
+    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/updateyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {

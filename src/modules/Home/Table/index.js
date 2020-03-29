@@ -51,11 +51,11 @@ function Requirements(props) {
   const [initial, setInitial] = useState(true)
   const [open, setOpen] = React.useState(false);
   const [first, setFirst] = useState(false)
-
+  console.log('props Requirements', props)
   useEffect(()=>{
     if(deleteSuccess === true){
       setOpen(true);
-      getListRequirement(userInfo.id)
+      getListRequirement({}, userInfo.id)
     } else if(deleteSuccess === false){
       setOpen(true);
     }
@@ -75,7 +75,7 @@ function Requirements(props) {
       resetEditRequirementSucess()
       resetApproveSucess()
       resetCancleSucess()
-      getListRequirement(userInfo.id)
+      getListRequirement({}, userInfo.id)
       setInitial(false)
     }
   }, [initial])
@@ -101,7 +101,7 @@ function Requirements(props) {
                 tableHeaderColor="primary"
               tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
               tableData={listRequirement.map((e, i)=>{
-                let tempArr= [i+1]
+                let tempArr= [`${i+1}`]
                 Object.keys(e).forEach((key, index) =>{
                   if(index > 0 && index<8)
                   tempArr.push(e[key])

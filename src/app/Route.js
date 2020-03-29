@@ -58,25 +58,29 @@ const routes = [
         name: 'Yêu cầu xuất kho',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'YCX'
       },
       {
         name: 'Yêu cầu mua hàng',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'YCM'
       },
       {
         name: 'Phiếu nhập kho',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'PNK'
       },
       {
         name: 'Phiếu xuất kho',
         path: '',
         icon: Person,
-        component: Home
+        component: Home,
+        type: 'PXK'
       },
     ]
   },
@@ -114,7 +118,7 @@ const routes = [
   //   isVisible: true
   // },
   {
-    path: '/admin/history',
+    path: '/admin/history/:type',
     component: UserAdd,
     name: "LỊCH SỬ",
     icon: History,
@@ -123,25 +127,29 @@ const routes = [
         name: 'Yêu cầu xuất kho',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'YCX'
       },
       {
         name: 'Yêu cầu mua hàng',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'YCM'
       },
       {
         name: 'Phiếu nhập kho',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'PNK'
       },
       {
         name: 'Phiếu xuất kho',
         path: '',
         icon: Person,
-        component: HomeTable
+        component: HomeTable,
+        type: 'PXK'
       },
     ],
     isVisible: true,

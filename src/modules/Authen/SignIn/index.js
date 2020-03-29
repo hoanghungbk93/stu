@@ -67,7 +67,7 @@ function SignIn(props) {
   const [userName, setUsername] = useState('')
   const [password, setPassword] = useState('')
   useEffect(() => {
-    askForPermissioToReceiveNotifications()
+    
     console.log('authen.isLogined', authen.isLogined)
     if (isLogined === true) {
       history.replace('/admin')
@@ -76,6 +76,9 @@ function SignIn(props) {
       resetLogin()
     }
   }, [isLogined])
+  // useEffect(()=>{
+  //   askForPermissioToReceiveNotifications()
+  // },[])
   // if (isLogined === true) {
     
   //   return <Redirect to={from} />

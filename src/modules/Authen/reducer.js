@@ -38,7 +38,7 @@ export const login = (header, param) => async dispatch => {
 
   try {
 
-    fetch(`https://5f93e07a.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
@@ -72,7 +72,7 @@ export const logout = (history) => async dispatch => {
   history.push('/')
   // try {
 
-  //   fetch(`https://5f93e07a.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+  //   fetch(`https://cc44e5d1.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
   //     if (!response.ok) throw new Error(response.status);
   //     else return response.json();
   //   }).then((myJson) => {

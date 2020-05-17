@@ -32,6 +32,7 @@ import HomeTable from "../modules/Home/Table"
 import HomeDetail from "../modules/Home/Detail"
 import HomeAdd from "../modules/Home/New"
 import HomeUserDetail from "../modules/Home/UserDetail"
+import HomePdf from '../modules/Home/private-component/PDFView'
 // import {HomeAdd, HomeTable, HomeDetail } from "../modules/Home"
 import {Users, UserAdd, UserEdit} from "../modules/Users";
 import {Projects, ProjectAdd, ProjectEdit} from "../modules/Project";
@@ -53,36 +54,36 @@ const routes = [
     component: HomeTable,
     isVisible: true,
     admin: false,
-    submenus: [
-      {
-        name: 'Yêu cầu xuất kho',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'YCX'
-      },
-      {
-        name: 'Yêu cầu mua hàng',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'YCM'
-      },
-      {
-        name: 'Phiếu nhập kho',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'PNK'
-      },
-      {
-        name: 'Phiếu xuất kho',
-        path: '',
-        icon: Person,
-        component: Home,
-        type: 'PXK'
-      },
-    ]
+    // submenus: [
+    //   {
+    //     name: 'Yêu cầu xuất kho',
+    //     path: '',
+    //     icon: Person,
+    //     component: HomeTable,
+    //     type: 'YCX'
+    //   },
+    //   {
+    //     name: 'Yêu cầu mua hàng',
+    //     path: '',
+    //     icon: Person,
+    //     component: HomeTable,
+    //     type: 'YCM'
+    //   },
+    //   {
+    //     name: 'Phiếu nhập kho',
+    //     path: '',
+    //     icon: Person,
+    //     component: HomeTable,
+    //     type: 'PNK'
+    //   },
+    //   {
+    //     name: 'Phiếu xuất kho',
+    //     path: '',
+    //     icon: Person,
+    //     component: Home,
+    //     type: 'PXK'
+    //   },
+    // ]
   },
   // {
   //   path: "/admin/addNewRequirement",
@@ -117,44 +118,44 @@ const routes = [
   //   ],
   //   isVisible: true
   // },
-  {
-    path: '/admin/history/:type',
-    component: UserAdd,
-    name: "LỊCH SỬ",
-    icon: History,
-    submenus: [
-      {
-        name: 'Yêu cầu xuất kho',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'YCX'
-      },
-      {
-        name: 'Yêu cầu mua hàng',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'YCM'
-      },
-      {
-        name: 'Phiếu nhập kho',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'PNK'
-      },
-      {
-        name: 'Phiếu xuất kho',
-        path: '',
-        icon: Person,
-        component: HomeTable,
-        type: 'PXK'
-      },
-    ],
-    isVisible: true,
-    admin: false,
-  },
+  // {
+  //   path: '/admin/history/:type',
+  //   component: UserAdd,
+  //   name: "LỊCH SỬ",
+  //   icon: History,
+  //   submenus: [
+  //     {
+  //       name: 'Yêu cầu xuất kho',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable,
+  //       type: 'YCX'
+  //     },
+  //     {
+  //       name: 'Yêu cầu mua hàng',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable,
+  //       type: 'YCM'
+  //     },
+  //     {
+  //       name: 'Phiếu nhập kho',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable,
+  //       type: 'PNK'
+  //     },
+  //     {
+  //       name: 'Phiếu xuất kho',
+  //       path: '',
+  //       icon: Person,
+  //       component: HomeTable,
+  //       type: 'PXK'
+  //     },
+  //   ],
+  //   isVisible: true,
+  //   admin: false,
+  // },
   {
     path: '/admin/user',
     component: Users,
@@ -239,6 +240,13 @@ const routes = [
     path: '/admin/addNewRequirement',
     component: HomeAdd,
     name: "HomeAddNew",
+    icon: Business,
+    isVisible: false
+  },
+  {
+    path: '/admin/pdf',
+    component: HomePdf,
+    name: "HomePef",
     icon: Business,
     isVisible: false
   }

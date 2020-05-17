@@ -48,7 +48,7 @@ function Stack(props) {
   return (
     <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router>
         <Switch>
           <Route exact path={`/`} component={SignIn} >
           </Route>

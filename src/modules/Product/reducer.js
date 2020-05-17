@@ -35,7 +35,7 @@ const initialState = Model(null)
 export const addProduct = (header, params) => async dispatch => {
   console.log('addProduct params', params)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuvt/addvt`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuvt/addvt`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -74,7 +74,7 @@ export const addProduct = (header, params) => async dispatch => {
 export const deleteProduct = (header, ProductId) => async dispatch => {
   console.log('deleteProduct ', ProductId)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuvt/deletevt/?id=${ProductId}`,{
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuvt/deletevt/?id=${ProductId}`,{
       method: 'DELETE',
     }).then((response) => {
       console.log('responseaa', response)
@@ -108,7 +108,7 @@ export const deleteProduct = (header, ProductId) => async dispatch => {
 export const editProduct = (header, params) => async dispatch => {
   console.log('editProduct', params)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuvt/updatevt`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuvt/updatevt`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -160,7 +160,7 @@ export const resetAddProductSucess = () => async dispatch => {
 export const getListProduct = (header, ProductuserId) => async dispatch => {
   try {
 
-    fetch(`https://cc44e5d1.ngrok.io/api/stuvt/getallvt`).then((response) => {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuvt/getallvt`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

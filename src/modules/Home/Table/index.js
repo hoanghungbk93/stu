@@ -55,7 +55,7 @@ function Requirements(props) {
   useEffect(()=>{
     if(deleteSuccess === true){
       setOpen(true);
-      getListRequirement({}, userInfo.id)
+      getListRequirement({}, userInfo.id, userInfo.bp, userInfo.loai === 'SubAdmin', userInfo.loai === 'admin')
     } else if(deleteSuccess === false){
       setOpen(true);
     }
@@ -75,7 +75,7 @@ function Requirements(props) {
       resetEditRequirementSucess()
       resetApproveSucess()
       resetCancleSucess()
-      getListRequirement({}, userInfo.id)
+      getListRequirement({}, userInfo.id, userInfo.bp, userInfo.loai === 'SubAdmin', userInfo.loai === 'admin')
       setInitial(false)
     }
   }, [initial])

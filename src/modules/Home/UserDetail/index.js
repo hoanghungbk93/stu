@@ -59,7 +59,7 @@ const requirementOptions = [
   'YCX',
   'PNK',
   'YCM',
-  'YXK',
+  'PXK',
 ]
 const useStyles = makeStyles(styles);
 function Alert(props) {

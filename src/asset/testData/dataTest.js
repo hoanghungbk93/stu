@@ -54,7 +54,7 @@ export default {
       productList: "[{id: 1, name: 'bong dien' total: 3, information: manufacture : 'Rang Dong', unit: 'cai', project: 'stu', editNumber: 0, rejectReason: '' }]"
     },
     {
-      code: 'YXK001',
+      code: 'PXK001',
       time: '20-01-2019',
       userName: 'Hung',
       department: 'Mua Hàng',

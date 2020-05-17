@@ -3,7 +3,7 @@ export function getNextStatus(status){
     return 'Duyệt 1'
   }
   if(status === 'Duyệt 1'){
-    return 'Duyệt 2'
+    return 'Đã duyệt'
   }
 
 }

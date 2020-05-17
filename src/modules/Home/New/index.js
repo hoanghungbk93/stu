@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -28,6 +28,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import moment from 'moment'
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
+import readXlsxFile from 'read-excel-file'
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -59,7 +60,7 @@ const requirementOptions = [
   'YCX',
   'PNK',
   'YCM',
-  'YXK',
+  'PXK',
 ]
 const useStyles = makeStyles(styles);
 function Alert(props) {
@@ -90,6 +91,7 @@ function RequirementAdd(props) {
   const [project, setProject] = useState('')
   const dateFormat = "DD-MM-YYYY"
   const [selectedDate, setSelectedDate] = useState(moment().format(dateFormat))
+  const inputFile = useRef(null) 
   // console.log('moment().format(dateFormat)', moment().format(dateFormat))
   const handleDateChange = date => {
     setSelectedDate(date);
@@ -119,6 +121,21 @@ function RequirementAdd(props) {
   useEffect(() => {
     if (addRequirementSuccess !== null) {
       setOpen(true);
+      // if(addRequirementSuccess === true){
+      //   console.log('moment(needTime)', moment(needTime).format('YYYY-MM-DDTHH:MM:SS'))
+      //   const params = Object.assign({}, Model, {
+      //     "myc": 'YCM' + requirementName,
+      //     "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
+      //     "tuseryc": authen.userInfo.name,
+      //     "bpyc": department,
+      //     "dayc": project,
+      //     "lvtyc": `${JSON.stringify([])}`,
+      //     "statusyc": "Chờ duyệt",
+      //     "iduseryc": authen.userInfo.id,
+      //     "refmyc": requirementType + requirementName
+      //   })
+      //   addRequirement(header, params)
+      // }
     }
   }, [addRequirementSuccess])
   const handleClose = (event, reason) => {
@@ -138,7 +155,8 @@ function RequirementAdd(props) {
   function deleteSelectedIndex(index) {
     console.log('deleteSelectedIndex', index)
     console.log('deleteSelectedIndex', requirementList)
-    setRequirementList(requirementList.length === 1 ? [] : requirementList.slice(index))
+    console.log('deleteSelectedIndex', requirementList.slice(index))
+    setRequirementList(requirementList.length === 1 ? [] : requirementList.filter((e, i) => i !== index))
   }
   function renderModal() {
     return (
@@ -411,6 +429,13 @@ function RequirementAdd(props) {
                 // setRequirementList(requirementList.slice().push(newProduct))
               }}>{'Thêm vật tư'}</Button>
             </CardFooter>
+            <CardFooter>
+              <Button color="primary" onClick={() => {
+                  // `current` points to the mounted file input element
+                inputFile.current.click();
+                // setRequirementList(requirementList.slice().push(newProduct))
+              }}>{'Thêm vật tư từ file'}</Button>
+            </CardFooter>
           </Card>
         </GridItem>
       </GridContainer>
@@ -446,6 +471,30 @@ function RequirementAdd(props) {
         })
         addRequirement(header, params)
       }}>Lưu</Button>
+      <Button color="primary" onClick={() => {
+        // history.push('/admin/pdf')
+      }}>Xuất Excel</Button>
+      <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={(evnet)=>{
+        console.log('evnet', evnet.target.files[0])
+        readXlsxFile(evnet.target.files[0]).then((rows) => {
+          console.log('rows', rows)
+          const listProduct = rows.filter((e, i) => i > 0).map(e => {
+            return {
+            tvt: e[1],
+            mvt: e[0],
+            ts: e[6],
+            hsx: e[3],
+            dv: e[4],
+            sl: Number(e[5]),
+            ncc: e[2]
+
+          }
+          })
+          setRequirementList(requirementList.concat(listProduct))
+        // `rows` is an array of rows
+        // each row being an array of cells.
+        })
+      }}/>
       {renderModal()}
     </div>
   );

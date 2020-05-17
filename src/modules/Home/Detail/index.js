@@ -51,7 +51,7 @@ const useStyles = makeStyles(styles);
 
 function Detail(props) {
   const classes = useStyles();
-  const {location, history, match, requirement, authen} = props
+  const {location, history, match, requirement, authen, approve, cancel} = props
   const {listRequirement} = requirement
   const requirementtInfo= listRequirement[match.params.id-1]
   console.log('requirementtInfo', requirementtInfo)
@@ -106,14 +106,17 @@ function Detail(props) {
           newRequirement.statusyc = getNextStatus(requirementtInfo.statusyc)
           approve({}, newRequirement)
         }}
+        disabled={requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin' ||
+            requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
+          }
         >Duyệt</Button>
         <Button 
           disabled={requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin' ||
-            requirementtInfo.statusyc === 'Duyệt 2' && authen.userInfo.loai === 'admin'
+            requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
           }
         color="primary" onClick={() => {
           const newRequirement = requirementtInfo
-          newRequirement.statusyc = 'Từ chối'
+          newRequirement.statusyc = 'Yêu cầu huỷ'
           cancel({}, newRequirement)
         }}
         >Từ chối</Button>

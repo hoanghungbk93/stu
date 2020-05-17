@@ -27,8 +27,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
+import firebase from 'firebase';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import { askForPermissioToReceiveNotifications } from '../../../pushNotification';
+
 const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -78,11 +80,18 @@ function SignIn(props) {
   }, [isLogined])
   useEffect(()=>{
     askForPermissioToReceiveNotifications()
+    const messaging = firebase.messaging()
+    navigator.serviceWorker.addEventListener("message", (message) => console.log('onNotification', message));
+    messaging.onMessage((payload) => {
+      console.log('Message received. ', payload);
+      // ...
+    });
+
   },[])
-  // if (isLogined === true) {
+  if (isLogined === true) {
     
-  //   return <Redirect to={from} />
-  // }
+    return <Redirect to={from} />
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -145,6 +154,7 @@ function SignIn(props) {
       {isLoading && <Instagram></Instagram>}
     </Container>
   );
+ 
 }
 const mapStateToProps = state => ({
   authen: state.authen

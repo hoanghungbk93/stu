@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.js": "/stu/static/js/main.56512964.chunk.js",
-    "main.js.map": "/stu/static/js/main.56512964.chunk.js.map",
-    "runtime-main.js": "/stu/static/js/runtime-main.efc6fbfe.js",
-    "runtime-main.js.map": "/stu/static/js/runtime-main.efc6fbfe.js.map",
-    "static/css/2.d0176e96.chunk.css": "/stu/static/css/2.d0176e96.chunk.css",
-    "static/js/2.3d823bb3.chunk.js": "/stu/static/js/2.3d823bb3.chunk.js",
-    "static/js/2.3d823bb3.chunk.js.map": "/stu/static/js/2.3d823bb3.chunk.js.map",
-    "index.html": "/stu/index.html",
-    "precache-manifest.0f8ab70536168f0d41adfa0c488d34eb.js": "/stu/precache-manifest.0f8ab70536168f0d41adfa0c488d34eb.js",
-    "service-worker.js": "/stu/service-worker.js",
-    "static/css/2.d0176e96.chunk.css.map": "/stu/static/css/2.d0176e96.chunk.css.map",
-    "static/js/2.3d823bb3.chunk.js.LICENSE.txt": "/stu/static/js/2.3d823bb3.chunk.js.LICENSE.txt",
-    "static/media/sidebar-2.jpg": "/stu/static/media/sidebar-2.310509c9.jpg",
-    "static/media/stuLogo.png": "/stu/static/media/stuLogo.9a30e651.png"
+    "main.js": "/static/js/main.c2e87983.chunk.js",
+    "main.js.map": "/static/js/main.c2e87983.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.31d66896.js",
+    "runtime-main.js.map": "/static/js/runtime-main.31d66896.js.map",
+    "static/css/2.d0176e96.chunk.css": "/static/css/2.d0176e96.chunk.css",
+    "static/js/2.548165a4.chunk.js": "/static/js/2.548165a4.chunk.js",
+    "static/js/2.548165a4.chunk.js.map": "/static/js/2.548165a4.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.927f15320647a1d90f55d6d295d46fcf.js": "/precache-manifest.927f15320647a1d90f55d6d295d46fcf.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.d0176e96.chunk.css.map": "/static/css/2.d0176e96.chunk.css.map",
+    "static/js/2.548165a4.chunk.js.LICENSE.txt": "/static/js/2.548165a4.chunk.js.LICENSE.txt",
+    "static/media/sidebar-2.jpg": "/static/media/sidebar-2.310509c9.jpg",
+    "static/media/stuLogo.png": "/static/media/stuLogo.9a30e651.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.efc6fbfe.js",
+    "static/js/runtime-main.31d66896.js",
     "static/css/2.d0176e96.chunk.css",
-    "static/js/2.3d823bb3.chunk.js",
-    "static/js/main.56512964.chunk.js"
+    "static/js/2.548165a4.chunk.js",
+    "static/js/main.c2e87983.chunk.js"
   ]
 }

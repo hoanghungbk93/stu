@@ -29,7 +29,7 @@ function Users(props) {
   const history = useHistory()
   const classes = useStyles();
   const [initial, setInitial] = useState(true)
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [first, setFirst] = useState(false)
 
   useEffect(()=>{
@@ -52,6 +52,7 @@ function Users(props) {
     if(initial){
       resetAddUserSucess()
       resetEditUserSucess()
+      resetDeleteUserSuccess()
       getListUser()
       setInitial(false)
     }

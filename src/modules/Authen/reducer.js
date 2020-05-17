@@ -6,7 +6,7 @@ import Model from './model'
 // import { Authen } from '../../api'
 // import TokenStore from 'utils/TokenStore'
 // import Helpers from 'utils/Helpers'
-
+import {resetListRequirement} from '../Home/reducer.js'
 import {
   LOADING,
   setLoading,
@@ -38,7 +38,7 @@ export const login = (header, param) => async dispatch => {
 
   try {
 
-    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
@@ -69,10 +69,11 @@ export const login = (header, param) => async dispatch => {
 export const logout = (history) => async dispatch => {
   dispatch(setLogin(null))
   dispatch(setUserInfo(null))
+  dispatch(resetListRequirement())
   history.push('/')
   // try {
 
-  //   fetch(`https://cc44e5d1.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+  //   fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
   //     if (!response.ok) throw new Error(response.status);
   //     else return response.json();
   //   }).then((myJson) => {

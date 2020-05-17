@@ -36,7 +36,7 @@ const initialState = Model(null)
 export const addUser = (header, params) => async dispatch => {
   console.log('editUser params', params)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/adduser`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/adduser`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -75,7 +75,7 @@ export const addUser = (header, params) => async dispatch => {
 export const deleteUser = (header, userId) => async dispatch => {
   console.log('deleteUser ', userId)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/deleteuser/?id=${userId}`,{
       method: 'DELETE',
     }).then((response) => {
       console.log('responseaa', response)
@@ -108,7 +108,7 @@ export const deleteUser = (header, userId) => async dispatch => {
 }
 export const editUser = (header, params) => async dispatch => {
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/updateuser`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/updateuser`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -165,7 +165,7 @@ export const getListUser = (header, userId) => async dispatch => {
   // }
   try {
 
-    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/getalluser`).then((response) => {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/getalluser`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

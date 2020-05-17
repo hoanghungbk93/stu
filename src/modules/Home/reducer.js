@@ -42,7 +42,7 @@ export const addRequirement = (header, params) => async dispatch => {
   console.log('addRequirement params', params)
   try {
     console.log('addRequirement params', params)
-    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/addyc`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/addyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -81,7 +81,7 @@ export const addRequirement = (header, params) => async dispatch => {
 export const deleteRequirement = (header, requirementId) => async dispatch => {
   console.log('deleteRequirement ', requirementId)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
       method: 'DELETE',
     }).then((response) => {
       console.log('responseaa', response)
@@ -114,7 +114,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
 }
 export const editRequirement = (header, params) => async dispatch => {
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -173,20 +173,33 @@ export const resetCancleSucess = () => async dispatch => {
   dispatch(setCancelSuccess(null))
 
 }
-export const getListRequirement = (header, userId) => async dispatch => {
+
+export const resetListRequirement = () => async dispatch => {
+
+  dispatch(setListRequirement([]))
+
+}
+export const getListRequirement = (header, userId, department, isSubAdmin, isAdmin) => async dispatch => {
   // const response = await UserApi.get('/api/stuuser');
-  // console.log('getListUser response', response)
+  // console.log('getListUser response', response)getallyc
   // if(response){
   //   dispatch(setListUser(response))
+  const apiLink = isAdmin ? `https://a8ecd4d7.ngrok.io/api/stuyc/getallyc` : isSubAdmin ? `https://a8ecd4d7.ngrok.io/api/stuyc/getbybpyc?_bpyc=${department}` : `https://a8ecd4d7.ngrok.io/api/stuyc/getbyiduseryc?_iduseryc=${userId}`
   // }
+  console.log('apiLink', apiLink)
+  console.log('isAdmin', isAdmin)
+  console.log('isSubAdmin', isSubAdmin)
   try {
 
-    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/getallyc?_iduseryc=${userId}`).then((response) => {
+    fetch(apiLink).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
+      console.log('response getListRequirement', myJson)
       if (myJson[0]) {
-        dispatch(setListRequirement(myJson))
+        const temp = isAdmin ? myJson.filter(e => e.statusyc.trim() === 'Duyệt 1' || e.statusyc.trim() === 'Đã duyệt' || e.iduseryc === userId)  : 
+        isSubAdmin ? myJson.filter(e => e.statusyc.trim() === 'Chờ duyệt' || e.statusyc.trim() === 'Duyệt 1') : myJson
+        dispatch(setListRequirement(temp))
         dispatch(setLoading(false))
       } else {
         dispatch(setLoading(false))
@@ -210,7 +223,7 @@ export const getListRequirement = (header, userId) => async dispatch => {
 export const approve = (header, params) => async dispatch => {
   console.log('setApproveSuccess params', params)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -248,13 +261,12 @@ export const approve = (header, params) => async dispatch => {
 export const cancel = (header, params) => async dispatch => {
   console.log('setCancelSuccess params', params)
   try {
-    fetch(`https://cc44e5d1.ngrok.io/api/stuuser/updateyc`, {
-      method: 'POST',
+    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/updateyc`, {
+      method: 'PUT',
       body: JSON.stringify(params),
       headers: {
         "Content-Type": 'application/json'
       },
-      crossDomain: true
     }).then((response) => {
       console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);

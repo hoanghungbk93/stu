@@ -99,11 +99,11 @@ function Requirements(props) {
               <Table
                 userType={userInfo.loai}
                 tableHeaderColor="primary"
-              tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
+              tableHead={["TT", "Số tài liệu", "Tham chiếu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
               tableData={listRequirement.map((e, i)=>{
                 let tempArr= [`${i+1}`]
                 Object.keys(e).forEach((key, index) =>{
-                  if(index > 0 && index<8)
+                  if(index > 0 && index<9)
                   tempArr.push(e[key])
                 })
                 return tempArr

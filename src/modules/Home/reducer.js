@@ -56,16 +56,16 @@ export const addRequirement = (header, params) => async dispatch => {
     }).then((myJson) => {
       console.log('myJson', myJson)
       if (myJson) {
-        dispatch(setAddRequirementSuccess(true))
+        dispatch(setAddRequirementSuccess({success : true, listProduct : myJson._listvt}))
         dispatch(setLoading(false))
       } else {
-        dispatch(setAddRequirementSuccess(false))
+        dispatch(setAddRequirementSuccess({success : false, listProduct : []}))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err => {
-        dispatch(setAddRequirementSuccess(false))
+        dispatch(setAddRequirementSuccess({success : false, listProduct : []}))
         dispatch(setLoading(false))
         console.log('errr', err)
       }
@@ -73,7 +73,7 @@ export const addRequirement = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setAddRequirementSuccess(false))
+    dispatch(setAddRequirementSuccess({success : false, listProduct : []}))
     dispatch(setLoading(false))
     console.log('err', err)
   }
@@ -159,7 +159,7 @@ export const resetDeleteRequirementSuccess = () => async dispatch => {
 }
 export const resetAddRequirementSucess = () => async dispatch => {
 
-  dispatch(setAddRequirementSuccess(null))
+  dispatch(setAddRequirementSuccess({success : null, listProduct : []}))
 
 }
 
@@ -253,7 +253,7 @@ export const approve = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setAddRequirementSuccess(false))
+    dispatch(setApproveSuccess(false))
     dispatch(setLoading(false))
     console.log('err', err)
   }

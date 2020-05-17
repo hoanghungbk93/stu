@@ -57,7 +57,7 @@ const styles = {
   },
 };
 const requirementOptions = [
-  'YCX',
+  'YXK',
   'PNK',
   'YCM',
   'PXK',
@@ -87,7 +87,7 @@ function RequirementAdd(props) {
   const [currentInformation, setCurrentInformation] = useState('')
   const [currentUnit, setCurrentUnit] = useState('')
   const [currentManufacture, setCurrentManufacture] = useState('')
-  const [requirementType, setRequirementType] = useState('YCX')
+  const [requirementType, setRequirementType] = useState('YXK')
   const [project, setProject] = useState('')
   const dateFormat = "DD-MM-YYYY"
   const [selectedDate, setSelectedDate] = useState(moment().format(dateFormat))
@@ -119,23 +119,23 @@ function RequirementAdd(props) {
   }, [currentProductIndex])
 
   useEffect(() => {
-    if (addRequirementSuccess !== null) {
+    if (addRequirementSuccess && addRequirementSuccess.success !== null) {
+      console.log('================')
       setOpen(true);
-      // if(addRequirementSuccess === true){
-      //   console.log('moment(needTime)', moment(needTime).format('YYYY-MM-DDTHH:MM:SS'))
-      //   const params = Object.assign({}, Model, {
-      //     "myc": 'YCM' + requirementName,
-      //     "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
-      //     "tuseryc": authen.userInfo.name,
-      //     "bpyc": department,
-      //     "dayc": project,
-      //     "lvtyc": `${JSON.stringify([])}`,
-      //     "statusyc": "Chờ duyệt",
-      //     "iduseryc": authen.userInfo.id,
-      //     "refmyc": requirementType + requirementName
-      //   })
-      //   addRequirement(header, params)
-      // }
+      if(addRequirementSuccess.success === true && addRequirementSuccess.listProduct && addRequirementSuccess.listProduct.length > 0){
+        const params = Object.assign({}, Model, {
+          "myc": 'YCM' + requirementName,
+          "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
+          "tuseryc": authen.userInfo.name,
+          "bpyc": department,
+          "dayc": project,
+          "lvtyc": `${JSON.stringify(addRequirementSuccess.listProduct)}`,
+          "statusyc": "Chờ duyệt",
+          "iduseryc": authen.userInfo.id,
+          "refmyc": requirementType + requirementName
+        })
+        addRequirement(header, params)
+      }
     }
   }, [addRequirementSuccess])
   const handleClose = (event, reason) => {
@@ -324,8 +324,8 @@ function RequirementAdd(props) {
   return (
     <div>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={addRequirementSuccess === true ? "success" : "error"}>
-          {addRequirementSuccess === true ? `Thêm yêu cầu thành công!` : `Thêm yêu cầu thất bại!`}
+        <Alert onClose={handleClose} severity={addRequirementSuccess && addRequirementSuccess.success === true ? "success" : "error"}>
+          {addRequirementSuccess && addRequirementSuccess.success === true ? `Thêm yêu cầu thành công!` : `Thêm yêu cầu thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -458,7 +458,7 @@ function RequirementAdd(props) {
         deleteSelectedIndex={deleteSelectedIndex}
       ></List>
       <Button color="primary" onClick={() => {
-        console.log('moment(needTime)', moment(needTime).format('YYYY-MM-DDTHH:MM:SS'))
+        console.log('moment(selectedDate)', moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'))
         const params = Object.assign({}, Model, {
           "myc": requirementType + requirementName,
           "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
@@ -480,8 +480,8 @@ function RequirementAdd(props) {
           console.log('rows', rows)
           const listProduct = rows.filter((e, i) => i > 0).map(e => {
             return {
-            tvt: e[1],
             mvt: e[0],
+            tvt: e[1],
             ts: e[6],
             hsx: e[3],
             dv: e[4],

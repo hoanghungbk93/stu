@@ -85,7 +85,7 @@ function AdminNavbarLinks(props) {
           <p className={classes.linkText}>Dashboard</p>
         </Hidden>
       </Button> */}
-      <div className={classes.manager}>
+      {/* <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
           justIcon={window.innerWidth > 959}
@@ -162,7 +162,7 @@ function AdminNavbarLinks(props) {
             </Grow>
           )}
         </Poppers>
-      </div>
+      </div> */}
       <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -201,7 +201,7 @@ function AdminNavbarLinks(props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    <MenuItem
+                    {/* <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
@@ -212,7 +212,7 @@ function AdminNavbarLinks(props) {
                       className={classes.dropdownItem}
                     >
                       Settings
-                    </MenuItem>
+                    </MenuItem> */}
                     <Divider light />
                     <MenuItem
                       onClick={handleLogout}

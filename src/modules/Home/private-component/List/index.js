@@ -69,7 +69,7 @@ export default function CustomTable(props) {
                 {prop.map((e, key) => {
                   return (
                     <TableCell className={classes.tableCell} key={key} >
-                      {key === 2 ? moment(e).format('DD-MM-YYYY') : e}
+                      {key === 3 ? moment(e).format('DD-MM-YYYY') : e}
                     </TableCell>
                   );
                 })}

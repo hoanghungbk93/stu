@@ -3,7 +3,7 @@ import { pathOr, construct, assocPath, isNil, isEmpty, or } from 'ramda'
 
 function Authen(record) {
   this.isLoading = pathOr(false, ['isLoading'], record)
-  this.addRequirementSuccess = pathOr(null, ['addRequirementSuccess'], record)
+  this.addRequirementSuccess = pathOr({success : null, listProduct : []}, ['addRequirementSuccess'], record)
   this.editRequirementSuccess = pathOr(null, ['editRequirementSuccess'], record)
   this.deleteSuccess = pathOr(null, ['deleteSuccess'], record)
   this.listRequirement = pathOr([], ['listRequirement'], record)

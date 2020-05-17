@@ -56,7 +56,7 @@ const styles = {
   },
 };
 const requirementOptions = [
-  'YCX',
+  'YXK',
   'PNK',
   'YCM',
   'PXK',
@@ -123,7 +123,7 @@ function RequirementAdd(props) {
   }, [currentProductIndex])
 
   useEffect(() => {
-    if (addRequirementSuccess !== null) {
+    if (addRequirementSuccess && addRequirementSuccess.success !== null) {
       setOpen(true);
     }
   }, [addRequirementSuccess])
@@ -313,8 +313,8 @@ function RequirementAdd(props) {
   return (
     <div>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={addRequirementSuccess === true ? "success" : "error"}>
-          {addRequirementSuccess === true ? `Thêm yêu cầu thành công!` : `Thêm yêu cầu thất bại!`}
+        <Alert onClose={handleClose} severity={addRequirementSuccess && addRequirementSuccess.success === true ? "success" : "error"}>
+          {addRequirementSuccess && addRequirementSuccess.success === true ? `Thêm yêu cầu thành công!` : `Thêm yêu cầu thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>

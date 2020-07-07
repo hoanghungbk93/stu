@@ -19,30 +19,6 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 
 const {store, persistor} = configureStore()
-// const switchRoutes = (
-//   <Switch>
-//     {routes.map((prop, index) => {
-//         return (
-//           <Route
-//             path={prop.path}
-//             component={prop.component}
-//             key={index}
-//           />
-//         );
-//       }
-//     )}
-//   </Switch>
-// );
-// if ("serviceWorker" in navigator) {
-//   navigator.serviceWorker
-//     .register("./firebase-messaging-sw.js")
-//     .then(function(registration) {
-//       console.log("Registration successful, scope is:", registration.scope);
-//     })
-//     .catch(function(err) {
-//       console.log("Service worker registration failed, error:", err);
-//     });
-// }
 function Stack(props) {
   console.log('process.env.PUBLIC_URL2', process.env.PUBLIC_URL)
   return (

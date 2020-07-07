@@ -35,7 +35,7 @@ const initialState = Model(null)
 export const addProject = (header, params) => async dispatch => {
   console.log('addProject params', params)
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/studa/addnewda`, {
+    fetch(`https://api.stu.vn/api/studa/addnewda`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -74,7 +74,7 @@ export const addProject = (header, params) => async dispatch => {
 export const deleteProject = (header, projectId) => async dispatch => {
   console.log('deleteProject ', projectId)
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/studa/deleteda/?id=${projectId}`,{
+    fetch(`https://api.stu.vn/api/studa/deleteda/?id=${projectId}`,{
       method: 'DELETE',
     }).then((response) => {
       console.log('responseaa', response)
@@ -107,7 +107,7 @@ export const deleteProject = (header, projectId) => async dispatch => {
 }
 export const editProject = (header, params) => async dispatch => {
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/studa/updateda`, {
+    fetch(`https://api.stu.vn/api/studa/updateda`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -159,7 +159,7 @@ export const resetAddProjectSucess = () => async dispatch => {
 export const getListProject = (header, projectuserId) => async dispatch => {
   try {
 
-    fetch(`https://a8ecd4d7.ngrok.io/api/studa/getallda`).then((response) => {
+    fetch(`https://api.stu.vn/api/studa/getallda`).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {

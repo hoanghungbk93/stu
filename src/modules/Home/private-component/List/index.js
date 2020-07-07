@@ -20,7 +20,7 @@ export default function CustomTable(props) {
   const [selectedId, setSelectedId] = useState(-1)
   const [openDialog, setOpenDialog] = React.useState(false);
   const { location, userType} = props
-  console.log('location TableList', location)
+  // console.log('location TableList', location)
   return (
     <div className={classes.tableResponsive}>
       <AlertDialogSlide
@@ -51,11 +51,13 @@ export default function CustomTable(props) {
               <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
                 // resetDeleteRequirementSuccess()
                 console.log('location prop[0]', prop[0])
-                if(userType === 'SubAdmin' || userType === 'admin'){
-                  history.push(`/admin/editRequirement/${prop[0]}`, { order: prop[0] })
+                console.log('location prop[7]', prop[7])
+                console.log('location prop', prop)
+                if(userType === 'SubAdmin' && prop[8] === 'Chờ duyệt' || userType === 'admin' && prop[8] === 'Duyệt 1'){
+                  history.push(`/admin/editRequirement/${prop[1]}`, { order: prop[1] })
                 }
                 else{
-                  history.push(`/admin/detailRequirement/${prop[0]}`, { order: prop[0] })
+                  history.push(`/admin/detailRequirement/${prop[1]}`, { order: prop[1] })
                 }
               }}
                 hover

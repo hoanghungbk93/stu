@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef, useEffect} from "react";
 import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -23,15 +23,38 @@ import styles from "../../assets/jss/material-dashboard-react/components/headerL
 import {useHistory} from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { InfiniteLoader, List,  } from 'react-virtualized';
 const useStyles = makeStyles(styles);
+function useOutsideAlerter(ref, setOpenNotification) {
+  useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+          if (ref.current && !ref.current.contains(event.target)) {
+            setOpenNotification(null)
+          }
+      }
 
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+          // Unbind the event listener on clean up
+          document.removeEventListener("mousedown", handleClickOutside);
+      };
+  }, [ref]);
+}
 function AdminNavbarLinks(props) {
-  const {logout} = props
+  const {logout, totalNoti, listNoti, setListNoti, authen} = props
   const history = useHistory()
-  console.log('AdminNavbarLinks', history)
+  const wrapperRef = useRef(null);
+    
+  // console.log('AdminNavbarLinks', history)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
+  useOutsideAlerter(wrapperRef, setOpenNotification);
   const [openProfile, setOpenProfile] = React.useState(null);
+  // const [listNoti, setListNoti] = useState([])
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -39,10 +62,51 @@ function AdminNavbarLinks(props) {
       setOpenNotification(event.currentTarget);
     }
   };
-  const handleCloseNotification = () => {
+  const handleCloseNotification = (index) => {
     setOpenNotification(null);
+    try {
+      const params = {
+        "id_tb":listNoti[index].id_tb,
+          "id_yc": listNoti[index].id_yc,
+          "ma_yc": listNoti[index].ma_yc,
+          "noi_dung": listNoti[index].noi_dung,
+          "tt_tb": "readed",
+          "userid": listNoti[index].userid,
+      }
+      fetch(`https://api.stu.vn/api/stutb/updatetb`, {
+        method: 'PUT',
+        body: JSON.stringify(params),
+        headers: {
+          "Content-Type": 'application/json'
+        },
+      }).then((response) => {
+        console.log('responseaa', response)
+        if (!response.ok) throw new Error(response.status);
+        else return response.json();
+      }).then((myJson) => {
+        console.log('myJson', myJson)
+        
+      }).catch(
+        err => {
+          
+          console.log('errr', err)
+        }
+      )
+      // if(data[0].sta)
+      // dispatch(setLoading(true))
+    } catch (err) {
+      
+      console.log('err', err)
+    }
+    if(authen.userInfo.loai === 'SubAdmin' || authen.userInfo.loai === 'admin'){
+      history.push(`/admin/editRequirement/${listNoti[index].ma_yc}`,)
+    }
+    else{
+      history.push(`/admin/detailRequirement/${listNoti[index].ma_yc}`)
+    }
   };
   const handleClickProfile = event => {
+    setOpenNotification(null);
     if (openProfile && openProfile.contains(event.target)) {
       setOpenProfile(null);
     } else {
@@ -55,37 +119,37 @@ function AdminNavbarLinks(props) {
   const handleLogout = () => {
     logout(history);
   };
+  function loadMoreRows ({ startIndex, stopIndex }) {
+    // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
+    //   .then(response => {
+    //     // Store response data in list...
+    //   })
+    console.log('hihi')
+    // let temp = listNoti.slice()
+    // temp.concat(['Hung','HUNGj'])
+    // setListNoti(temp)
+  }
+  function rowRenderer({ key, index, style}){
+    return(
+      <MenuItem
+      onClick={() => handleCloseNotification(index)}
+      className={classes.dropdownItem}
+      style={{backgroundColor: listNoti[index].tt_tb === 'unread' ? 
+      'grey' : 'red', borderBottomWidth: '2', borderBottomColor : 'white',
+      marginBottom: 2
+      }}
+      
+    >
+      {listNoti[index].noi_dung + '-' +listNoti[index].ma_yc}
+    </MenuItem>
+    )
+  }
+  const isRowLoaded = ({index}) => index < listNoti.length;
   return (
-    <div>
-      {/* <div className={classes.searchWrapper}> */}
-        {/* <CustomInput
-          formControlProps={{
-            className: classes.margin + " " + classes.search
-          }}
-          inputProps={{
-            placeholder: "Search",
-            inputProps: {
-              "aria-label": "Search"
-            }
-          }}
-        />
-        <Button color="white" aria-label="edit" justIcon round>
-          <Search />
-        </Button>
-      </div>
-      <Button
-        color={window.innerWidth > 959 ? "transparent" : "white"}
-        justIcon={window.innerWidth > 959}
-        simple={!(window.innerWidth > 959)}
-        aria-label="Dashboard"
-        className={classes.buttonLink}
-      >
-        <Dashboard className={classes.icons} />
-        <Hidden mdUp implementation="css">
-          <p className={classes.linkText}>Dashboard</p>
-        </Hidden>
-      </Button> */}
-      {/* <div className={classes.manager}>
+    <div style={{width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}
+      
+    >
+      <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
           justIcon={window.innerWidth > 959}
@@ -96,7 +160,7 @@ function AdminNavbarLinks(props) {
           className={classes.buttonLink}
         >
           <Notifications className={classes.icons} />
-          <span className={classes.notifications}>5</span>
+          {totalNoti > 0 ? <span className={classes.notifications}>{totalNoti} </span> : null}
           <Hidden mdUp implementation="css">
             <p onClick={handleCloseNotification} className={classes.linkText}>
               Notification
@@ -123,46 +187,34 @@ function AdminNavbarLinks(props) {
                   placement === "bottom" ? "center top" : "center bottom"
               }}
             >
-              <Paper>
-                <ClickAwayListener onClickAway={handleCloseNotification}>
-                  <MenuList role="menu">
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Mike John responded to your email
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      You have 5 new tasks
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      You{"'"}re now friend with Andrew
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Another Notification
-                    </MenuItem>
-                    <MenuItem
-                      onClick={handleCloseNotification}
-                      className={classes.dropdownItem}
-                    >
-                      Another One
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
+            <div ref={wrapperRef}>
+              {listNoti.length > 0 && <Paper>
+                {/* <ClickAwayListener onClickAway={handleCloseNotification}> */}
+                <InfiniteLoader
+                  isRowLoaded={isRowLoaded}
+                  loadMoreRows={loadMoreRows}
+                  rowCount={listNoti.length}
+                >
+                  {({ onRowsRendered, registerChild }) => (
+                    <List
+                      height={500}
+                      onRowsRendered={onRowsRendered}
+                      ref={registerChild}
+                      rowCount={listNoti.length}
+                      rowHeight={50}
+                      rowRenderer={rowRenderer}
+                      width={500}
+                    />
+                  )}
+
+                </InfiniteLoader>
+                {/* </ClickAwayListener> */}
+              </Paper>}
+              </div>
             </Grow>
           )}
         </Poppers>
-      </div> */}
+      </div>
       <div className={classes.manager}>
         <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -174,9 +226,9 @@ function AdminNavbarLinks(props) {
           className={classes.buttonLink}
         >
           <Person className={classes.icons} />
-          <Hidden mdUp implementation="css">
+          {/* <Hidden mdUp implementation="css">
             <p className={classes.linkText}>Profile</p>
-          </Hidden>
+          </Hidden> */}
         </Button>
         <Poppers
           open={Boolean(openProfile)}
@@ -201,19 +253,13 @@ function AdminNavbarLinks(props) {
               <Paper>
                 <ClickAwayListener onClickAway={handleCloseProfile}>
                   <MenuList role="menu">
-                    {/* <MenuItem
-                      onClick={handleCloseProfile}
-                      className={classes.dropdownItem}
-                    >
-                      Profile
-                    </MenuItem>
                     <MenuItem
                       onClick={handleCloseProfile}
                       className={classes.dropdownItem}
                     >
-                      Settings
-                    </MenuItem> */}
-                    <Divider light />
+                      {authen.userInfo.name}
+                    </MenuItem>
+                    
                     <MenuItem
                       onClick={handleLogout}
                       className={classes.dropdownItem}

@@ -23,17 +23,18 @@ import Model from '../../../utils/Model'
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
 import InputLabel from '@material-ui/core/InputLabel';
 import moment from 'moment'
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import readXlsxFile from 'read-excel-file'
+import FormControl from '@material-ui/core/FormControl';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
-const styles = {
+const styles = (theme) => ({
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
     margin: "0",
@@ -55,13 +56,12 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none"
   },
-};
-const requirementOptions = [
-  'YXK',
-  'PNK',
-  'YCM',
-  'PXK',
-]
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+})
+
 const useStyles = makeStyles(styles);
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -69,6 +69,14 @@ function Alert(props) {
 function RequirementAdd(props) {
   const classes = useStyles();
   const { history, authen, requirement, addRequirement } = props
+  const requirementOptions = authen.userInfo.bp === 'Mua Hang' ? [
+    'YCM',
+  ] : authen.userInfo.bp === 'Kho' ? [
+    'PNK',
+    'PXK',
+  ] :  [
+    'YVT',
+  ] 
   const { addRequirementSuccess } = requirement
   const [requirementName, setRequirementName] = useState('')
   const [password, setPassword] = useState('')
@@ -87,14 +95,16 @@ function RequirementAdd(props) {
   const [currentInformation, setCurrentInformation] = useState('')
   const [currentUnit, setCurrentUnit] = useState('')
   const [currentManufacture, setCurrentManufacture] = useState('')
-  const [requirementType, setRequirementType] = useState('YXK')
+  const [requirementType, setRequirementType] = useState(requirementOptions[0])
   const [project, setProject] = useState('')
   const dateFormat = "DD-MM-YYYY"
   const [selectedDate, setSelectedDate] = useState(moment().format(dateFormat))
   const inputFile = useRef(null) 
-  // console.log('moment().format(dateFormat)', moment().format(dateFormat))
+  console.log('selectedDate', selectedDate)
   const handleDateChange = date => {
-    setSelectedDate(date);
+    console.log('date', date)
+    // setSelectedDate(moment(date).format(dateFormat));
+    setSelectedDate(moment(date).format(dateFormat));
   };
   function resetState() {
     setCurrentProductName('')
@@ -120,22 +130,22 @@ function RequirementAdd(props) {
 
   useEffect(() => {
     if (addRequirementSuccess && addRequirementSuccess.success !== null) {
-      console.log('================')
+      console.log('================', moment(selectedDate).format('YYYY-MM-DD'))
       setOpen(true);
-      if(addRequirementSuccess.success === true && addRequirementSuccess.listProduct && addRequirementSuccess.listProduct.length > 0){
-        const params = Object.assign({}, Model, {
-          "myc": 'YCM' + requirementName,
-          "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
-          "tuseryc": authen.userInfo.name,
-          "bpyc": department,
-          "dayc": project,
-          "lvtyc": `${JSON.stringify(addRequirementSuccess.listProduct)}`,
-          "statusyc": "Chờ duyệt",
-          "iduseryc": authen.userInfo.id,
-          "refmyc": requirementType + requirementName
-        })
-        addRequirement(header, params)
-      }
+      // if(addRequirementSuccess.success === true && addRequirementSuccess.listProduct && addRequirementSuccess.listProduct.length > 0){
+      //   const params = Object.assign({}, Model, {
+      //     "myc": 'YCM' + requirementName,
+      //     "nyc": moment(selectedDate).format('YYYY-MM-DD'),
+      //     "tuseryc": authen.userInfo.name,
+      //     "bpyc": department,
+      //     "dayc": project,
+      //     "lvtyc": `${JSON.stringify(addRequirementSuccess.listProduct)}`,
+      //     "statusyc": "Chờ duyệt",
+      //     "iduseryc": authen.userInfo.id,
+      //     "refmyc": requirementType + requirementName
+      //   })
+      //   addRequirement(header, params)
+      // }
     }
   }, [addRequirementSuccess])
   const handleClose = (event, reason) => {
@@ -172,7 +182,9 @@ function RequirementAdd(props) {
           timeout: 500,
         }}
       >
-        <GridContainer>
+        <GridContainer 
+        justify="center"
+        alignItems="center">
 
           <GridItem xs={12} sm={12} md={12}>
             <Card>
@@ -198,7 +210,7 @@ function RequirementAdd(props) {
                   </GridItem>
                   <GridItem xs={12} sm={12} md={4}>
                     <CustomInput
-                      labelText="Mã vật tư"
+                      labelText="Mã vật tư"
                       id="productCode"
                       formControlProps={{
                         fullWidth: true
@@ -328,7 +340,8 @@ function RequirementAdd(props) {
           {addRequirementSuccess && addRequirementSuccess.success === true ? `Thêm yêu cầu thành công!` : `Thêm yêu cầu thất bại!`}
         </Alert>
       </Snackbar>
-      <GridContainer>
+      <GridContainer justify="center"
+        alignItems="center">
 
         <GridItem xs={12} sm={12} md={8}>
           <Card>
@@ -337,30 +350,14 @@ function RequirementAdd(props) {
               <p className={classes.cardCategoryWhite}>Hoàn thành thông tin yêu cầu</p>
             </CardHeader>
             <CardBody>
+              {/* <GridContainer>
+                
+              </GridContainer> */}
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <InputLabel id="demo-simple-select-label">Loại YC</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    // labelText="Loại YC"
-                    value={requirementType}
-                    onChange={(event) => {
-                      setRequirementType(event.target.value)
-                    }}
-                  >
-                    {requirementOptions.map((option, index) => (
-                      <MenuItem key={index} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
+              
                 <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
-                    labelText="Tên YC"
+                    labelText="Số YC"
                     id="requirementname"
                     formControlProps={{
                       fullWidth: true
@@ -380,10 +377,10 @@ function RequirementAdd(props) {
                       fullWidth: true
                     }}
                     onChange={(event) => {
-                      setDepartment(event.target.value)
+                      // setDepartment(event.target.value)
                       console.log('Email address', event.target.value)
                     }}
-                    value={department}
+                    value={authen.userInfo.bp}
                   />
                 </GridItem>
                 <GridItem xs={12} sm={12} md={4}>
@@ -402,15 +399,40 @@ function RequirementAdd(props) {
                 </GridItem>
               </GridContainer>
               <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
+                {/* <GridItem xs={12} sm={12} md={4}>
+                  
+                </GridItem> */}
+                <GridItem xs={12} sm={12} md={12}>
+                  <div style={{display:'flex', flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems : 'center'}}>
+                  <FormControl className={classes.formControl}>
+                  <InputLabel htmlFor="uncontrolled-native">Loại YC</InputLabel>
+                  <NativeSelect
+                    defaultValue={requirementOptions[0]}
+                    // value={requirementType}
+                    onChange={(event) => {
+                      setRequirementType(event.target.value)
+                      console.log('hihi', event.target.value)
+                    }}
+                    inputProps={{
+                      name: 'requirementType',
+                      id: 'uncontrolled-native',
+                    }}
+                  >
+                    {requirementOptions.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                  </FormControl>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around">
                       <KeyboardDatePicker
                         format="dd-MM-yyyy"
                         margin="normal"
                         id="date-picker-dialog"
-                        // label="Date picker inline"
-                        value={selectedDate}
+                        label="Ngày cần"
+                        value={moment(selectedDate).format(dateFormat)}
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change date',
@@ -418,10 +440,12 @@ function RequirementAdd(props) {
                       />
                     </Grid>
                   </MuiPickersUtilsProvider>
+                  </div>
+                  
                 </GridItem>
-
               </GridContainer>
             </CardBody>
+            <div style={{display :'flex', flexDirection: 'row', flex: 1, justifyContent: 'space-between'}}>
             <CardFooter>
               <Button color="primary" onClick={() => {
                 setIsAddNew(true)
@@ -436,6 +460,8 @@ function RequirementAdd(props) {
                 // setRequirementList(requirementList.slice().push(newProduct))
               }}>{'Thêm vật tư từ file'}</Button>
             </CardFooter>
+            </div>
+            
           </Card>
         </GridItem>
       </GridContainer>
@@ -458,22 +484,24 @@ function RequirementAdd(props) {
         deleteSelectedIndex={deleteSelectedIndex}
       ></List>
       <Button color="primary" onClick={() => {
-        console.log('moment(selectedDate)', moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'))
+        console.log('================', moment(selectedDate, dateFormat).format('YYYY-MM-DD'))
         const params = Object.assign({}, Model, {
           "myc": requirementType + requirementName,
-          "nyc": moment(selectedDate).format('YYYY-MM-DDTHH:MM:SS'),
+          "nyc": moment(selectedDate, dateFormat).format('YYYY-MM-DD'),
           "tuseryc": authen.userInfo.name,
-          "bpyc": department,
-          "dayc": project,
+          "bpyc": authen.userInfo.bp,
+          "dayc": project ? project : '999999',
           "lvtyc": `${JSON.stringify(requirementList)}`,
           "statusyc": "Chờ duyệt",
           "iduseryc": authen.userInfo.id,
         })
         addRequirement(header, params)
-      }}>Lưu</Button>
-      <Button color="primary" onClick={() => {
+      }}
+      disabled={!requirementName || requirementList.length === 0}
+      >Lưu</Button>
+      {/* <Button color="primary" onClick={() => {
         // history.push('/admin/pdf')
-      }}>Xuất Excel</Button>
+      }}>Xuất Excel</Button> */}
       <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={(evnet)=>{
         console.log('evnet', evnet.target.files[0])
         readXlsxFile(evnet.target.files[0]).then((rows) => {

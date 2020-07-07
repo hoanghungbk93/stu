@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -19,7 +19,10 @@ import styles from "../../../assets/jss/material-dashboard-react/layouts/adminSt
 import bgImage from "../../../assets/img/sidebar-2.jpg";
 import logo from "../../../assets/img/stuLogo.png";
 import checkSinginHOC from '../../../components/CheckSinginHOC'
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import { connect } from 'react-redux'
+import { findRenderedDOMComponentWithTag } from "react-dom/test-utils";
 let ps;
 console.log('routes', routes)
 const switchRoutes = (
@@ -50,6 +53,9 @@ function Admin(props) {
   const [color, setColor] = React.useState("blue");
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [totalNoti, setTotalNoti] = useState(0)
+  
+  const[listNoti, setListNoti] = useState([])
   const handleImageClick = image => {
     setImage(image);
   };
@@ -64,6 +70,7 @@ function Admin(props) {
     }
   };
   const handleDrawerToggle = () => {
+    toast('togle drawer')
     setMobileOpen(!mobileOpen);
   };
   const getRoute = () => {
@@ -92,6 +99,61 @@ function Admin(props) {
       window.removeEventListener("resize", resizeFunction);
     };
   }, [mainPanel]);
+  useEffect(()=>{
+    let count = 0;
+    filterListNotification()
+    const timerId = setInterval(()=>{
+      filterListNotification()
+      // toast('hello')
+      // setTotalNoti(count++)
+    }, 5000)
+    return ()=>{clearInterval(timerId)}
+  },[])
+  const filterListNotification = () => {
+    // const response = await UserApi.get('/api/stuuser');
+    // console.log('getListUser response', response)getallyc
+    // if(response){
+    //   dispatch(setListUser(response))
+    const apiLink = `https://api.stu.vn/api/stutb/getbyuserid?_userid=${authen.userInfo.id}`
+    // }
+    console.log('notifi', apiLink)
+    // console.log('isAdmin', isAdmin)
+    // console.log('isSubAdmin', isSubAdmin)
+    try {
+  
+      fetch(apiLink).then((response) => {
+        console.log('response', response)
+        return response.json();
+      }).then((myJson) => {
+        console.log('response filterListRequirement ', myJson)
+        const temp = myJson.filter(a => a.tt_tb === 'unread') ? myJson.filter(a => a.tt_tb === 'unread') : []
+          myJson.map(e => {
+            if(listNoti.findIndex(el => el.id_tb === e.id_tb) === -1 && e.tt_tb === 'unread'){
+              toast(e.noi_dung)
+            }
+          })
+          setListNoti(myJson.length > 0 ? myJson.sort(function(a, b){
+            var x = b.tt_tb.toLowerCase();
+            var y = a.tt_tb.toLowerCase();
+            if (x < y) {return -1;}
+            if (x > y) {return 1;}
+            return 0;
+          }) : [])
+          setTotalNoti(temp.length)        
+      }).catch(
+        err => {
+          
+          console.log('errr', err)
+        }
+      )
+      // if(data[0].sta)
+      // dispatch(setLoading(true))
+    } catch (err) {
+      
+      console.log('err', err)
+    }
+  
+  }
   return (
     <div className={classes.wrapper}>
       <Sidebar
@@ -102,6 +164,7 @@ function Admin(props) {
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
         color={color}
+        
         {...props}
         isAdmin={authen.userInfo.loai === 'admin'}
       />
@@ -110,6 +173,9 @@ function Admin(props) {
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
           {...props}
+          totalNoti={totalNoti}
+          listNoti={listNoti}
+          authen={authen}
         />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {getRoute() ? (
@@ -119,7 +185,7 @@ function Admin(props) {
         ) : (
           <div className={classes.map}>{routes && switchRoutes}</div>
         )}
-        {getRoute() ? <Footer /> : null}
+        {/* {getRoute() ? <Footer /> : null} */}
         {/* <FixedPlugin
           handleImageClick={handleImageClick}
           handleColorClick={handleColorClick}
@@ -128,6 +194,7 @@ function Admin(props) {
           handleFixedClick={handleFixedClick}
           fixedClasses={fixedClasses}
         /> */}
+        <ToastContainer limit={2000}/>
       </div>
     </div>
   );

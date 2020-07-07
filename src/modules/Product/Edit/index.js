@@ -72,7 +72,7 @@ function ProductEdit(props) {
       <div>
     <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert onClose={handleClose} severity={editProductSuccess === true ? "success" : "error"}>
-          {editProductSuccess === true ? `Sửa thông tin vật tư thành công!` : `Sửa thông tin vật tư thất bại!`}
+          {editProductSuccess === true ? `Sửa thông tin vật tư thành công!` : `Sửa thông tin vật tư thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>
@@ -87,7 +87,7 @@ function ProductEdit(props) {
               <GridContainer>
                 <GridItem xs={12} sm={12} md={3}>
                   <CustomInput
-                    labelText="Tên vật tư"
+                    labelText="Tên vật tư"
                     id="productname"
                     formControlProps={{
                       fullWidth: true

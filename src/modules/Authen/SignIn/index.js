@@ -27,9 +27,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { green } from '@material-ui/core/colors';
-import firebase from 'firebase';
-// Firebase App (the core Firebase SDK) is always required and must be listed first
-import { askForPermissioToReceiveNotifications } from '../../../pushNotification';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -62,7 +59,7 @@ function SignIn(props) {
   const classes = useStyles();
   const { history, login, authen, location, resetLogin } = props
   const { isLogined, userInfo, isLoading } = authen
-  console.log(history)
+  // console.log(history)
 
   const [redirectToReferrer, setRedirectToReferer] = useState(false)
   const { from } = location.state || { from: { pathname: '/' } }
@@ -70,7 +67,7 @@ function SignIn(props) {
   const [password, setPassword] = useState('')
   useEffect(() => {
     
-    console.log('authen.isLogined', authen.isLogined)
+    // console.log('authen.isLogined', authen.isLogined)
     if (isLogined === true) {
       history.replace('/admin')
     } else if(isLogined === false)
@@ -78,16 +75,10 @@ function SignIn(props) {
       resetLogin()
     }
   }, [isLogined])
-  useEffect(()=>{
-    askForPermissioToReceiveNotifications()
-    const messaging = firebase.messaging()
-    navigator.serviceWorker.addEventListener("message", (message) => console.log('onNotification', message));
-    messaging.onMessage((payload) => {
-      console.log('Message received. ', payload);
-      // ...
-    });
+  // useEffect(()=>{
+    
 
-  },[])
+  // },[])
   if (isLogined === true) {
     
     return <Redirect to={from} />

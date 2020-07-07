@@ -73,7 +73,7 @@ function ProductAdd(props) {
     <div>
       <Snackbar open={open} autoHideDuration={1000} onClose={() => handleClose()}>
         <Alert onClose={handleClose} severity={addProductSuccess === true ? "success" : "error"}>
-          {addProductSuccess === true ? `Thêm vật tư thành công!` : `Thêm vật tư thất bại!`}
+          {addProductSuccess === true ? `Thêm vật tư thành công!` : `Thêm vật tư thất bại!`}
         </Alert>
       </Snackbar>
       <GridContainer>

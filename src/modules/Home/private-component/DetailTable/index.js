@@ -25,12 +25,12 @@ function Alert(props) {
 function CustomTable(props) {
 
   const classes = useStyles();
-  const { tableHead, tableData, authen, tableHeaderColor, requirement, history, approve, cancel, requirementInfo } = props;
+  const { tableHead, tableData, authen, tableHeaderColor, requirement, history, approve, cancel, requirementtInfo, setDisableApprove } = props;
   const { approveSuccess, cancelSuccess } = requirement
-  console.log('requirementInfo', requirementInfo)
+  console.log('requirementInfo1', requirementtInfo)
   const [openApprove, setOpenApprove] = useState(false);
   const [openCancel, setOpenCancel] = useState(false);
-  const { header } = authen
+  // const { header } = authen
   useEffect(() => {
     if (cancelSuccess !== null) {
       setOpenCancel(true);
@@ -88,22 +88,22 @@ function CustomTable(props) {
                 selected
               >
                 {prop.map((e, key) => {
-                  if (key === 8) return (
+                  {/* if (key === 8) return (
                     <TableCell
                       className={classes.tableCell + " " + classes.tableHeadCell}
                       key={key}
                     >
-                      <TextField
+                      <input
                         id="standard-textarea"
                         placeholder="Lý do từ chối"
-                        multiline
-                        contentEditable={false}
+                        type="textarea" 
+                        disabled={requirementtInfo.statusyc === 'Đã duyệt' || (requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin')}
                       />
                     </TableCell>
-                  );
+                  ); */}
                   return (
                     <TableCell className={classes.tableCell} key={key} >
-                      {e}
+                      {String(e)}
                     </TableCell>
                   );
                 })}

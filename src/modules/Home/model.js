@@ -9,6 +9,8 @@ function Authen(record) {
   this.listRequirement = pathOr([], ['listRequirement'], record)
   this.approveSuccess = pathOr(null, ['approveSuccess'], record)
   this.cancelSuccess = pathOr(null, ['cancelSuccess'], record)
+  this.listNoti = pathOr([], ['listNoti'], record)
+  this.totalNoti = pathOr(0, ['totalNoti'], record)
 }
 
 Authen.prototype = {

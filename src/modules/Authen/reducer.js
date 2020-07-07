@@ -29,7 +29,7 @@ import {
 const initialState = Model(null)
 
 export const login = (header, param) => async dispatch => {
-  console.log('param', param)
+  // console.log('param', param)
   dispatch(setLoading(true))
   const params = JSON.stringify({
     _name: param.userName,
@@ -38,7 +38,7 @@ export const login = (header, param) => async dispatch => {
 
   try {
 
-    fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+    fetch(`https://api.stu.vn/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
@@ -50,7 +50,7 @@ export const login = (header, param) => async dispatch => {
         dispatch(setLogin(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
+      // console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setLogin(false))
@@ -73,7 +73,7 @@ export const logout = (history) => async dispatch => {
   history.push('/')
   // try {
 
-  //   fetch(`https://a8ecd4d7.ngrok.io/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
+  //   fetch(`https://api.stu.vn/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
   //     if (!response.ok) throw new Error(response.status);
   //     else return response.json();
   //   }).then((myJson) => {

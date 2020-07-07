@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -17,7 +17,15 @@ import { bindActionCreators } from 'redux'
 import Button from "../../../components/CustomButtons/Button.js";
 import CardFooter from "../../../components/Card/CardFooter.js";
 import {getNextStatus} from '../../../utils/Helper'
+import { Switch, Route, Redirect } from "react-router-dom";
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
 const styles = {
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   cardCategoryWhite: {
     "&,& a,& a:hover,& a:focus": {
       color: "rgba(255,255,255,.62)",
@@ -51,35 +59,113 @@ const useStyles = makeStyles(styles);
 
 function Detail(props) {
   const classes = useStyles();
+
   const {location, history, match, requirement, authen, approve, cancel} = props
   const {listRequirement} = requirement
-  const requirementtInfo= listRequirement[match.params.id-1]
-  console.log('requirementtInfo', requirementtInfo)
-  const lvtyc = requirementtInfo && requirementtInfo.lvtyc ? JSON.parse(requirementtInfo.lvtyc) : []
-  
-  // const requirementDetail = location && location.state && location.state.prop
-  const requirementDetail =[[1, 'Hùng', 'xxx', '24V', 'Intel', 'Cái', '100', '0','thừa']]
-  const requirementDetails =[] 
-  lvtyc.length > 0 &&  lvtyc.map( (e, i) => {
-    let temp = []
-    temp[0] = i + 1
-    temp[1] = e.tvt
-    temp[2] = e.mvt
-    temp[3] = e.ts
-    temp[4] = e.dv
-    temp[5] = e.hsx
-    temp[6] = e.sl
-    temp[7] = requirementtInfo.lsyc
-    temp[8] = ""
-    requirementDetails.push(temp)
-  }
-  ) 
-  console.log('requirementDetails', requirementDetails)
+  const [requirementtInfo, setRequirementInfo] = useState(null)
+  const [requirementDetails, setRequirementDetal] = useState([])
+  const [disabledApprove, setDisableApprove] = useState(false)
+  const [rejectReason, setRejectReason] = useState("")
+  const [openRejectReasonModal, setOpenRejectReasonModal] = useState(false)
   console.log('props', props)
-  console.log('props match', match)
+  // console.log('props match', match)
+  useEffect(()=>{
+    console.log('requirementtInfo', requirementtInfo)
+    console.log('requirementDetails', requirementDetails)
+    if(requirementtInfo)
+    console.log('result', ['Đã duyệt', 'Yêu cầu huỷ'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
+    setDisableApprove(requirementtInfo !== null && requirementDetails.length > 0 && 
+      ['Đã duyệt', 'Yêu cầu huỷ'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
+  }, [requirementtInfo, requirementDetails])
+  useEffect(()=>{
+    console.log('props match', match)
+    if(match && match.params && match.params.id){
+      try{
+    const apiLink = `https://api.stu.vn/api/stuyc/getbymyc?_myc=${match.params.id}`
+    fetch(apiLink).then((response) => {
+      console.log('response', response)
+      return response.json();
+    }).then((myJson) => {
+      console.log('response requirementDetails ', myJson)
+      console.log('response requirementDetails myJson.lvtyc', myJson[0].lvtyc)
+      setRequirementInfo(myJson[0])
+      setRejectReason(myJson[0].ldtcyc)
+      const lvtyc = myJson && myJson[0].lvtyc ? JSON.parse(myJson[0].lvtyc) : []
+      let requirementDetail =[] 
+      lvtyc.length > 0 &&  lvtyc.map( (e, i) => {
+        let temp = []
+        temp[0] = String(i + 1)
+        temp[1] = e.tvt
+        temp[2] = e.mvt
+        temp[3] = e.ts
+        temp[4] = e.dv
+        temp[5] = e.hsx
+        temp[6] = e.sl
+        temp[7] = myJson[0].lsyc
+        temp[8] = ""
+        requirementDetail.push(temp)
+      }
+      )
+      console.log('lvtyc', lvtyc)
+      console.log('requirementDetail', requirementDetail)
+      setRequirementDetal(requirementDetail)
+    }).catch(
+      err => {
+        
+        console.log('errr', err)
+      }
+    )
+    // if(data[0].sta)
+    // dispatch(setLoading(true))
+  
+      }
+     catch (err) {
+    
+      console.log('err', err)
+    } 
+    }
+    
+  }, [match, match.params,  match.params.id])
+  const handleCloseModal = (event, reason) => {
+    setRejectReason()
+    setOpenRejectReasonModal(false);
+  };
+  function renderModal(){
+    return(
+      <Modal
+        open={openRejectReasonModal}
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={openRejectReasonModal}
+        onClose={handleCloseModal}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        // style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}
+      > 
+      <div style={{flexDirection : 'column', width: '30%', height: '30%', alignItems: 'center', justifyContent: 'center'}}>
+        <p>Nhập lí do từ chối</p>
+        <input onChange={(event) => {
+          setRejectReason(event.target.value)
+        }}></input>
+        <Button
+          onClick={()=>{
+            const newRequirement = requirementtInfo
+            newRequirement.ldtcyc = rejectReason
+            newRequirement.statusyc = 'Yêu cầu huỷ'
+            cancel({}, newRequirement)
+          }}
+        >OK</Button>
+        </div>
+      </Modal>
+    )
+  }
   return (
     <div>
-    <GridContainer>
+    {requirementtInfo !== null && requirementDetails.length >0 &&<GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
@@ -88,7 +174,7 @@ function Detail(props) {
           <CardBody>
             <DetailTable
               tableHeaderColor="primary"
-              tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa', 'Lí do từ chối']}
+              tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa']}
               tableData={requirementDetails}
               history={history}
               approve={approve}
@@ -99,28 +185,34 @@ function Detail(props) {
           </CardBody>
         </Card>
       </GridItem>
-    </GridContainer>
-    <CardFooter variant="contained" color="primary" aria-label="outlined primary button group">
+    </GridContainer>}
+    {disabledApprove && <CardFooter variant="contained" color="primary" aria-label="outlined primary button group">
         <Button color="primary" onClick={() => {
           const newRequirement = requirementtInfo
+          if(newRequirement.iduseryc === '999'){
+            newRequirement.iduseryc = authen.userInfo.id
+            newRequirement.iuseryc = authen.userInfo.name
+          }
           newRequirement.statusyc = getNextStatus(requirementtInfo.statusyc)
           approve({}, newRequirement)
         }}
-        disabled={requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin' ||
+        disabled={(requirementtInfo.statusyc === 'Duyệt 1'  || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'SubAdmin' ||
             requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
           }
         >Duyệt</Button>
         <Button 
-          disabled={requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin' ||
+          disabled={(requirementtInfo.statusyc === 'Duyệt 1' || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'SubAdmin' ||
             requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
           }
         color="primary" onClick={() => {
-          const newRequirement = requirementtInfo
-          newRequirement.statusyc = 'Yêu cầu huỷ'
-          cancel({}, newRequirement)
+          setOpenRejectReasonModal(true)
+          // const newRequirement = requirementtInfo
+          // newRequirement.statusyc = 'Yêu cầu huỷ'
+          // cancel({}, newRequirement)
         }}
         >Từ chối</Button>
-      </CardFooter>
+      </CardFooter>}
+      {renderModal()}
       </div>
   );
 }

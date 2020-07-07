@@ -19,7 +19,7 @@ export default function CustomTable(props) {
   const [selectedId, setSelectedId] = useState(-1)
   const [openDialog, setOpenDialog] = React.useState(false);
   const { location} = props
-  console.log('location TableList', location)
+  // console.log('location TableList', location)
   return (
     <div className={classes.tableResponsive}>
       <AlertDialogSlide

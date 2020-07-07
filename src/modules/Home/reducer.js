@@ -7,6 +7,7 @@ import Model from './model'
 // import TokenStore from 'utils/TokenStore'
 // import Helpers from 'utils/Helpers'
 import UserApi from '../../api/User'
+import axios from 'axios'
 import {
   LOADING,
   setLoading,
@@ -16,6 +17,8 @@ import {
   DELETE_SUCCESS,
   CANCEL_SUCCESS,
   APPROVE_SUCCESS,
+  LIST_NOTI,
+  setListNoti,
   setApproveSuccess,
   setCancelSuccess,
   setDeleteSuccess,
@@ -42,7 +45,7 @@ export const addRequirement = (header, params) => async dispatch => {
   console.log('addRequirement params', params)
   try {
     console.log('addRequirement params', params)
-    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/addyc`, {
+    fetch(`https://api.stu.vn/api/stuyc/addyc`, {
       method: 'POST',
       body: JSON.stringify(params),
       headers: {
@@ -81,7 +84,7 @@ export const addRequirement = (header, params) => async dispatch => {
 export const deleteRequirement = (header, requirementId) => async dispatch => {
   console.log('deleteRequirement ', requirementId)
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/sturequirement/deleterequirement/?id=${requirementId}`, {
+    fetch(`https://api.stu.vn/api/sturequirement/deleterequirement/?id=${requirementId}`, {
       method: 'DELETE',
     }).then((response) => {
       console.log('responseaa', response)
@@ -114,7 +117,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
 }
 export const editRequirement = (header, params) => async dispatch => {
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -179,29 +182,37 @@ export const resetListRequirement = () => async dispatch => {
   dispatch(setListRequirement([]))
 
 }
-export const getListRequirement = (header, userId, department, isSubAdmin, isAdmin) => async dispatch => {
+
+export const getListNotification = (header, userId, department, isSubAdmin, isAdmin) => async dispatch => {
   // const response = await UserApi.get('/api/stuuser');
   // console.log('getListUser response', response)getallyc
   // if(response){
   //   dispatch(setListUser(response))
-  const apiLink = isAdmin ? `https://a8ecd4d7.ngrok.io/api/stuyc/getallyc` : isSubAdmin ? `https://a8ecd4d7.ngrok.io/api/stuyc/getbybpyc?_bpyc=${department}` : `https://a8ecd4d7.ngrok.io/api/stuyc/getbyiduseryc?_iduseryc=${userId}`
+  const apiLink = ``
+
+}
+export const filterListRequirement = (name, searchKey, project, productName, selectedFromDate, selectedToDate, status, userName) => async dispatch => {
+  // const response = await UserApi.get('/api/stuuser');
+  // console.log('getListUser response', response)getallyc
+  // if(response){
+  //   dispatch(setListUser(response))
+  const apiLink = `https://api.stu.vn/api/stuyc/getfilteryc?_dfrom=${selectedFromDate}&_dto=${selectedToDate}&_mda=${project}&_username=${userName}&_mvt=${searchKey}&_statusyc=${status}&_idusersearch=${name}`
   // }
   console.log('apiLink', apiLink)
-  console.log('isAdmin', isAdmin)
-  console.log('isSubAdmin', isSubAdmin)
+  // console.log('isAdmin', isAdmin)
+  // console.log('isSubAdmin', isSubAdmin)
   try {
 
     fetch(apiLink).then((response) => {
       console.log('response', response)
       return response.json();
     }).then((myJson) => {
-      console.log('response getListRequirement', myJson)
+      console.log('response filterListRequirement ', myJson)
       if (myJson[0]) {
-        const temp = isAdmin ? myJson.filter(e => e.statusyc.trim() === 'Duyệt 1' || e.statusyc.trim() === 'Đã duyệt' || e.iduseryc === userId)  : 
-        isSubAdmin ? myJson.filter(e => e.statusyc.trim() === 'Chờ duyệt' || e.statusyc.trim() === 'Duyệt 1') : myJson
-        dispatch(setListRequirement(temp))
+        dispatch(setListRequirement(myJson))
         dispatch(setLoading(false))
       } else {
+        dispatch(setListRequirement([]))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
@@ -223,7 +234,7 @@ export const getListRequirement = (header, userId, department, isSubAdmin, isAdm
 export const approve = (header, params) => async dispatch => {
   console.log('setApproveSuccess params', params)
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -261,7 +272,7 @@ export const approve = (header, params) => async dispatch => {
 export const cancel = (header, params) => async dispatch => {
   console.log('setCancelSuccess params', params)
   try {
-    fetch(`https://a8ecd4d7.ngrok.io/api/stuyc/updateyc`, {
+    fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
       body: JSON.stringify(params),
       headers: {
@@ -304,6 +315,7 @@ const actions = {
   [DELETE_SUCCESS]: (state, action) => {return {...state, deleteSuccess: action.payload}},
   [CANCEL_SUCCESS]: (state, action) => {return {...state, cancelSuccess: action.payload}},
   [APPROVE_SUCCESS]: (state, action) => {return {...state, approveSuccess: action.payload}},
+  [LIST_NOTI]: (state, action) => {return {...state, listNoti: action.payload.listNoti, totalNoti: action.payload.totalNoti}},
   // [REHYDRATE]: (state, action) => action.payload.requirement
 }
 

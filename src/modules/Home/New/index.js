@@ -680,11 +680,11 @@ function RequirementAdd(props) {
       }}
         disabled={!requirementName || requirementList.length === 0}
       >Lưu</Button>
-      <Button color="primary" onClick={() => {
+      {/* <Button color="primary" onClick={() => {
         console.log('requirement list', requirementList)
         
         exportPDF(requirementType + requirementName, history)
-      }}>Xuất PDF</Button>
+      }}>Xuất PDF</Button> */}
       </div>
       
       {renderModal()}

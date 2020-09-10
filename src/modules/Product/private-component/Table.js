@@ -59,14 +59,14 @@ export default function CustomTable(props) {
                     </TableCell>
                   );
                 })}
-                <TableCell className={classes.tableCell} key={key} >
+                {/* <TableCell className={classes.tableCell} key={key} >
                   <DeleteIcon onClick={(e) => {
                     resetDeleteProductSuccess()
                     e.stopPropagation();
                     setSelectedId(listProduct[key].id)
                     setOpenDialog(true)
                   }}></DeleteIcon>
-                </TableCell>
+                </TableCell> */}
               </TableRow>
             );
           })}

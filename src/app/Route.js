@@ -184,7 +184,7 @@ const routes = [
     name: "QUẢN LÍ DỰ ÁN",
     icon: AssignmentIcon,
     isVisible: true,
-    admin: false,
+    admin: true,
   },
   {
     path: '/admin/addNewProject',
@@ -203,7 +203,7 @@ const routes = [
   {
     path: '/admin/product',
     component: Products,
-    name: "QUẢN LÍ VẬT TƯ",
+    name: "BÁO CÁO TỒN KHO",
     icon: AssignmentIcon,
     isVisible: true,
     admin: false,
@@ -237,16 +237,16 @@ const routes = [
     isVisible: false
   },
   {
-    path: '/admin/addNewRequirement',
-    component: HomeAdd,
-    name: "HomeAddNew",
+    path: '/admin/pdf/:id',
+    component: HomePdf,
+    name: "HomePdf",
     icon: Business,
     isVisible: false
   },
   {
-    path: '/admin/pdf',
-    component: HomePdf,
-    name: "HomePef",
+    path: '/admin/addNewRequirement',
+    component: HomeAdd,
+    name: "HomeAddNew",
     icon: Business,
     isVisible: false
   }

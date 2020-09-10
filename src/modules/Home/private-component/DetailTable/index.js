@@ -97,7 +97,7 @@ function CustomTable(props) {
                         id="standard-textarea"
                         placeholder="Lý do từ chối"
                         type="textarea" 
-                        disabled={requirementtInfo.statusyc === 'Đã duyệt' || (requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'SubAdmin')}
+                        disabled={requirementtInfo.statusyc === 'Đã duyệt' || (requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'Trưởng phòng')}
                       />
                     </TableCell>
                   ); */}

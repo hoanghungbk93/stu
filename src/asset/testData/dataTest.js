@@ -30,7 +30,7 @@ export default {
       id: 4,
       pass: '4',
       userName: 'hun4',
-      department: 'staff'
+      department: 'Nhân viên'
     },
     {
       name: 'hung5',
@@ -38,7 +38,7 @@ export default {
       id: 5,
       pass: '5',
       userName: 'hung5',
-      department: 'staff'
+      department: 'Nhân viên'
     },
   ],
   orderList: [

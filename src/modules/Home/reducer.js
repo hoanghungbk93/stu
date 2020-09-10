@@ -6,8 +6,11 @@ import Model from './model'
 // import { Authen } from '../../api'
 // import TokenStore from 'utils/TokenStore'
 // import Helpers from 'utils/Helpers'
+// import fetchBase64 from 
 import UserApi from '../../api/User'
 import axios from 'axios'
+import { triggerBase64Download } from 'react-base64-downloader';
+
 import {
   LOADING,
   setLoading,
@@ -38,6 +41,9 @@ import { REHYDRATE } from 'redux-persist';
 // I18n.fallbacks = true
 // I18n.missingBehaviour = 'guess'
 // I18n.defaultLocale = 'en'
+import jsPDF  from "jspdf";
+
+// Default export is a4 paper, portrait, using millimeters for units
 
 const initialState = Model(null)
 
@@ -59,16 +65,16 @@ export const addRequirement = (header, params) => async dispatch => {
     }).then((myJson) => {
       console.log('myJson', myJson)
       if (myJson) {
-        dispatch(setAddRequirementSuccess({success : true, listProduct : myJson._listvt}))
+        dispatch(setAddRequirementSuccess({ success: true, listProduct: myJson._listvt }))
         dispatch(setLoading(false))
       } else {
-        dispatch(setAddRequirementSuccess({success : false, listProduct : []}))
+        dispatch(setAddRequirementSuccess({ success: false, listProduct: [] }))
         dispatch(setLoading(false))
       }
       console.log('myJson', myJson)
     }).catch(
       err => {
-        dispatch(setAddRequirementSuccess({success : false, listProduct : []}))
+        dispatch(setAddRequirementSuccess({ success: false, listProduct: [] }))
         dispatch(setLoading(false))
         console.log('errr', err)
       }
@@ -76,7 +82,7 @@ export const addRequirement = (header, params) => async dispatch => {
     // if(data[0].sta)
     // dispatch(setLoading(true))
   } catch (err) {
-    dispatch(setAddRequirementSuccess({success : false, listProduct : []}))
+    dispatch(setAddRequirementSuccess({ success: false, listProduct: [] }))
     dispatch(setLoading(false))
     console.log('err', err)
   }
@@ -116,6 +122,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
   }
 }
 export const editRequirement = (header, params) => async dispatch => {
+  console.log('param', params)
   try {
     fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
@@ -127,7 +134,7 @@ export const editRequirement = (header, params) => async dispatch => {
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
+      console.log('myJson editRequirement', myJson)
       if (myJson) {
         dispatch(setEditRequirementSuccess(true))
         dispatch(setLoading(false))
@@ -162,7 +169,7 @@ export const resetDeleteRequirementSuccess = () => async dispatch => {
 }
 export const resetAddRequirementSucess = () => async dispatch => {
 
-  dispatch(setAddRequirementSuccess({success : null, listProduct : []}))
+  dispatch(setAddRequirementSuccess({ success: null, listProduct: [] }))
 
 }
 
@@ -230,6 +237,69 @@ export const filterListRequirement = (name, searchKey, project, productName, sel
   }
 
 }
+export const getProjectList = (setProjectList) => async dispatch => {
+  // const response = await UserApi.get('/api/stuuser');
+  // console.log('getListUser response', response)getallyc
+  // if(response){
+  //   dispatch(setListUser(response))
+  const apiLink = `https://api.stu.vn/api/studa/getallda`
+  // }
+  console.log('getProjectList apiLink', apiLink)
+  // console.log('isAdmin', isAdmin)
+  // console.log('isSubAdmin', isSubAdmin)
+  try {
+
+    fetch(apiLink).then((response) => {
+      console.log('response getProjectList', response)
+      return response.json();
+    }).then((myJson) => {
+      console.log('response get project list ', myJson)
+      if (myJson[0]) {
+        setProjectList(myJson)
+      } else {
+        setProjectList([])
+      }
+      console.log('myJson', myJson)
+    }).catch(
+      err => {
+        console.log('errr', err)
+      }
+    )
+    // if(data[0].sta)
+    // dispatch(setLoading(true))
+  } catch (err) {
+    console.log('err', err)
+  }
+
+}
+export const exportPDF = (params, setBase64) => async dispatch => {
+
+  const apiLink = `https://api.stu.vn/api/pdfcreator/pxk?ph=${params}`
+  // }
+  console.log('exportPDF apiLink', apiLink)
+  try {
+
+    fetch(apiLink).then( response => {
+      // setBase64(response)
+      return response.json()
+      
+    } )
+    .then( blob =>{
+      console.log('blob', blob)
+      const linkSource = `data:application/pdf;base64,${blob.pdfBase64}`;
+      const downloadLink = document.createElement("a");
+      const fileName = params + '.pdf';
+
+      downloadLink.href = linkSource;
+      downloadLink.download = fileName;
+      downloadLink.click();
+      // }
+    }) ;
+  } catch (err) {
+    console.log('err', err)
+  }
+
+}
 
 export const approve = (header, params) => async dispatch => {
   console.log('setApproveSuccess params', params)
@@ -269,6 +339,8 @@ export const approve = (header, params) => async dispatch => {
     console.log('err', err)
   }
 }
+
+
 export const cancel = (header, params) => async dispatch => {
   console.log('setCancelSuccess params', params)
   try {
@@ -308,14 +380,14 @@ export const cancel = (header, params) => async dispatch => {
   }
 }
 const actions = {
-  [LOADING]: (state, action) => {return {...state, isLoading: action.payload}},
-  [ADD_REQUIREMENT_SUCCESS]: (state, action) => {return {...state, addRequirementSuccess: action.payload}},
-  [EDIT_REQUIREMENT_SUCCESS]: (state, action) => {return {...state, editRequirementSuccess: action.payload}},
-  [LIST_REQUIREMENT]: (state, action) => {return {...state, listRequirement: action.payload}},
-  [DELETE_SUCCESS]: (state, action) => {return {...state, deleteSuccess: action.payload}},
-  [CANCEL_SUCCESS]: (state, action) => {return {...state, cancelSuccess: action.payload}},
-  [APPROVE_SUCCESS]: (state, action) => {return {...state, approveSuccess: action.payload}},
-  [LIST_NOTI]: (state, action) => {return {...state, listNoti: action.payload.listNoti, totalNoti: action.payload.totalNoti}},
+  [LOADING]: (state, action) => { return { ...state, isLoading: action.payload } },
+  [ADD_REQUIREMENT_SUCCESS]: (state, action) => { return { ...state, addRequirementSuccess: action.payload } },
+  [EDIT_REQUIREMENT_SUCCESS]: (state, action) => { return { ...state, editRequirementSuccess: action.payload } },
+  [LIST_REQUIREMENT]: (state, action) => { return { ...state, listRequirement: action.payload } },
+  [DELETE_SUCCESS]: (state, action) => { return { ...state, deleteSuccess: action.payload } },
+  [CANCEL_SUCCESS]: (state, action) => { return { ...state, cancelSuccess: action.payload } },
+  [APPROVE_SUCCESS]: (state, action) => { return { ...state, approveSuccess: action.payload } },
+  [LIST_NOTI]: (state, action) => { return { ...state, listNoti: action.payload.listNoti, totalNoti: action.payload.totalNoti } },
   // [REHYDRATE]: (state, action) => action.payload.requirement
 }
 

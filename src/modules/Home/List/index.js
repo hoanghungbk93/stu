@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
@@ -40,7 +40,22 @@ const switchRoutes = (
     <Redirect from="/admin" to="/admin/table/1" />
   </Switch>
 );
+// function useInterval(callback, delay) {
+//   const savedCallback = useRef();
 
+//   useEffect(() => {
+//     savedCallback.current = callback;
+//   });
+
+//   useEffect(() => {
+//     function tick() {
+//       savedCallback.current;
+//     }
+
+//     let id = setInterval(tick, delay);
+//     return () => clearInterval(id);
+//   }, [delay]);
+// }
 const useStyles = makeStyles(styles);
 function Admin(props) {
   // styles
@@ -54,7 +69,7 @@ function Admin(props) {
   const [fixedClasses, setFixedClasses] = React.useState("dropdown show");
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [totalNoti, setTotalNoti] = useState(0)
-  
+  const [first, setFirst] = useState(false)
   const[listNoti, setListNoti] = useState([])
   const handleImageClick = image => {
     setImage(image);
@@ -70,7 +85,6 @@ function Admin(props) {
     }
   };
   const handleDrawerToggle = () => {
-    toast('togle drawer')
     setMobileOpen(!mobileOpen);
   };
   const getRoute = () => {
@@ -101,15 +115,20 @@ function Admin(props) {
   }, [mainPanel]);
   useEffect(()=>{
     let count = 0;
-    filterListNotification()
+    if(!first){
+      filterListNotification()
+      setFirst(true)
+    }
+    
     const timerId = setInterval(()=>{
       filterListNotification()
       // toast('hello')
       // setTotalNoti(count++)
     }, 5000)
     return ()=>{clearInterval(timerId)}
-  },[])
-  const filterListNotification = () => {
+  },[listNoti])
+  
+  function filterListNotification(){
     // const response = await UserApi.get('/api/stuuser');
     // console.log('getListUser response', response)getallyc
     // if(response){
@@ -126,6 +145,7 @@ function Admin(props) {
         return response.json();
       }).then((myJson) => {
         console.log('response filterListRequirement ', myJson)
+        console.log('rlistNoti ', listNoti)
         const temp = myJson.filter(a => a.tt_tb === 'unread') ? myJson.filter(a => a.tt_tb === 'unread') : []
           myJson.map(e => {
             if(listNoti.findIndex(el => el.id_tb === e.id_tb) === -1 && e.tt_tb === 'unread'){

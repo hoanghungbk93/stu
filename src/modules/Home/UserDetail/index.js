@@ -14,7 +14,7 @@ import CardFooter from "../../../components/Card/CardFooter.js";
 import Snackbar from '@material-ui/core/Snackbar';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { addRequirement } from '../reducer'
+import { editRequirement, getProjectList, exportPDF } from '../reducer'
 import MuiAlert from '@material-ui/lab/Alert';
 import List from './List'
 import Modal from '@material-ui/core/Modal';
@@ -34,6 +34,7 @@ import {
 } from '@material-ui/pickers';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import FormControl from '@material-ui/core/FormControl';
+import generatePDF from '../private-component/PDFView'
 const styles = {
   cardCategoryWhite: {
     color: "rgba(255,255,255,.62)",
@@ -56,6 +57,9 @@ const styles = {
     marginBottom: "3px",
     textDecoration: "none"
   },
+  formControl:{
+    width: '40%'
+  }
 };
 
 const useStyles = makeStyles(styles);
@@ -64,16 +68,16 @@ function Alert(props) {
 }
 function RequirementAdd(props) {
   const classes = useStyles();
-  const { history, authen, requirement, addRequirement, match } = props
+  const { history, authen, requirement, editRequirement, match, getProjectList, exportPDF } = props
   const {listRequirement} = requirement
   // const requirementtInfo= listRequirement[match.params.id-1]
   // console.log('requirementtInfo', requirementtInfo)
   const [requirementtInfo, setRequirementInfo] = useState(null)
   const [requirementDetails, setRequirementDetal] = useState([])
+  const [projects, setProjects] = useState([])
   // const lvtyc = requirementtInfo && requirementtInfo.lvtyc ? JSON.parse(requirementtInfo.lvtyc) : []
-  const { addRequirementSuccess } = requirement
+  const { editRequirementSuccess } = requirement
   const [requirementName, setRequirementName] = useState('')
-  const [password, setPassword] = useState('')
   const [department, setDepartment] = useState('')
   const [open, setOpen] = React.useState(false);
   const [needTime, setNeedTime] = useState(0)
@@ -90,12 +94,29 @@ function RequirementAdd(props) {
   const [currentUnit, setCurrentUnit] = useState('')
   const [currentManufacture, setCurrentManufacture] = useState('')
   const [requirementType, setRequirementType] = useState('')
-  const [project, setProject] = useState('')
+  const [currentProjectCode, setCurrentProjectCode] = useState('')
+  const [currentProjectName, setCurrentProjectName] = useState('')
   // const [requirementStatus, setRequirementStatus] = useState(requirementtInfo.statusyc)
+  const [listProduct, setListProduct] = useState([])
+  const [currentProduct, setCurrentProduct] = useState('')
 
   const dateFormat = "MM-DD-YYYY"
   const [selectedDate, setSelectedDate] = useState('')
-  const disabledView = true
+  const [disabledView, setDisableView] = useState(false)
+  useEffect(() => {
+    getProjectList(setProjects)
+  }, [])
+
+  useEffect(()=>{
+    console.log('HungHC', currentProjectName)
+    if(projects.length > 0 && currentProjectName){
+      const temp = projects.find(e => e.tda === currentProjectName)
+      if(temp){
+        setCurrentProjectCode(temp.mda)
+      }
+    }
+    
+  }, [projects, currentProjectName])
   const requirementOptions = authen.userInfo.bp === 'Mua Hang' ? [
     'YCM',
   ] : authen.userInfo.bp === 'Kho' ? [
@@ -122,8 +143,10 @@ function RequirementAdd(props) {
       setRequirementName(myJson[0].myc.substring(3))
       setDepartment(myJson[0].bpyc)
       setRequirementType(myJson[0].myc.substring(0,3))
-      setProject(myJson[0].dayc)
+      // setProject(myJson[0].dayc)
+      setCurrentProjectName(myJson[0].dayc)
       setSelectedDate(moment(myJson[0].nyc).format(dateFormat))
+      setDisableView(myJson[0].statusyc !== 'Chờ duyệt' || myJson[0].iduseryc !== authen.userInfo.id)
       let requirementDetail =[] 
       lvtyc.length > 0 &&  lvtyc.map( (e, i) => {
         let temp = []
@@ -159,11 +182,38 @@ function RequirementAdd(props) {
     }
     
   }, [match, match.params,  match.params.id])
+  useEffect(()=>{
+    if(currentProduct){
+      setCurrentProductName(currentProduct.tvt)
+      setCurrentProductCode(currentProduct.mvt)
+      setCurrentTotal(0)
+      setCurrentDistributor(currentProduct.ncc)
+      setCurrentInformation(currentProduct.ts)
+      setCurrentUnit(currentProduct.dv)
+      setCurrentManufacture(currentProduct.hsx)
+    }
+}, [currentProduct])
   const handleDateChange = date => {
     setSelectedDate(date);
   };
   function resetState() {
     setCurrentProductName('')
+    setCurrentProductCode('')
+    setCurrentTotal(0)
+    setCurrentDistributor('')
+    setCurrentInformation('')
+    setCurrentUnit('')
+    setCurrentManufacture('')
+  }
+  function resetWhenProductcodeChange() {
+    setCurrentProductName('')
+    setCurrentTotal(0)
+    setCurrentDistributor('')
+    setCurrentInformation('')
+    setCurrentUnit('')
+    setCurrentManufacture('')
+  }
+  function resetWhenProductNameChange() {
     setCurrentProductCode('')
     setCurrentTotal(0)
     setCurrentDistributor('')
@@ -185,10 +235,10 @@ function RequirementAdd(props) {
   }, [currentProductIndex])
 
   useEffect(() => {
-    if (addRequirementSuccess && addRequirementSuccess.success !== null) {
+    if (editRequirementSuccess && editRequirementSuccess.success !== null) {
       setOpen(true);
     }
-  }, [addRequirementSuccess])
+  }, [editRequirementSuccess])
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -198,7 +248,7 @@ function RequirementAdd(props) {
     history.goBack()
   };
   const handleCloseModal = (event, reason) => {
-    resetState()
+    // resetState()
     setOpenModal(false);
   };
 
@@ -221,15 +271,66 @@ function RequirementAdd(props) {
         BackdropProps={{
           timeout: 500,
         }}
+        onRendered={() => {
+          try {
+            const apiLink = `https://api.stu.vn/api/stuvt/getallvt`
+            fetch(apiLink).then((response) => {
+              
+              return response.json();
+            }).then((myJson) => {
+              console.log('response', myJson)
+              setListProduct(myJson)
+            }).catch(
+              err => {
+
+                console.log('errr', err)
+              }
+            )
+            // if(data[0].sta)
+            // dispatch(setLoading(true))
+          } catch (err) {
+
+            console.log('err', err)
+          }
+        }}
       >
         <GridContainer>
 
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>Thêm mới vật tư</h4>
+                <h4 className={classes.cardTitleWhite}>{isAddNew ? `Thêm mới vật tư`: `Chi tiết`}</h4>
                 <p className={classes.cardCategoryWhite}>Hoàn thành thông tin vật tư</p>
               </CardHeader>
+              {isAddNew && <Autocomplete
+                  id="combo-box-demo"
+                  options={listProduct}
+                  getOptionLabel={option => option.mvt}
+                  style={{ flex : 1, display: 'flex'}}
+                  renderInput={params => <TextField {...params} label="Chọn vật tư có sẵn" style={{flex: 1, display: 'flex'}}/>}
+                  onChange={(event, newValue) => {
+                    if(!newValue) return
+                    setCurrentProductCode(newValue.mvt)
+                          try {
+                            const apiLink = `https://api.stu.vn/api/stuvt/getbymvt?_mvt=${newValue.mvt}`
+                            fetch(apiLink).then((response) => {
+                              
+                              return response.json();
+                            }).then((myJson) => {
+                              console.log('response vt', myJson)
+                              setCurrentProduct(myJson[0])
+                            }).catch(
+                              err => {
+
+                                console.log('get product errr', err)
+                              }
+                            )
+                          } catch (err) {
+
+                            console.log('err', err)
+                          }
+                  }}
+                />}
               <CardBody>
                 <GridContainer>
                   <GridItem xs={12} sm={12} md={4}>
@@ -255,7 +356,31 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentProductCode(event.target.value)
+                        const temp = event.target.value
                         console.log('Email address', event.target.value)
+                        try {
+                            const apiLink = `https://api.stu.vn/api/stuvt/getbymvt?_mvt=${temp}`
+                            fetch(apiLink).then((response) => {
+                              
+                              return response.json();
+                            }).then((myJson) => {
+                              console.log('response vt', myJson)
+                              if(myJson.length > 0 && myJson[0].mvt === temp){
+                                setCurrentProduct(myJson[0])
+                              } else {
+                                console.log('haahaa')
+                                resetWhenProductcodeChange()
+                              }
+                            }).catch(
+                              err => {
+                                resetWhenProductcodeChange()
+                                console.log('get product errr', err)
+                              }
+                            )
+                          } catch (err) {
+
+                            console.log('err', err)
+                          }
                       }}
                       value={currentProductCode}
                     />
@@ -353,11 +478,14 @@ function RequirementAdd(props) {
                     ncc: currentDistributor
 
                   }
-                  if (isAddNew) {
+                  const productIndex = requirementList.findIndex(e => e.mvt === currentProductCode)
+                  if (isAddNew && productIndex === -1) {
                     setRequirementList(requirementList.concat(newProduct))
                   } else {
+                    console.log('newProduct', newProduct)
                     let temp = requirementList.slice()
-                    temp[currentProductIndex] = newProduct
+                    setRequirementList([])
+                    temp[productIndex] = {...newProduct}
                     setRequirementList(temp)
                   }
                   handleCloseModal()
@@ -374,8 +502,8 @@ function RequirementAdd(props) {
   return (
     <div>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={addRequirementSuccess && addRequirementSuccess.success === true ? "success" : "error"}>
-          {addRequirementSuccess && addRequirementSuccess.success === true ? `Thêm yêu cầu thành công!` : `Thêm yêu cầu thất bại!`}
+        <Alert onClose={handleClose} severity={editRequirementSuccess === true ? "success" : "error"}>
+          {editRequirementSuccess === true ? `Sửa yêu cầu thành công!` : `Sửa yêu cầu thất bại!`}
         </Alert>
       </Snackbar>
       {requirementType && <GridContainer justify="center"
@@ -392,7 +520,7 @@ function RequirementAdd(props) {
               </GridContainer> */}
               <GridContainer>
               
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Số YC"
                     id="requirementname"
@@ -406,7 +534,7 @@ function RequirementAdd(props) {
                     value={requirementName}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
+                <GridItem xs={12} sm={12} md={6}>
                   <CustomInput
                     labelText="Bộ phận"
                     id="department"
@@ -418,20 +546,6 @@ function RequirementAdd(props) {
                       console.log('Email address', event.target.value)
                     }}
                     value={authen.userInfo.bp}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Dự án"
-                    id="project"
-                    formControlProps={{
-                      fullWidth: true
-                    }}
-                    onChange={(event) => {
-                      console.log('project', event.target.value)
-                      setProject(event.target.value)
-                    }}
-                    value={project}
                   />
                 </GridItem>
               </GridContainer>
@@ -462,13 +576,44 @@ function RequirementAdd(props) {
                     ))}
                   </NativeSelect>
                   </FormControl>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <FormControl className={classes.formControl}>
+
+                    <InputLabel htmlFor="uncontrolled-native">Dự án</InputLabel>
+                    <NativeSelect
+                      // defaultValue={'' }
+                      value={currentProjectName}
+                      onChange={(event) => {
+                        console.log('event.target.value', event.target.value)
+                        console.log('projects', projects)
+                        console.log('projects.find(e => e.tda === event.target.value)', projects.find(e => e.tda === event.target.value))
+                        setCurrentProjectName(event.target.value)
+                        setCurrentProjectCode(projects.find(e => e.tda === event.target.value).mda)
+                      }}
+                      inputProps={{
+                        name: 'project',
+                        id: 'uncontrolled-native1',
+                      }}
+                    >
+                      {projects.map((option, index) => (
+                        <option key={index} value={option && option.tda}>
+                          {option && option.tda}
+                        </option>
+                      ))}
+                    </NativeSelect>
+                    </FormControl>
+                  
+                  </div>
+                  
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around">
                       <KeyboardDatePicker
                         format="dd-MM-yyyy"
                         margin="normal"
                         id="date-picker-dialog"
-                        label="Ngày cần"
+                        label="    "
                         value={selectedDate}
                         onChange={handleDateChange}
                         KeyboardButtonProps={{
@@ -477,15 +622,14 @@ function RequirementAdd(props) {
                       />
                     </Grid>
                   </MuiPickersUtilsProvider>
-                  </div>
-                  
-                </GridItem>
               </GridContainer>
             </CardBody>
             <CardFooter>
               <Button color="primary" onClick={() => {
                 setIsAddNew(true)
                 setOpenModal(true)
+                resetState()
+                setCurrentProductIndex(-1)
                 // setRequirementList(requirementList.slice().push(newProduct))
                 
               }}
@@ -504,9 +648,8 @@ function RequirementAdd(props) {
           })
           return tempArr
         }) : []}
-        tableHead={["TT", "Mã vật tư", , "Tên vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"]}
+        tableHead={["TT", "Tên vật tư", "Mã vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"]}
 
-        // tableHead={["TT", "Số tài liệu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên']}
         setIsAddNew={setIsAddNew}
         setRequirementList={setRequirementList}
         setCurrentProductIndex={setCurrentProductIndex}
@@ -521,16 +664,22 @@ function RequirementAdd(props) {
           "nyc": moment(selectedDate).format('YYYY-MM-DD'),
           "tuseryc": authen.userInfo.name,
           "bpyc": department,
-          "dayc": project,
+          "dayc": currentProjectName,
           "lvtyc": `${JSON.stringify(requirementList)}`,
           "statusyc": "Chờ duyệt",
           "iduseryc": authen.userInfo.id,
+          "idyc" : requirementtInfo.idyc
         })
         console.log('================', moment(selectedDate).format('YYYY-MM-DD'))
-        addRequirement(header, params)
+        editRequirement(header, params)
       }}
       disabled={disabledView}
       >Lưu</Button>}
+      <Button color="primary" onClick={() => {
+        console.log('requirement list', requirementList)
+        exportPDF(requirementType + requirementName)
+        // history.push('/admin/pdf/' + requirementType + requirementName)
+      }}>Xuất PDF</Button>
       {renderModal()}
     </div>
   );
@@ -545,7 +694,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      addRequirement,
+      editRequirement,
+      getProjectList,
+      exportPDF
     },
     dispatch
   )

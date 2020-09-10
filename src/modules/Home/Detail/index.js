@@ -73,9 +73,9 @@ function Detail(props) {
     console.log('requirementtInfo', requirementtInfo)
     console.log('requirementDetails', requirementDetails)
     if(requirementtInfo)
-    console.log('result', ['Đã duyệt', 'Yêu cầu huỷ'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
+    console.log('result', ['Đã duyệt', 'Từ chối'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
     setDisableApprove(requirementtInfo !== null && requirementDetails.length > 0 && 
-      ['Đã duyệt', 'Yêu cầu huỷ'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
+      ['Đã duyệt', 'Từ chối'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
   }, [requirementtInfo, requirementDetails])
   useEffect(()=>{
     console.log('props match', match)
@@ -98,8 +98,8 @@ function Detail(props) {
         temp[1] = e.tvt
         temp[2] = e.mvt
         temp[3] = e.ts
-        temp[4] = e.dv
-        temp[5] = e.hsx
+        temp[5] = e.dv
+        temp[4] = e.hsx
         temp[6] = e.sl
         temp[7] = myJson[0].lsyc
         temp[8] = ""
@@ -155,7 +155,7 @@ function Detail(props) {
           onClick={()=>{
             const newRequirement = requirementtInfo
             newRequirement.ldtcyc = rejectReason
-            newRequirement.statusyc = 'Yêu cầu huỷ'
+            newRequirement.statusyc = 'Từ chối'
             cancel({}, newRequirement)
           }}
         >OK</Button>
@@ -191,23 +191,23 @@ function Detail(props) {
           const newRequirement = requirementtInfo
           if(newRequirement.iduseryc === '999'){
             newRequirement.iduseryc = authen.userInfo.id
-            newRequirement.iuseryc = authen.userInfo.name
+            newRequirement.tuseryc = authen.userInfo.name
           }
           newRequirement.statusyc = getNextStatus(requirementtInfo.statusyc)
           approve({}, newRequirement)
         }}
-        disabled={(requirementtInfo.statusyc === 'Duyệt 1'  || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'SubAdmin' ||
+        disabled={(requirementtInfo.statusyc === 'Duyệt 1'  || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'Trưởng phòng' ||
             requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
           }
         >Duyệt</Button>
         <Button 
-          disabled={(requirementtInfo.statusyc === 'Duyệt 1' || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'SubAdmin' ||
+          disabled={(requirementtInfo.statusyc === 'Duyệt 1' || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'Trưởng phòng' ||
             requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
           }
         color="primary" onClick={() => {
           setOpenRejectReasonModal(true)
           // const newRequirement = requirementtInfo
-          // newRequirement.statusyc = 'Yêu cầu huỷ'
+          // newRequirement.statusyc = 'Từ chối'
           // cancel({}, newRequirement)
         }}
         >Từ chối</Button>

@@ -79,9 +79,9 @@ function UserAdd(props) {
   const [password, setPassword] = useState('')
   const [department, setDepartment] = useState('')
   const [open, setOpen] = React.useState(false);
-  const [type, setType] = useState('Staff')
+  const [type, setType] = useState('Nhân viên')
   const { header } = authen
-  const userType = ['SubAdmin', 'Staff']
+  const userType = ['Trưởng phòng', 'Nhân viên']
   useEffect(() => {
     if (addUserSuccess !== null) {
       setOpen(true);

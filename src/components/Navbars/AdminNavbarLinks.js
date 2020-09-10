@@ -98,7 +98,7 @@ function AdminNavbarLinks(props) {
       
       console.log('err', err)
     }
-    if(authen.userInfo.loai === 'SubAdmin' || authen.userInfo.loai === 'admin'){
+    if(authen.userInfo.loai === 'Trưởng phòng' || authen.userInfo.loai === 'admin'){
       history.push(`/admin/editRequirement/${listNoti[index].ma_yc}`,)
     }
     else{
@@ -134,7 +134,7 @@ function AdminNavbarLinks(props) {
       <MenuItem
       onClick={() => handleCloseNotification(index)}
       className={classes.dropdownItem}
-      style={{backgroundColor: listNoti[index].tt_tb === 'unread' ? 
+      style={{backgroundColor: listNoti[index].tt_tb !== 'unread' ? 
       'grey' : 'red', borderBottomWidth: '2', borderBottomColor : 'white',
       marginBottom: 2
       }}

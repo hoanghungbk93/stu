@@ -1,42 +1,54 @@
-import React from 'react';
-import { Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
-// Create styles
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4',
-    justifyContent: "center"
+import React, { useState, useEffect } from 'react';
+import { Document, Page, pdfjs } from 'react-pdf';
 
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-    alignItems: 'center'
+import { exportPDF } from '../../reducer'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
+function PDFView(props) {
+  const [numPages, setNumPages] = useState(null);
+  const [base64, setBase64] = useState('');
+  const [pageNumber, setPageNumber] = useState(1);
+  const {exportPDF} = props
+  console.log('props1', props)
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
   }
-});
+  useEffect(()=>{
+    exportPDF(props.match && props.match.params && props.match.params.id, setBase64)
+  }, [])
+  useEffect(() => {
+    console.log('====')
+    console.log(base64)
+    if(base64 && base64.pdfBase64){
+      setBase64(base64.pdfBase64)
+      // window.open("data:application/pdf," + encodeURI(base64.pdfBase64)); 
 
-// Create Document Component
-const MyDocument = (props) => {
-  const {data, isOut} = props
+    }
+  },[base64])
   return (
-  
-  <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>{isOut ? `Phiếu xuất kho` : `Phiếu nhập kho`}</Text>
-      </View>
-      {/* <View style={styles.section}>
-        <Text>Section #2</Text>
-      </View> */}
-    </Page>
-  </Document>
-);}
-const PDFView = (props) => {
-  const {data} =props
-  return(
-  <PDFViewer width={'100%'} height={'100%'}>
-    <MyDocument data = {data}/>
-  </PDFViewer>
-);}
-export default PDFView
+    <div>
+      {base64 ? <Document
+        file={base64}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
+        <Page pageNumber={pageNumber} />
+      </Document> : null}
+      <p>Page {pageNumber} of {numPages}</p>
+    </div>
+  );
+}
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators(
+    {
+      exportPDF
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(PDFView) 

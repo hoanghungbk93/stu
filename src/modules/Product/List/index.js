@@ -97,12 +97,12 @@ function Products(props) {
         </GridItem>
       </GridContainer>
       <CardFooter>
-      <Button color="primary" onClick={() => { 
+      {/* <Button color="primary" onClick={() => { 
         resetDeleteProductSuccess()
         history.push('/admin/addNewProduct')
          }}>
          Thêm vật tư
-         </Button>
+         </Button> */}
       </CardFooter>
     </div>
   );

@@ -16,10 +16,9 @@ const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
   const classes = useStyles();
-  const { tableHead, tableData, tableHeaderColor, history, deleteRequirement, listRequirement, resetDeleteRequirementSuccess } = props;
+  const { tableHead, tableData, tableHeaderColor, history, deleteRequirement, userType, bp } = props;
   const [selectedId, setSelectedId] = useState(-1)
   const [openDialog, setOpenDialog] = React.useState(false);
-  const { location, userType} = props
   // console.log('location TableList', location)
   return (
     <div className={classes.tableResponsive}>
@@ -53,7 +52,10 @@ export default function CustomTable(props) {
                 console.log('location prop[0]', prop[0])
                 console.log('location prop[7]', prop[7])
                 console.log('location prop', prop)
-                if(userType === 'SubAdmin' && prop[8] === 'Chờ duyệt' || userType === 'admin' && prop[8] === 'Duyệt 1'){
+                console.log('userType', userType)
+                if(userType === 'Trưởng phòng' && prop[8] === 'Chờ duyệt' || userType === 'admin' && prop[8] === 'Duyệt 1' ||
+                  (userType === 'Trưởng phòng' && bp === 'Kinh doanh' && prop[8] === 'Chờ duyệt')
+                ){
                   history.push(`/admin/editRequirement/${prop[1]}`, { order: prop[1] })
                 }
                 else{

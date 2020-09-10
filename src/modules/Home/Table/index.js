@@ -6,7 +6,6 @@ import Table from "../private-component/List";
 import Card from "../../../components/Card/Card.js";
 import CardHeader from "../../../components/Card/CardHeader.js";
 import CardBody from "../../../components/Card/CardBody.js";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "../../../components/CustomButtons/Button.js";
 import styles from "../../../assets/jss/material-dashboard-react/layouts/adminStyle.js";
@@ -27,11 +26,10 @@ import MuiAlert from '@material-ui/lab/Alert';
 import {debounce} from 'lodash'
 import { DatePicker } from 'antd';
 import 'antd/dist/antd.css';
-
 import moment from 'moment'
-const { RangePicker } = DatePicker;
 
-const statusList = [{id : 'Chờ duyệt'}, {id : 'Duyệt 1'}, {id : 'Đã duyệt'}, {id : 'Yêu cầu huỷ'}, {id: 'Đã thực hiện'}]
+const { RangePicker } = DatePicker;
+const statusList = [{id : 'Chờ duyệt'}, {id : 'Duyệt 1'}, {id : 'Đã duyệt'}, {id : 'Từ chối'}]
 const useStyles = makeStyles(styles);
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -156,9 +154,9 @@ function Requirements(props) {
     setStatus(event.target.value)
     // onSearch()
   }
-  
+
   return (
-    <div>
+    <div style={{width : '100%'}}>
       <Snackbar open={open} autoHideDuration={1000} onClose={handleClose}>
         <Alert severity={deleteSuccess === true ? "success" : "error"} 
         >
@@ -220,8 +218,9 @@ function Requirements(props) {
             <CardBody>
               <Table
                 userType={userInfo.loai}
+                bp={userInfo.bp}
                 tableHeaderColor="primary"
-              tableHead={["TT", "Số tài liệu", "Tham chiếu", "Thời gian", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
+              tableHead={["TT", "Số tài liệu", "Tham chiếu", "Ngày cần", "Người YC", 'Bộ phận', 'Dự án', 'Mức ưu tiên', 'Trạng thái']}
               tableData={listRequirement.map((e, i)=>{
                 let tempArr= [`${i+1}`]
                 Object.keys(e).forEach((key, index) =>{

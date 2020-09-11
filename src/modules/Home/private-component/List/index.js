@@ -19,7 +19,6 @@ export default function CustomTable(props) {
   const { tableHead, tableData, tableHeaderColor, history, deleteRequirement, userType, bp } = props;
   const [selectedId, setSelectedId] = useState(-1)
   const [openDialog, setOpenDialog] = React.useState(false);
-  // console.log('location TableList', location)
   return (
     <div className={classes.tableResponsive}>
       <AlertDialogSlide
@@ -48,11 +47,6 @@ export default function CustomTable(props) {
           {tableData.map((prop, key) => {
             return (
               <TableRow key={key} className={classes.tableBodyRow} onClick={() => {
-                // resetDeleteRequirementSuccess()
-                console.log('location prop[0]', prop[0])
-                console.log('location prop[7]', prop[7])
-                console.log('location prop', prop)
-                console.log('userType', userType)
                 if(userType === 'Trưởng phòng' && prop[8] === 'Chờ duyệt' || userType === 'admin' && prop[8] === 'Duyệt 1' ||
                   (userType === 'Trưởng phòng' && bp === 'Kinh doanh' && prop[8] === 'Chờ duyệt')
                 ){
@@ -64,11 +58,6 @@ export default function CustomTable(props) {
               }}
                 hover
                 selected
-              //   onMouseMove={()=>{
-              //   setActiveRow(key)
-              //   console.log('hihi', key)
-              // }}
-              // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
               >
                 {prop.map((e, key) => {
                   return (
@@ -77,15 +66,6 @@ export default function CustomTable(props) {
                     </TableCell>
                   );
                 })}
-                {/* <TableCell className={classes.tableCell} key={key} >
-                  <DeleteIcon onClick={(e) => {
-                    console.log('hehehehe')
-                    resetDeleteRequirementSuccess()
-                    e.stopPropagation();
-                    setSelectedId(listRequirement[key].id)
-                    setOpenDialog(true)
-                  }}></DeleteIcon>
-                </TableCell> */}
               </TableRow>
             );
           })}

@@ -107,52 +107,32 @@ function Requirements(props) {
     }
   }, [initial])
   const searchApi = () => {
-    console.log('searchKey', searchKey)
-    // console.log('type', type)
-    // console.log('value', value)
-    console.log('project', project)
-    console.log('productName', productName)
     filterListRequirement(userInfo.id, searchKey, project, productName, moment(selectedFromDate, dateFormat).format(dateFormat2), moment(selectedToDate, dateFormat).format(dateFormat2), status, userName)
   }
   const onSearch = useDebouncedCallback(searchApi, 1000)
-  // const [debouncedCallApi] = useState(() => debounce(searchApi, 1000));
   useEffect(onSearch, [searchKey, project, productName, userName, selectedFromDate, selectedToDate, status])
-  // useEffect(()=>{
-  //   filterListRequirement(userInfo.id, searchKey, project, productName, moment(selectedFromDate, dateFormat).format(dateFormat2), moment(selectedToDate, dateFormat).format(dateFormat2), status, userName)
-  // }, [selectedFromDate, selectedToDate, status])
   function productCodeChange(event) {
     setSearchKey(event.target.value)
     
   }
   function userChange(event) {
     setUserName(event.target.value)
-    // onSearch('user', event.target.value)
   }
   function productNameChange (event){
-    // this.setState({value: event.target.value});
     setProductName(event.target.value)
-    // onSearch()
   }
   function projectChange (event) {
-    // this.setState({value: event.target.value});
     setProject(event.target.value)
-    // onSearch()
   }
   
   const handleTimeChange = (dateValue, dateString) => {
-    console.log('date', dateValue)
-    console.log('date String', dateString)
     setSelectedFromDate(dateString[0])
     setSelectedToDate(dateString[1])
-    // onSearch()
   }
 
   const statusChange = (event) => {
     event.persist()
-    console.log('statusChange event', event)
-    console.log('statusChange event', event.target.value)
     setStatus(event.target.value)
-    // onSearch()
   }
 
   return (

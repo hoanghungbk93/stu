@@ -65,31 +65,27 @@ function Detail(props) {
   const [requirementtInfo, setRequirementInfo] = useState(null)
   const [requirementDetails, setRequirementDetal] = useState([])
   const [disabledApprove, setDisableApprove] = useState(false)
-  const [rejectReason, setRejectReason] = useState("")
+  // const [rejectReason, setRejectReason] = useState("")
   const [openRejectReasonModal, setOpenRejectReasonModal] = useState(false)
-  console.log('props', props)
+  const [rejectReason, setRejectReason] = useState({})
+  // console.log('props', props)
   // console.log('props match', match)
   useEffect(()=>{
-    console.log('requirementtInfo', requirementtInfo)
-    console.log('requirementDetails', requirementDetails)
+    // console.log('requirementtInfo', requirementtInfo)
+    // console.log('requirementDetails', requirementDetails)
     if(requirementtInfo)
-    console.log('result', ['Đã duyệt', 'Từ chối'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
     setDisableApprove(requirementtInfo !== null && requirementDetails.length > 0 && 
       ['Đã duyệt', 'Từ chối'].findIndex( e => e !== requirementtInfo.statusyc) !== -1)
   }, [requirementtInfo, requirementDetails])
   useEffect(()=>{
-    console.log('props match', match)
     if(match && match.params && match.params.id){
       try{
     const apiLink = `https://api.stu.vn/api/stuyc/getbymyc?_myc=${match.params.id}`
     fetch(apiLink).then((response) => {
-      console.log('response', response)
       return response.json();
     }).then((myJson) => {
-      console.log('response requirementDetails ', myJson)
-      console.log('response requirementDetails myJson.lvtyc', myJson[0].lvtyc)
       setRequirementInfo(myJson[0])
-      setRejectReason(myJson[0].ldtcyc)
+      // setRejectReason(myJson[0].ldtcyc)
       const lvtyc = myJson && myJson[0].lvtyc ? JSON.parse(myJson[0].lvtyc) : []
       let requirementDetail =[] 
       lvtyc.length > 0 &&  lvtyc.map( (e, i) => {
@@ -106,8 +102,6 @@ function Detail(props) {
         requirementDetail.push(temp)
       }
       )
-      console.log('lvtyc', lvtyc)
-      console.log('requirementDetail', requirementDetail)
       setRequirementDetal(requirementDetail)
     }).catch(
       err => {
@@ -127,7 +121,7 @@ function Detail(props) {
     
   }, [match, match.params,  match.params.id])
   const handleCloseModal = (event, reason) => {
-    setRejectReason()
+    // setRejectReason()
     setOpenRejectReasonModal(false);
   };
   function renderModal(){
@@ -147,10 +141,10 @@ function Detail(props) {
         // style={{display: 'flex', flex: 1, justifyContent: 'center', alignItems: 'center'}}
       > 
       <div style={{flexDirection : 'column', width: '30%', height: '30%', alignItems: 'center', justifyContent: 'center'}}>
-        <p>Nhập lí do từ chối</p>
+        {/* <p>Nhập lí do từ chối</p>
         <input onChange={(event) => {
           setRejectReason(event.target.value)
-        }}></input>
+        }}></input> */}
         <Button
           onClick={()=>{
             const newRequirement = requirementtInfo
@@ -174,13 +168,15 @@ function Detail(props) {
           <CardBody>
             <DetailTable
               tableHeaderColor="primary"
-              tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa']}
+              tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa', 'Lý do từ chối']}
               tableData={requirementDetails}
               history={history}
               approve={approve}
               cancel={cancel}
               match={match}
               requirementtInfo={requirementtInfo}
+              rejectReason={rejectReason}
+              setRejectReason={setRejectReason}
             />
           </CardBody>
         </Card>
@@ -197,22 +193,28 @@ function Detail(props) {
           approve({}, newRequirement)
         }}
         disabled={(requirementtInfo.statusyc === 'Duyệt 1'  || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'Trưởng phòng' ||
-            requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
+            requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin' || JSON.stringify(rejectReason) !== '{}' || requirementtInfo.statusyc === 'Từ chối'
           }
         >Duyệt</Button>
         <Button 
           disabled={(requirementtInfo.statusyc === 'Duyệt 1' || requirementtInfo.statusyc === 'Đã duyệt') && authen.userInfo.loai === 'Trưởng phòng' ||
-            requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin'
+            requirementtInfo.statusyc === 'Đã duyệt' && authen.userInfo.loai === 'admin' || requirementtInfo.statusyc === 'Từ chối'
           }
         color="primary" onClick={() => {
-          setOpenRejectReasonModal(true)
-          // const newRequirement = requirementtInfo
-          // newRequirement.statusyc = 'Từ chối'
-          // cancel({}, newRequirement)
+          // setOpenRejectReasonModal(true)
+          const newRequirement = requirementtInfo
+          const listvt = JSON.parse(requirementtInfo.lvtyc)
+          const newListVt = listvt.map(e => ({...e, ldtc : rejectReason[e.mvt]}))
+          newRequirement.statusyc = 'Từ chối'
+          newRequirement.lvtyc = JSON.stringify(newListVt)
+          console.log('newListVt', newListVt)
+          console.log('newRequirement', newRequirement)
+          console.log('rejectReason', rejectReason)
+          cancel({}, newRequirement)  
         }}
         >Từ chối</Button>
       </CardFooter>}
-      {renderModal()}
+      {/* {renderModal()} */}
       </div>
   );
 }

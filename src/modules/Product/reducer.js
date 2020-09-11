@@ -33,7 +33,6 @@ import {
 const initialState = Model(null)
 
 export const addProduct = (header, params) => async dispatch => {
-  console.log('addProduct params', params)
   try {
     fetch(`https://api.stu.vn/api/stuvt/addvt`, {
       method: 'POST',
@@ -43,11 +42,9 @@ export const addProduct = (header, params) => async dispatch => {
       },
       crossDomain:true
     }).then((response) => {
-      console.log('responseaa', response)
       if(!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
       if (myJson) {
         dispatch(setAddProductSuccess(true))
         dispatch(setLoading(false))
@@ -55,7 +52,6 @@ export const addProduct = (header, params) => async dispatch => {
         dispatch(setAddProductSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setAddProductSuccess(false))
@@ -72,16 +68,13 @@ export const addProduct = (header, params) => async dispatch => {
   }
 }
 export const deleteProduct = (header, ProductId) => async dispatch => {
-  console.log('deleteProduct ', ProductId)
   try {
     fetch(`https://api.stu.vn/api/stuvt/deletevt/?id=${ProductId}`,{
       method: 'DELETE',
     }).then((response) => {
-      console.log('responseaa', response)
       if(!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
       if (myJson) {
         dispatch(setDeleteSuccess(true))
         dispatch(setLoading(false))
@@ -89,7 +82,6 @@ export const deleteProduct = (header, ProductId) => async dispatch => {
         dispatch(setDeleteSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setDeleteSuccess(false))
@@ -106,7 +98,6 @@ export const deleteProduct = (header, ProductId) => async dispatch => {
   }
 }
 export const editProduct = (header, params) => async dispatch => {
-  console.log('editProduct', params)
   try {
     fetch(`https://api.stu.vn/api/stuvt/updatevt`, {
       method: 'PUT',
@@ -118,7 +109,6 @@ export const editProduct = (header, params) => async dispatch => {
       if(!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
       if (myJson) {
         dispatch(setEditProductSuccess(true))
         dispatch(setLoading(false))
@@ -126,7 +116,6 @@ export const editProduct = (header, params) => async dispatch => {
         dispatch(setEditProductSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setEditProductSuccess(false))
@@ -161,7 +150,6 @@ export const getListProduct = (header, ProductuserId) => async dispatch => {
   try {
 
     fetch(`https://api.stu.vn/api/stuvt/getallvt`).then((response) => {
-      console.log('response', response)
       return response.json();
     }).then((myJson) => {
       if (myJson[0]) {
@@ -170,7 +158,6 @@ export const getListProduct = (header, ProductuserId) => async dispatch => {
       } else {
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setLoading(false))

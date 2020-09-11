@@ -48,9 +48,8 @@ import jsPDF  from "jspdf";
 const initialState = Model(null)
 
 export const addRequirement = (header, params) => async dispatch => {
-  console.log('addRequirement params', params)
+  // console.log('addRequirement params', params)
   try {
-    console.log('addRequirement params', params)
     fetch(`https://api.stu.vn/api/stuyc/addyc`, {
       method: 'POST',
       body: JSON.stringify(params),
@@ -59,11 +58,10 @@ export const addRequirement = (header, params) => async dispatch => {
       },
       crossDomain: true
     }).then((response) => {
-      console.log('responseaa', response)
+      // console.log('responseaa addRequirement', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
       if (myJson) {
         dispatch(setAddRequirementSuccess({ success: true, listProduct: myJson._listvt }))
         dispatch(setLoading(false))
@@ -71,7 +69,6 @@ export const addRequirement = (header, params) => async dispatch => {
         dispatch(setAddRequirementSuccess({ success: false, listProduct: [] }))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setAddRequirementSuccess({ success: false, listProduct: [] }))
@@ -88,16 +85,15 @@ export const addRequirement = (header, params) => async dispatch => {
   }
 }
 export const deleteRequirement = (header, requirementId) => async dispatch => {
-  console.log('deleteRequirement ', requirementId)
+  // console.log('deleteRequirement ', requirementId)
   try {
     fetch(`https://api.stu.vn/api/sturequirement/deleterequirement/?id=${requirementId}`, {
       method: 'DELETE',
     }).then((response) => {
-      console.log('responseaa', response)
+      // console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
       if (myJson) {
         dispatch(setDeleteSuccess(true))
         dispatch(setLoading(false))
@@ -105,7 +101,6 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
         dispatch(setDeleteSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setDeleteSuccess(false))
@@ -122,7 +117,7 @@ export const deleteRequirement = (header, requirementId) => async dispatch => {
   }
 }
 export const editRequirement = (header, params) => async dispatch => {
-  console.log('param', params)
+  // console.log('param', params)
   try {
     fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
@@ -134,7 +129,7 @@ export const editRequirement = (header, params) => async dispatch => {
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson editRequirement', myJson)
+      // console.log('myJson editRequirement', myJson)
       if (myJson) {
         dispatch(setEditRequirementSuccess(true))
         dispatch(setLoading(false))
@@ -142,7 +137,6 @@ export const editRequirement = (header, params) => async dispatch => {
         dispatch(setEditRequirementSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setEditRequirementSuccess(false))
@@ -205,16 +199,15 @@ export const filterListRequirement = (name, searchKey, project, productName, sel
   //   dispatch(setListUser(response))
   const apiLink = `https://api.stu.vn/api/stuyc/getfilteryc?_dfrom=${selectedFromDate}&_dto=${selectedToDate}&_mda=${project}&_username=${userName}&_mvt=${searchKey}&_statusyc=${status}&_idusersearch=${name}`
   // }
-  console.log('apiLink', apiLink)
+  // console.log('apiLink', apiLink)
   // console.log('isAdmin', isAdmin)
   // console.log('isSubAdmin', isSubAdmin)
   try {
 
     fetch(apiLink).then((response) => {
-      console.log('response', response)
+      // console.log('response', response)
       return response.json();
     }).then((myJson) => {
-      console.log('response filterListRequirement ', myJson)
       if (myJson[0]) {
         dispatch(setListRequirement(myJson))
         dispatch(setLoading(false))
@@ -222,7 +215,6 @@ export const filterListRequirement = (name, searchKey, project, productName, sel
         dispatch(setListRequirement([]))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setLoading(false))
@@ -238,35 +230,25 @@ export const filterListRequirement = (name, searchKey, project, productName, sel
 
 }
 export const getProjectList = (setProjectList) => async dispatch => {
-  // const response = await UserApi.get('/api/stuuser');
-  // console.log('getListUser response', response)getallyc
-  // if(response){
-  //   dispatch(setListUser(response))
   const apiLink = `https://api.stu.vn/api/studa/getallda`
-  // }
-  console.log('getProjectList apiLink', apiLink)
-  // console.log('isAdmin', isAdmin)
-  // console.log('isSubAdmin', isSubAdmin)
+ 
   try {
 
     fetch(apiLink).then((response) => {
-      console.log('response getProjectList', response)
+      // console.log('response getProjectList', response)
       return response.json();
     }).then((myJson) => {
-      console.log('response get project list ', myJson)
+      // console.log('response get project list ', myJson)
       if (myJson[0]) {
         setProjectList(myJson)
       } else {
         setProjectList([])
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   } catch (err) {
     console.log('err', err)
   }
@@ -276,7 +258,7 @@ export const exportPDF = (params, setBase64) => async dispatch => {
 
   const apiLink = `https://api.stu.vn/api/pdfcreator/pxk?ph=${params}`
   // }
-  console.log('exportPDF apiLink', apiLink)
+  // console.log('exportPDF apiLink', apiLink)
   try {
 
     fetch(apiLink).then( response => {
@@ -285,7 +267,7 @@ export const exportPDF = (params, setBase64) => async dispatch => {
       
     } )
     .then( blob =>{
-      console.log('blob', blob)
+      // console.log('blob', blob)
       const linkSource = `data:application/pdf;base64,${blob.pdfBase64}`;
       const downloadLink = document.createElement("a");
       const fileName = params + '.pdf';
@@ -302,7 +284,7 @@ export const exportPDF = (params, setBase64) => async dispatch => {
 }
 
 export const approve = (header, params) => async dispatch => {
-  console.log('setApproveSuccess params', params)
+  // console.log('setApproveSuccess params', params)
   try {
     fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
@@ -311,11 +293,10 @@ export const approve = (header, params) => async dispatch => {
         "Content-Type": 'application/json'
       },
     }).then((response) => {
-      console.log('responseaa', response)
+      // console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
       if (myJson) {
         dispatch(setApproveSuccess(true))
         dispatch(setLoading(false))
@@ -323,7 +304,6 @@ export const approve = (header, params) => async dispatch => {
         dispatch(setApproveSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setApproveSuccess(false))
@@ -342,7 +322,7 @@ export const approve = (header, params) => async dispatch => {
 
 
 export const cancel = (header, params) => async dispatch => {
-  console.log('setCancelSuccess params', params)
+  // console.log('setCancelSuccess params', params)
   try {
     fetch(`https://api.stu.vn/api/stuyc/updateyc`, {
       method: 'PUT',
@@ -351,11 +331,10 @@ export const cancel = (header, params) => async dispatch => {
         "Content-Type": 'application/json'
       },
     }).then((response) => {
-      console.log('responseaa', response)
       if (!response.ok) throw new Error(response.status);
       else return response.json();
     }).then((myJson) => {
-      console.log('myJson', myJson)
+      // console.log('myJson', myJson)
       if (myJson) {
         dispatch(setCancelSuccess(true))
         dispatch(setLoading(false))
@@ -363,7 +342,6 @@ export const cancel = (header, params) => async dispatch => {
         dispatch(setCancelSuccess(false))
         dispatch(setLoading(false))
       }
-      console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setCancelSuccess(false))

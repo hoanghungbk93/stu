@@ -48,13 +48,10 @@ function AdminNavbarLinks(props) {
   const {logout, totalNoti, listNoti, setListNoti, authen} = props
   const history = useHistory()
   const wrapperRef = useRef(null);
-    
-  // console.log('AdminNavbarLinks', history)
   const classes = useStyles();
   const [openNotification, setOpenNotification] = React.useState(null);
   useOutsideAlerter(wrapperRef, setOpenNotification);
   const [openProfile, setOpenProfile] = React.useState(null);
-  // const [listNoti, setListNoti] = useState([])
   const handleClickNotification = event => {
     if (openNotification && openNotification.contains(event.target)) {
       setOpenNotification(null);
@@ -80,11 +77,9 @@ function AdminNavbarLinks(props) {
           "Content-Type": 'application/json'
         },
       }).then((response) => {
-        console.log('responseaa', response)
         if (!response.ok) throw new Error(response.status);
         else return response.json();
       }).then((myJson) => {
-        console.log('myJson', myJson)
         
       }).catch(
         err => {
@@ -120,14 +115,7 @@ function AdminNavbarLinks(props) {
     logout(history);
   };
   function loadMoreRows ({ startIndex, stopIndex }) {
-    // return fetch(`path/to/api?startIndex=${startIndex}&stopIndex=${stopIndex}`)
-    //   .then(response => {
-    //     // Store response data in list...
-    //   })
     console.log('hihi')
-    // let temp = listNoti.slice()
-    // temp.concat(['Hung','HUNGj'])
-    // setListNoti(temp)
   }
   function rowRenderer({ key, index, style}){
     return(

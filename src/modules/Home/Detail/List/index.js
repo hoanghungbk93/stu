@@ -30,11 +30,6 @@ export default function CustomTable(props) {
     setOpenModal,
     deleteSelectedIndex
   } = props;
-  // const {params} = match
-  console.log('order', props)
-  console.log('requirementList', requirementList)
-  // const RequirementInfo= listRequirement[params.id-1]
-  // console.log('history', history)
 
   return (
     <div className={classes.tableResponsive}>
@@ -62,11 +57,6 @@ export default function CustomTable(props) {
               <TableRow key={key} className={classes.tableBodyRow}
                     hover
                     selected
-                  //   onMouseMove={()=>{
-                  //   setActiveRow(key)
-                  //   console.log('hihi', key)
-                  // }}
-                  // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
                   onClick={()=> {
                     setIsAddNew(false)
                     setCurrentProductIndex(key)
@@ -83,7 +73,6 @@ export default function CustomTable(props) {
                 })}
                 {prop.length > 0 && <TableCell className={classes.tableCell} key={key} >
                   <DeleteIcon onClick={(e) => {
-                    console.log('hehehehe')
                     e.stopPropagation();
                     deleteSelectedIndex(key)
                   }}></DeleteIcon>

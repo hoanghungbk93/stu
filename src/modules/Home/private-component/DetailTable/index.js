@@ -18,6 +18,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from "../../../../assets/jss/material-dashboard-react/components/detailTableStyle.js";
 import TextField from '@material-ui/core/TextField';
+import {resetApproveSucess, resetCancleSucess} from '../../reducer'
 const useStyles = makeStyles(styles);
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -25,9 +26,8 @@ function Alert(props) {
 function CustomTable(props) {
 
   const classes = useStyles();
-  const { tableHead, tableData, authen, tableHeaderColor, requirement, history, approve, cancel, requirementtInfo, setDisableApprove } = props;
+  const { tableHead, tableData, authen, tableHeaderColor, requirement, resetApproveSucess, resetCancleSucess, rejectReason, requirementtInfo, setRejectReason } = props;
   const { approveSuccess, cancelSuccess } = requirement
-  console.log('requirementInfo1', requirementtInfo)
   const [openApprove, setOpenApprove] = useState(false);
   const [openCancel, setOpenCancel] = useState(false);
   // const { header } = authen
@@ -45,10 +45,14 @@ function CustomTable(props) {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpenApprove(false);
     setOpenCancel(false);
-    history.goBack()
+    setTimeout(() => {
+      resetApproveSucess()
+      resetCancleSucess()
+    }, 1000)
+    
+    // history.goBack()
   };
   return (
     <div className={classes.tableResponsive}>
@@ -88,7 +92,7 @@ function CustomTable(props) {
                 selected
               >
                 {prop.map((e, key) => {
-                  {/* if (key === 8) return (
+                  if (key === 8) return (
                     <TableCell
                       className={classes.tableCell + " " + classes.tableHeadCell}
                       key={key}
@@ -98,9 +102,16 @@ function CustomTable(props) {
                         placeholder="Lý do từ chối"
                         type="textarea" 
                         disabled={requirementtInfo.statusyc === 'Đã duyệt' || (requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'Trưởng phòng')}
+                        onChange={(event) => {
+                          let temp = {...rejectReason}
+                          temp[prop[2]] = event.target.value
+                          setRejectReason(temp)
+                          console.log(event.target.value)
+                          console.log(prop)
+                        }}
                       />
                     </TableCell>
-                  ); */}
+                  );
                   return (
                     <TableCell className={classes.tableCell} key={key} >
                       {String(e)}
@@ -142,7 +153,9 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       approve,
-      cancel
+      cancel,
+      resetApproveSucess,
+      resetCancleSucess
     },
     dispatch
   )

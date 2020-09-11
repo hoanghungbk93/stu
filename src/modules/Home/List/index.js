@@ -24,7 +24,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { connect } from 'react-redux'
 import { findRenderedDOMComponentWithTag } from "react-dom/test-utils";
 let ps;
-console.log('routes', routes)
+// console.log('routes', routes)
 const switchRoutes = (
   <Switch>
     {routes.map((prop, index) => {
@@ -129,23 +129,12 @@ function Admin(props) {
   },[listNoti])
   
   function filterListNotification(){
-    // const response = await UserApi.get('/api/stuuser');
-    // console.log('getListUser response', response)getallyc
-    // if(response){
-    //   dispatch(setListUser(response))
     const apiLink = `https://api.stu.vn/api/stutb/getbyuserid?_userid=${authen.userInfo.id}`
-    // }
-    console.log('notifi', apiLink)
-    // console.log('isAdmin', isAdmin)
-    // console.log('isSubAdmin', isSubAdmin)
     try {
   
       fetch(apiLink).then((response) => {
-        console.log('response', response)
         return response.json();
       }).then((myJson) => {
-        console.log('response filterListRequirement ', myJson)
-        console.log('rlistNoti ', listNoti)
         const temp = myJson.filter(a => a.tt_tb === 'unread') ? myJson.filter(a => a.tt_tb === 'unread') : []
           myJson.map(e => {
             if(listNoti.findIndex(el => el.id_tb === e.id_tb) === -1 && e.tt_tb === 'unread'){

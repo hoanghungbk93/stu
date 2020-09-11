@@ -26,8 +26,6 @@ export default function Sidebar(props) {
   const [openNotification, setOpenNotification] = React.useState(null);
   const [openProfile, setOpenProfile] = React.useState(null);
   const { color, logo, image, logoText, routes, history, isAdmin, totalNoti } = props;
-  // console.log('history', history)
-  // console.log('isAdmin', isAdmin)
   const initialMenuList = []
   routes.forEach(element => {
     if(element.submenus) initialMenuList.push(false)
@@ -62,10 +60,6 @@ export default function Sidebar(props) {
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
-        {/* console.log('prop', prop)
-        console.log('isAdmin', isAdmin)
-        console.log('prop.isVisible && prop.admin === true && !isAdmin', prop.isVisible && prop.admin === true && !isAdmin) */}
-        
         if (!prop.isVisible) return
         if (prop.isVisible && prop.admin === true && !isAdmin) return
         var activePro = " ";

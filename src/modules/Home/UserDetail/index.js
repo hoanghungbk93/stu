@@ -70,17 +70,13 @@ function RequirementAdd(props) {
   const classes = useStyles();
   const { history, authen, requirement, editRequirement, match, getProjectList, exportPDF } = props
   const {listRequirement} = requirement
-  // const requirementtInfo= listRequirement[match.params.id-1]
-  // console.log('requirementtInfo', requirementtInfo)
   const [requirementtInfo, setRequirementInfo] = useState(null)
   const [requirementDetails, setRequirementDetal] = useState([])
   const [projects, setProjects] = useState([])
-  // const lvtyc = requirementtInfo && requirementtInfo.lvtyc ? JSON.parse(requirementtInfo.lvtyc) : []
   const { editRequirementSuccess } = requirement
   const [requirementName, setRequirementName] = useState('')
   const [department, setDepartment] = useState('')
   const [open, setOpen] = React.useState(false);
-  const [needTime, setNeedTime] = useState(0)
   const { header } = authen
   const [requirementList, setRequirementList] = useState([])
   const [isAddNew, setIsAddNew] = useState(true)
@@ -96,6 +92,7 @@ function RequirementAdd(props) {
   const [requirementType, setRequirementType] = useState('')
   const [currentProjectCode, setCurrentProjectCode] = useState('')
   const [currentProjectName, setCurrentProjectName] = useState('')
+  // const [referrence, setReference] = useState('')
   // const [requirementStatus, setRequirementStatus] = useState(requirementtInfo.statusyc)
   const [listProduct, setListProduct] = useState([])
   const [currentProduct, setCurrentProduct] = useState('')
@@ -108,7 +105,6 @@ function RequirementAdd(props) {
   }, [])
 
   useEffect(()=>{
-    console.log('HungHC', currentProjectName)
     if(projects.length > 0 && currentProjectName){
       const temp = projects.find(e => e.tda === currentProjectName)
       if(temp){
@@ -125,25 +121,19 @@ function RequirementAdd(props) {
   ] :  [
     'YVT',
   ] 
-  // console.log('moment().format(dateFormat)', moment().format(dateFormat))
   useEffect(()=>{
-    console.log('props match', match)
     if(match && match.params && match.params.id){
       try{
     const apiLink = `https://api.stu.vn/api/stuyc/getbymyc?_myc=${match.params.id}`
     fetch(apiLink).then((response) => {
-      console.log('response', response)
       return response.json();
     }).then((myJson) => {
-      console.log('response requirementDetails ', myJson)
-      console.log('response requirementDetails myJson.lvtyc', myJson[0].lvtyc)
       setRequirementInfo(myJson[0])
       const lvtyc = myJson && myJson[0].lvtyc ? JSON.parse(myJson[0].lvtyc) : []
       setRequirementList(lvtyc)
       setRequirementName(myJson[0].myc.substring(3))
       setDepartment(myJson[0].bpyc)
       setRequirementType(myJson[0].myc.substring(0,3))
-      // setProject(myJson[0].dayc)
       setCurrentProjectName(myJson[0].dayc)
       setSelectedDate(moment(myJson[0].nyc).format(dateFormat))
       setDisableView(myJson[0].statusyc !== 'Chờ duyệt' || myJson[0].iduseryc !== authen.userInfo.id)
@@ -162,8 +152,6 @@ function RequirementAdd(props) {
         requirementDetail.push(temp)
       }
       )
-      console.log('lvtyc', lvtyc)
-      console.log('requirementDetail', requirementDetail)
       setRequirementDetal(requirementDetail)
     }).catch(
       err => {
@@ -171,8 +159,6 @@ function RequirementAdd(props) {
         console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   
       }
      catch (err) {
@@ -254,8 +240,6 @@ function RequirementAdd(props) {
 
 
   function deleteSelectedIndex(index) {
-    console.log('deleteSelectedIndex', index)
-    console.log('deleteSelectedIndex', requirementList)
     setRequirementList(requirementList.length === 1 ? [] : requirementList.slice(index))
   }
   function renderModal() {
@@ -278,7 +262,6 @@ function RequirementAdd(props) {
               
               return response.json();
             }).then((myJson) => {
-              console.log('response', myJson)
               setListProduct(myJson)
             }).catch(
               err => {
@@ -317,7 +300,6 @@ function RequirementAdd(props) {
                               
                               return response.json();
                             }).then((myJson) => {
-                              console.log('response vt', myJson)
                               setCurrentProduct(myJson[0])
                             }).catch(
                               err => {
@@ -341,7 +323,6 @@ function RequirementAdd(props) {
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
                         setCurrentProductName(event.target.value)
                       }}
                       value={currentProductName}
@@ -357,18 +338,15 @@ function RequirementAdd(props) {
                       onChange={(event) => {
                         setCurrentProductCode(event.target.value)
                         const temp = event.target.value
-                        console.log('Email address', event.target.value)
                         try {
                             const apiLink = `https://api.stu.vn/api/stuvt/getbymvt?_mvt=${temp}`
                             fetch(apiLink).then((response) => {
                               
                               return response.json();
                             }).then((myJson) => {
-                              console.log('response vt', myJson)
                               if(myJson.length > 0 && myJson[0].mvt === temp){
                                 setCurrentProduct(myJson[0])
                               } else {
-                                console.log('haahaa')
                                 resetWhenProductcodeChange()
                               }
                             }).catch(
@@ -393,7 +371,6 @@ function RequirementAdd(props) {
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
                         setCurrentDistributor(event.target.value)
                       }}
                       value={currentDistributor}
@@ -409,7 +386,6 @@ function RequirementAdd(props) {
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
                         setCurrentManufacture(event.target.value)
                       }}
                       value={currentManufacture}
@@ -424,7 +400,6 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentUnit(event.target.value)
-                        console.log('Email address', event.target.value)
                       }}
                       value={currentUnit}
                     />
@@ -438,7 +413,6 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentTotal(event.target.value)
-                        console.log('Email address', event.target.value)
                       }}
                       value={currentTotal}
                       error={isNaN(currentTotal)} 
@@ -456,7 +430,6 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentInformation(event.target.value)
-                        console.log('Email address', event.target.value)
                       }}
                       value={currentInformation}
                     />
@@ -482,7 +455,6 @@ function RequirementAdd(props) {
                   if (isAddNew && productIndex === -1) {
                     setRequirementList(requirementList.concat(newProduct))
                   } else {
-                    console.log('newProduct', newProduct)
                     let temp = requirementList.slice()
                     setRequirementList([])
                     temp[productIndex] = {...newProduct}
@@ -528,7 +500,6 @@ function RequirementAdd(props) {
                       fullWidth: true
                     }}
                     onChange={(event) => {
-                      console.log('Requirementname', event.target.value)
                       setRequirementName(event.target.value)
                     }}
                     value={requirementName}
@@ -543,7 +514,6 @@ function RequirementAdd(props) {
                     }}
                     onChange={(event) => {
                       // setDepartment(event.target.value)
-                      console.log('Email address', event.target.value)
                     }}
                     value={authen.userInfo.bp}
                   />
@@ -562,7 +532,6 @@ function RequirementAdd(props) {
                     // value={requirementType}
                     onChange={(event) => {
                       setRequirementType(event.target.value)
-                      console.log('hihi', event.target.value)
                     }}
                     inputProps={{
                       name: 'requirementType',
@@ -583,9 +552,6 @@ function RequirementAdd(props) {
                       // defaultValue={'' }
                       value={currentProjectName}
                       onChange={(event) => {
-                        console.log('event.target.value', event.target.value)
-                        console.log('projects', projects)
-                        console.log('projects.find(e => e.tda === event.target.value)', projects.find(e => e.tda === event.target.value))
                         setCurrentProjectName(event.target.value)
                         setCurrentProjectCode(projects.find(e => e.tda === event.target.value).mda)
                       }}
@@ -658,7 +624,6 @@ function RequirementAdd(props) {
         disabled={disabledView}
       ></List>}
       {requirementType && <Button color="primary" onClick={() => {
-        console.log('moment(needTime)', moment(needTime).format('YYYY-MM-DD'))
         const params = Object.assign({}, Model, {
           "myc": requirementType + requirementName,
           "nyc": moment(selectedDate).format('YYYY-MM-DD'),
@@ -670,15 +635,12 @@ function RequirementAdd(props) {
           "iduseryc": authen.userInfo.id,
           "idyc" : requirementtInfo.idyc
         })
-        console.log('================', moment(selectedDate).format('YYYY-MM-DD'))
         editRequirement(header, params)
       }}
       disabled={disabledView}
       >Lưu</Button>}
       <Button color="primary" onClick={() => {
-        console.log('requirement list', requirementList)
         exportPDF(requirementType + requirementName)
-        // history.push('/admin/pdf/' + requirementType + requirementName)
       }}>Xuất PDF</Button>
       {renderModal()}
     </div>

@@ -77,11 +77,11 @@ function Products(props) {
             <CardBody>
               <Table
                 tableHeaderColor="primary"
-                tableHead={["TT", "Mã vật tư", , "Tên vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"]}
+                tableHead={["TT", "Mã vật tư", , "Tên vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Số lượng đã sử dụng", "Nhà cung cấp"]}
                 tableData={listProduct.map((e, i) => {
                   let tempArr = [i + 1]
                   Object.keys(e).forEach((key, index) => {
-                    if (index > 0 && index < 8)
+                    if (index > 0 && index < 9)
                       tempArr.push(e[key])
                   })
                   return tempArr

@@ -11,7 +11,6 @@ function PDFView(props) {
   const [base64, setBase64] = useState('');
   const [pageNumber, setPageNumber] = useState(1);
   const {exportPDF} = props
-  console.log('props1', props)
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
   }
@@ -19,8 +18,6 @@ function PDFView(props) {
     exportPDF(props.match && props.match.params && props.match.params.id, setBase64)
   }, [])
   useEffect(() => {
-    console.log('====')
-    console.log(base64)
     if(base64 && base64.pdfBase64){
       setBase64(base64.pdfBase64)
       // window.open("data:application/pdf," + encodeURI(base64.pdfBase64)); 

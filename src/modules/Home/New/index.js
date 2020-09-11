@@ -110,10 +110,30 @@ function RequirementAdd(props) {
   // const dateFormat2 = "YYYY-MM-DD"
   const [selectedDate, setSelectedDate] = useState('')
   const inputFile = useRef(null)
-  console.log('selectedDate', selectedDate)
+  useEffect(()=>{
+    if(requirementType === 'PXK'){
+      try {
+        const apiLink = `https://api.stu.vn/api/stuyc/getyc?_lyc=YCM&_statusyc=Đã duyệt`
+        fetch(apiLink).then((response) => {
+          
+          return response.json();
+        }).then((myJson) => {
+          myJson.length> 0 && setListRequirementName(myJson)
+        }).catch(
+          err => {
+
+            console.log('errr', err)
+          }
+        )
+        // if(data[0].sta)
+        // dispatch(setLoading(true))
+      } catch (err) {
+
+        console.log('err', err)
+      }
+    }
+  }, [requirementType])
   const handleDateChange = date => {
-    console.log('date', date)
-    // setSelectedDate(moment(date).format(dateFormat));
     setSelectedDate(date);
   };
   function resetState() {
@@ -125,6 +145,7 @@ function RequirementAdd(props) {
     setCurrentUnit('')
     setCurrentManufacture('')
   }
+  
   function resetProductState() {
     setCurrentProductName('')
     setCurrentTotal(0)
@@ -184,7 +205,6 @@ function RequirementAdd(props) {
   }, [currentProduct])
   useEffect(() => {
     if (addRequirementSuccess && addRequirementSuccess.success !== null) {
-      console.log('================', moment(selectedDate).format('YYYY-MM-DD'))
       setOpen(true);
     }
   }, [addRequirementSuccess])
@@ -203,9 +223,6 @@ function RequirementAdd(props) {
 
 
   function deleteSelectedIndex(index) {
-    console.log('deleteSelectedIndex', index)
-    console.log('deleteSelectedIndex', requirementList)
-    console.log('deleteSelectedIndex', requirementList.slice(index))
     setRequirementList(requirementList.length === 1 ? [] : requirementList.filter((e, i) => i !== index))
   }
   function renderModal() {
@@ -223,7 +240,6 @@ function RequirementAdd(props) {
               
               return response.json();
             }).then((myJson) => {
-              console.log('response', myJson)
               setListProduct(myJson)
             }).catch(
               err => {
@@ -269,7 +285,6 @@ function RequirementAdd(props) {
                               
                               return response.json();
                             }).then((myJson) => {
-                              console.log('response vt', myJson)
                               if(myJson.length > 0){
                                 setCurrentProduct(myJson[0])
                               } else {
@@ -301,14 +316,12 @@ function RequirementAdd(props) {
                       onChange={(event) => {
                         setCurrentProductCode(event.target.value)
                         const temp = event.target.value
-                        console.log('Email address', event.target.value)
                         try {
                             const apiLink = `https://api.stu.vn/api/stuvt/getbymvt?_mvt=${temp}`
                             fetch(apiLink).then((response) => {
                               
                               return response.json();
                             }).then((myJson) => {
-                              console.log('response vt', myJson)
                               if(myJson.length > 0 && myJson[0].mvt === temp){
                                 setCurrentProduct(myJson[0])
                               } else {
@@ -336,7 +349,6 @@ function RequirementAdd(props) {
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
                         setCurrentProductName(event.target.value)
                       }}
                       value={currentProductName}
@@ -350,7 +362,6 @@ function RequirementAdd(props) {
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
                         setCurrentDistributor(event.target.value)
                       }}
                       value={currentDistributor}
@@ -366,7 +377,6 @@ function RequirementAdd(props) {
                         fullWidth: true
                       }}
                       onChange={(event) => {
-                        console.log('Productname', event.target.value)
                         setCurrentManufacture(event.target.value)
                       }}
                       value={currentManufacture}
@@ -381,7 +391,6 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentUnit(event.target.value)
-                        console.log('Email address', event.target.value)
                       }}
                       value={currentUnit}
                     />
@@ -395,7 +404,6 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentTotal(event.target.value)
-                        console.log('Email address', event.target.value)
                       }}
                       value={currentTotal}
                       error={isNaN(currentTotal)}
@@ -413,7 +421,6 @@ function RequirementAdd(props) {
                       }}
                       onChange={(event) => {
                         setCurrentInformation(event.target.value)
-                        console.log('Email address', event.target.value)
                       }}
                       value={currentInformation}
                     />
@@ -483,7 +490,6 @@ function RequirementAdd(props) {
                       fullWidth: true
                     }}
                     onChange={(event) => {
-                      console.log('Requirementname', event.target.value)
                       setRequirementName(event.target.value)
                     }}
                     value={requirementName}
@@ -493,36 +499,16 @@ function RequirementAdd(props) {
                 <Autocomplete
                   id="combo-box-demo"
                   options={listRequirementName}
-                  getOptionLabel={option => option.mvt}
+                  getOptionLabel={option => option.myc}
                   style={{ flex : 1, display: 'flex'}}
-                  renderInput={params => <TextField {...params} label="Cho yêu cầu" style={{width: '20%'}}/>}
+                  renderInput={params => <TextField {...params} label="Cho yêu cầu" style={{width: '100%'}}/>}
                   onChange={(event, newValue) => {
                     if(!newValue) return
-                    setCurrentProductCode(newValue.mvt)
-                    try{
-                        const apiLink = `https://api.stu.vn/api/stuyc/getbymyc?_myc=${event.target.value}`
-                        fetch(apiLink).then((response) => {
-                          console.log('response', response)
-                          return response.json();
-                        }).then((myJson) => {
-                          console.log('response list for pxk ', myJson)
-                          console.log('response list for pxk myJson.lvtyc', myJson[0].lvtyc)
-                          const lvtyc = myJson && myJson[0].lvtyc ? JSON.parse(myJson[0].lvtyc) : []
-                          setRequirementList(lvtyc)
-                        }).catch(
-                          err => {
-                            
-                            console.log('errr', err)
-                          }
-                        )
-                        // if(data[0].sta)
-                        // dispatch(setLoading(true))
-                      
-                          }
-                        catch (err) {
-                        
-                          console.log('err', err)
-                        } 
+                    // setCurrentProductCode(newValue.mvt)
+                    const requirementTemp = listRequirementName.find(e => e.myc === newValue.myc)
+                    if(requirementTemp && requirementTemp.lvtyc){
+                      setRequirementList(JSON.parse(requirementTemp.lvtyc))
+                    }
                   }}
                 />
                   </GridItem>}
@@ -535,7 +521,6 @@ function RequirementAdd(props) {
                     }}
                     onChange={(event) => {
                       // setDepartment(event.target.value)
-                      console.log('Email address', event.target.value)
                     }}
                     value={authen.userInfo.bp}
                   />
@@ -555,7 +540,6 @@ function RequirementAdd(props) {
                         // value={requirementType}
                         onChange={(event) => {
                           setRequirementType(event.target.value)
-                          console.log('hihi', event.target.value)
                         }}
                         inputProps={{
                           name: 'requirementType',
@@ -577,9 +561,6 @@ function RequirementAdd(props) {
                       // defaultValue={'' }
                       value={currentProjectName}
                       onChange={(event) => {
-                        console.log('event.target.value', event.target.value)
-                        console.log('projects', projects)
-                        console.log('projects.find(e => e.tda === event.target.value)', projects.find(e => e.tda === event.target.value))
                         setCurrentProjectName(event.target.value)
                         setCurrentProjectCode(projects.find(e => e.tda === event.target.value).mda)
                       }}
@@ -665,7 +646,6 @@ function RequirementAdd(props) {
            
       <div style={{flexDirection: 'row', display: 'flex', width : '100%', justifyContent: 'space-between', flex: 1}}>
       <Button color="primary" onClick={() => {
-        console.log('================', moment(selectedDate, dateFormat).format('YYYY-MM-DD'))
         const params = Object.assign({}, Model, {
           "myc": requirementType + requirementName,
           "nyc": moment(selectedDate, dateFormat).format('YYYY-MM-DD'),

@@ -29,7 +29,6 @@ import {
 const initialState = Model(null)
 
 export const login = (header, param) => async dispatch => {
-  // console.log('param', param)
   dispatch(setLoading(true))
   const params = JSON.stringify({
     _name: param.userName,
@@ -50,20 +49,15 @@ export const login = (header, param) => async dispatch => {
         dispatch(setLogin(false))
         dispatch(setLoading(false))
       }
-      // console.log('myJson', myJson)
     }).catch(
       err => {
         dispatch(setLogin(false))
         dispatch(setLoading(false))
-        console.log('errr', err)
       }
     )
-    // if(data[0].sta)
-    // dispatch(setLoading(true))
   } catch (err) {
     dispatch(setLogin(false))
     dispatch(setLoading(false))
-    console.log('err', err)
   }
 }
 export const logout = (history) => async dispatch => {
@@ -71,35 +65,6 @@ export const logout = (history) => async dispatch => {
   dispatch(setUserInfo(null))
   dispatch(resetListRequirement())
   history.push('/')
-  // try {
-
-  //   fetch(`https://api.stu.vn/api/stuuser/login?_name=${param.userName}&_pass=${param.password}`).then((response) => {
-  //     if (!response.ok) throw new Error(response.status);
-  //     else return response.json();
-  //   }).then((myJson) => {
-  //     if (myJson[0]) {
-  //       // dispatch(setUserInfo(myJson[0]))
-  //       // dispatch(setLoading(false))
-  //       dispatch(setLogin(null))
-  //     } else {
-  //       // dispatch(setLogin(false))
-  //       // dispatch(setLoading(false))
-  //     }
-  //     console.log('myJson', myJson)
-  //   }).catch(
-  //     err => {
-  //       // dispatch(setLogin(false))
-  //       // dispatch(setLoading(false))
-  //       console.log('errr', err)
-  //     }
-  //   )
-  //   // if(data[0].sta)
-  //   // dispatch(setLoading(true))
-  // } catch (err) {
-  //   // dispatch(setLogin(false))
-  //   // dispatch(setLoading(false))
-  //   console.log('err', err)
-  // }
 }
 export const resetLogin = () => async dispatch => {
 

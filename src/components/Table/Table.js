@@ -43,11 +43,6 @@ export default function CustomTable(props) {
                     }}
                     hover
                     selected
-                  //   onMouseMove={()=>{
-                  //   setActiveRow(key)
-                  //   console.log('hihi', key)
-                  // }}
-                  // style={{backgoundColor: activeRow === key ? 'red' : 'white'}}
                   >
                 {prop.map((e, key) => {
                   return (

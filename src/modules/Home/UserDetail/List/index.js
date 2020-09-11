@@ -31,12 +31,6 @@ export default function CustomTable(props) {
     deleteSelectedIndex,
     disabled
   } = props;
-  // const {params} = match
-  console.log('order', props)
-  console.log('requirementList', requirementList)
-  // const RequirementInfo= listRequirement[params.id-1]
-  // console.log('history', history)
-
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -87,6 +81,9 @@ export default function CustomTable(props) {
                     </TableCell>
                   );
                 })}
+                <TableCell className={classes.tableCell} key={key} >
+                      <input value></input>
+                </TableCell>
                 {!disabled && prop.length > 0 && <TableCell className={classes.tableCell} key={key} >
                   <DeleteIcon onClick={(e) => {
                     console.log('hehehehe')

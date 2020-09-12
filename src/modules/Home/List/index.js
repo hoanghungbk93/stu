@@ -60,9 +60,10 @@ const useStyles = makeStyles(styles);
 function Admin(props) {
   // styles
   const classes = useStyles();
+  // const{} = props
   // ref to help us initialize PerfectScrollbar on windows devices
   const mainPanel = React.createRef();
-  const {authen} = props
+  const {authen, history} = props
   // states and functions
   const [image, setImage] = React.useState(bgImage);
   const [color, setColor] = React.useState("blue");
@@ -137,8 +138,17 @@ function Admin(props) {
       }).then((myJson) => {
         const temp = myJson.filter(a => a.tt_tb === 'unread') ? myJson.filter(a => a.tt_tb === 'unread') : []
           myJson.map(e => {
-            if(listNoti.findIndex(el => el.id_tb === e.id_tb) === -1 && e.tt_tb === 'unread'){
-              toast(e.noi_dung, {})
+            const index = listNoti.findIndex(el => el.id_tb === e.id_tb)
+            if(index === -1 && e.tt_tb === 'unread'){
+              toast(<button onClick={()=>{
+                console.log('hahhaa', e)
+                if(authen.userInfo.loai === 'Trưởng phòng' || authen.userInfo.loai === 'admin'){
+                  history.push(`/admin/editRequirement/${e.ma_yc}`,)
+                }
+                else{
+                  history.push(`/admin/detailRequirement/${e.ma_yc}`)
+                }
+              }}>{e.noi_dung}</button>)
             }
           })
           setListNoti(myJson.length > 0 ? myJson.sort(function(a, b){

@@ -174,6 +174,7 @@ function AdminNavbarLinks(props) {
                 transformOrigin:
                   placement === "bottom" ? "center top" : "center bottom"
               }}
+              // timeout={0}
             >
             <div ref={wrapperRef}>
               {listNoti.length > 0 && <Paper>

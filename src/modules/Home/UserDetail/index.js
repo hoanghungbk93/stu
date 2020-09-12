@@ -165,7 +165,7 @@ function RequirementAdd(props) {
       setSelectedDate(moment(myJson[0].nyc).format(dateFormat))
       setDisableView(myJson[0].statusyc !== 'Chờ duyệt' || myJson[0].iduseryc !== authen.userInfo.id)
       if(myJson[0].statusyc === 'Từ chối'){
-        setTableHeader([...tableHeader, 'Lý do từ chối'])
+        setTableHeader(["TT", "Tên vật tư", "Mã vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp", 'Lý do từ chối'])
       }
       setPriordity(myJson[0].mutyc)
       setReferenceRequirement(myJson[0].refmyc)

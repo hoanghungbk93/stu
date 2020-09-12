@@ -138,7 +138,7 @@ function Admin(props) {
         const temp = myJson.filter(a => a.tt_tb === 'unread') ? myJson.filter(a => a.tt_tb === 'unread') : []
           myJson.map(e => {
             if(listNoti.findIndex(el => el.id_tb === e.id_tb) === -1 && e.tt_tb === 'unread'){
-              toast(e.noi_dung)
+              toast(e.noi_dung, {})
             }
           })
           setListNoti(myJson.length > 0 ? myJson.sort(function(a, b){
@@ -203,7 +203,15 @@ function Admin(props) {
           handleFixedClick={handleFixedClick}
           fixedClasses={fixedClasses}
         /> */}
-        <ToastContainer limit={2000}/>
+        <ToastContainer position="bottom-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}/>
       </div>
     </div>
   );

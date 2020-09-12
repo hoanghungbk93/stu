@@ -65,7 +65,7 @@ const styles = (theme) => ({
   formControl: {
     margin: theme.spacing(1),
     // minWidth: 120,
-    width: '40%'
+    width: '30%'
   },
 })
 
@@ -84,6 +84,7 @@ function RequirementAdd(props) {
   ] : [
         'YVT',
       ]
+  const priorities = ['Cao', 'Trung bình', 'Thấp']
   const { addRequirementSuccess } = requirement
   const [requirementName, setRequirementName] = useState('')
   const [projects, setProjects] = useState([])
@@ -103,12 +104,14 @@ function RequirementAdd(props) {
   const [currentUnit, setCurrentUnit] = useState('')
   const [currentManufacture, setCurrentManufacture] = useState('')
   const [currentProduct, setCurrentProduct] = useState('')
+  const [referenceRequirement, setReferenceRequirement] = useState('')
   const [requirementType, setRequirementType] = useState(requirementOptions[0])
   const [listRequirementName, setListRequirementName] = useState([])
   const [listProduct, setListProduct] = useState([])
+  const [priority, setPriordity] = useState('Cao')
   const dateFormat = "DD-MM-YYYY"
-  // const dateFormat2 = "YYYY-MM-DD"
-  const [selectedDate, setSelectedDate] = useState('')
+  const dateFormat2 = "MM-DD-YYYY"
+  const [selectedDate, setSelectedDate] = useState(moment().format(dateFormat))
   const inputFile = useRef(null)
   useEffect(()=>{
     if(requirementType === 'PXK'){
@@ -503,8 +506,8 @@ function RequirementAdd(props) {
                   style={{ flex : 1, display: 'flex'}}
                   renderInput={params => <TextField {...params} label="Cho yêu cầu" style={{width: '100%'}}/>}
                   onChange={(event, newValue) => {
+                    setReferenceRequirement(newValue.myc)
                     if(!newValue) return
-                    // setCurrentProductCode(newValue.mvt)
                     const requirementTemp = listRequirementName.find(e => e.myc === newValue.myc)
                     if(requirementTemp && requirementTemp.lvtyc){
                       setRequirementList(JSON.parse(requirementTemp.lvtyc))
@@ -581,6 +584,27 @@ function RequirementAdd(props) {
                       selected={selectedDate}
                       onChange={handleDateChange}
                     /> */}
+                    <FormControl className={classes.formControl}>
+                      <InputLabel htmlFor="uncontrolled-native">Mức ưu tiên</InputLabel>
+                      <NativeSelect
+                        // defaultValue={requirementOptions[0]}
+                        // value={requirementType}
+                        onChange={(event) => {
+                          setPriordity(event.target.value)
+                        }}
+                        inputProps={{
+                          name: 'priorrity',
+                          id: 'uncontrolled-native2',
+                        }}
+                      >
+                        {priorities.map((option, index) => (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </NativeSelect>
+                      
+                    </FormControl>
                   </div>
 
                 </GridItem>
@@ -590,7 +614,7 @@ function RequirementAdd(props) {
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <Grid container justify="space-around">
                         <KeyboardDatePicker
-                          format="dd-MM-yyyy"
+                          format="MM-dd-yyyy"
                           margin="normal"
                           id="date-picker-dialog"
                           label="    "
@@ -655,7 +679,10 @@ function RequirementAdd(props) {
           "lvtyc": `${JSON.stringify(requirementList)}`,
           "statusyc": "Chờ duyệt",
           "iduseryc": authen.userInfo.id,
+          "mutyc": priority,
+          "refmyc": referenceRequirement
         })
+        // console.log('addRequirement', params)
         addRequirement(header, params)
       }}
         disabled={!requirementName || requirementList.length === 0}

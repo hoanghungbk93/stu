@@ -73,11 +73,11 @@ function Requirements(props) {
   const [userName, setUserName] = useState('')
   const [status, setStatus] = useState('Chờ duyệt')
   const [selectedFromDate, setSelectedFromDate] = useState(moment()
-  .startOf('month')
+  .startOf('year')
   .format(dateFormat))
-  const [selectedToDate, setSelectedToDate] = useState(moment().format(dateFormat))
+  const [selectedToDate, setSelectedToDate] = useState(moment().endOf('year').format(dateFormat))
   const selectRef = createRef()
-  // console.log('props Requirements', props)
+  console.log('props Requirements', moment().startOf('year').format(dateFormat))
   useEffect(()=>{
     if(deleteSuccess === true){
       setOpen(true);
@@ -169,11 +169,11 @@ function Requirements(props) {
           placeholder='Chọn thời gian'
           onChange={handleTimeChange}
           defaultValue={[moment()
-              .startOf('month')
-              , moment()]}
+              .startOf('year')
+              , moment().endOf('year')]}
           defaultPickerValue={[moment()
-              .startOf('month')
-              , moment()]}
+              .startOf('year')
+              , moment().endOf('year')]}
           format={dateFormat}
           
             />

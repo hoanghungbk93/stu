@@ -81,9 +81,9 @@ export default function CustomTable(props) {
                     </TableCell>
                   );
                 })}
-                <TableCell className={classes.tableCell} key={key} >
+                {/* <TableCell className={classes.tableCell} key={key} >
                       <input value></input>
-                </TableCell>
+                </TableCell> */}
                 {!disabled && prop.length > 0 && <TableCell className={classes.tableCell} key={key} >
                   <DeleteIcon onClick={(e) => {
                     console.log('hehehehe')

@@ -58,7 +58,7 @@ const styles = {
     textDecoration: "none"
   },
   formControl:{
-    width: '40%'
+    width: '30%'
   }
 };
 
@@ -93,13 +93,39 @@ function RequirementAdd(props) {
   const [currentProjectCode, setCurrentProjectCode] = useState('')
   const [currentProjectName, setCurrentProjectName] = useState('')
   // const [referrence, setReference] = useState('')
-  // const [requirementStatus, setRequirementStatus] = useState(requirementtInfo.statusyc)
+  const [referenceRequirement, setReferenceRequirement] = useState('')
   const [listProduct, setListProduct] = useState([])
   const [currentProduct, setCurrentProduct] = useState('')
-
+  const priorities = ['Cao', 'Trung bình', 'Thấp']
   const dateFormat = "MM-DD-YYYY"
   const [selectedDate, setSelectedDate] = useState('')
   const [disabledView, setDisableView] = useState(false)
+  const [tableHeader, setTableHeader] = useState(["TT", "Tên vật tư", "Mã vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"])
+  const [priority, setPriordity] = useState('Cao')
+  const [listRequirementName, setListRequirementName] = useState([])
+  useEffect(()=>{
+    if(requirementType === 'PXK'){
+      try {
+        const apiLink = `https://api.stu.vn/api/stuyc/getyc?_lyc=YCM&_statusyc=Đã duyệt`
+        fetch(apiLink).then((response) => {
+          
+          return response.json();
+        }).then((myJson) => {
+          myJson.length> 0 && setListRequirementName(myJson)
+        }).catch(
+          err => {
+
+            console.log('errr', err)
+          }
+        )
+        // if(data[0].sta)
+        // dispatch(setLoading(true))
+      } catch (err) {
+
+        console.log('err', err)
+      }
+    }
+  }, [requirementType])
   useEffect(() => {
     getProjectList(setProjects)
   }, [])
@@ -128,6 +154,7 @@ function RequirementAdd(props) {
     fetch(apiLink).then((response) => {
       return response.json();
     }).then((myJson) => {
+      
       setRequirementInfo(myJson[0])
       const lvtyc = myJson && myJson[0].lvtyc ? JSON.parse(myJson[0].lvtyc) : []
       setRequirementList(lvtyc)
@@ -137,6 +164,11 @@ function RequirementAdd(props) {
       setCurrentProjectName(myJson[0].dayc)
       setSelectedDate(moment(myJson[0].nyc).format(dateFormat))
       setDisableView(myJson[0].statusyc !== 'Chờ duyệt' || myJson[0].iduseryc !== authen.userInfo.id)
+      if(myJson[0].statusyc === 'Từ chối'){
+        setTableHeader([...tableHeader, 'Lý do từ chối'])
+      }
+      setPriordity(myJson[0].mutyc)
+      setReferenceRequirement(myJson[0].refmyc)
       let requirementDetail =[] 
       lvtyc.length > 0 &&  lvtyc.map( (e, i) => {
         let temp = []
@@ -492,7 +524,7 @@ function RequirementAdd(props) {
               </GridContainer> */}
               <GridContainer>
               
-                <GridItem xs={12} sm={12} md={6}>
+                <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
                     labelText="Số YC"
                     id="requirementname"
@@ -505,7 +537,25 @@ function RequirementAdd(props) {
                     value={requirementName}
                   />
                 </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
+                {requirementType === 'PXK' && <GridItem xs={12} sm={12} md={4}>
+                <Autocomplete
+                  id="combo-box-demo"
+                  options={listRequirementName}
+                  getOptionLabel={option => option.myc}
+                  style={{ flex : 1, display: 'flex'}}
+                  renderInput={params => <TextField {...params} label="Cho yêu cầu" style={{width: '100%'}}/>}
+                  onChange={(event, newValue) => {
+                    setReferenceRequirement(newValue.myc)
+                    if(!newValue) return
+                    const requirementTemp = listRequirementName.find(e => e.myc === newValue.myc)
+                    if(requirementTemp && requirementTemp.lvtyc){
+                      setRequirementList(JSON.parse(requirementTemp.lvtyc))
+                    }
+                  }}
+                  value={{myc: referenceRequirement}}
+                />
+                  </GridItem>}
+                <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
                     labelText="Bộ phận"
                     id="department"
@@ -567,7 +617,27 @@ function RequirementAdd(props) {
                       ))}
                     </NativeSelect>
                     </FormControl>
-                  
+                    <FormControl className={classes.formControl}>
+                      <InputLabel htmlFor="uncontrolled-native">Mức ưu tiên</InputLabel>
+                      <NativeSelect
+                        // defaultValue={requirementOptions[0]}
+                        value={priority}
+                        onChange={(event) => {
+                          setPriordity(event.target.value)
+                        }}
+                        inputProps={{
+                          name: 'priorrity',
+                          id: 'uncontrolled-native2',
+                        }}
+                      >
+                        {priorities.map((option, index) => (
+                          <option key={index} value={option}>
+                            {option}
+                          </option>
+                        ))}
+                      </NativeSelect>
+                      
+                    </FormControl>
                   </div>
                   
                 </GridItem>
@@ -614,7 +684,7 @@ function RequirementAdd(props) {
           })
           return tempArr
         }) : []}
-        tableHead={["TT", "Tên vật tư", "Mã vật tư", "Thông số", "Hãng sản xuất", "Đơn vị", "Số lượng", "Nhà cung cấp"]}
+        tableHead={tableHeader}
 
         setIsAddNew={setIsAddNew}
         setRequirementList={setRequirementList}
@@ -633,7 +703,9 @@ function RequirementAdd(props) {
           "lvtyc": `${JSON.stringify(requirementList)}`,
           "statusyc": "Chờ duyệt",
           "iduseryc": authen.userInfo.id,
-          "idyc" : requirementtInfo.idyc
+          "idyc" : requirementtInfo.idyc,
+          "mutyc": priority,
+          "refmyc": referenceRequirement
         })
         editRequirement(header, params)
       }}

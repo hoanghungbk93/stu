@@ -104,7 +104,12 @@ function CustomTable(props) {
                         disabled={requirementtInfo.statusyc === 'Đã duyệt' || (requirementtInfo.statusyc === 'Duyệt 1' && authen.userInfo.loai === 'Trưởng phòng')}
                         onChange={(event) => {
                           let temp = {...rejectReason}
-                          temp[prop[2]] = event.target.value
+                          
+                          if(event.target.value === ""){
+                            delete temp[prop[2]]
+                          } else {
+                            temp[prop[2]] = event.target.value
+                          }
                           setRejectReason(temp)
                           console.log(event.target.value)
                           console.log(prop)

@@ -186,13 +186,15 @@ function AdminNavbarLinks(props) {
                 >
                   {({ onRowsRendered, registerChild }) => (
                     <List
-                      height={500}
+                      height={(listNoti.length + 1)*30}
                       onRowsRendered={onRowsRendered}
                       ref={registerChild}
                       rowCount={listNoti.length}
-                      rowHeight={50}
+                      rowHeight={30}
                       rowRenderer={rowRenderer}
                       width={500}
+                      overscanRowCount={100}
+                      // autoHeight
                     />
                   )}
 

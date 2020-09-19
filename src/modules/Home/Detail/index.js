@@ -185,7 +185,7 @@ function Detail(props) {
     {disabledApprove && <CardFooter variant="contained" color="primary" aria-label="outlined primary button group">
         <Button color="primary" onClick={() => {
           const newRequirement = requirementtInfo
-          if(newRequirement.iduseryc === '999'){
+          if(newRequirement.iduseryc === '999' || newRequirement.iduseryc === 999){
             newRequirement.iduseryc = authen.userInfo.id
             newRequirement.tuseryc = authen.userInfo.name
           }

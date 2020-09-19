@@ -20,6 +20,9 @@ import {getNextStatus} from '../../../utils/Helper'
 import { Switch, Route, Redirect } from "react-router-dom";
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
+import CustomInput from "../../../components/CustomInput/CustomInput.js";
+import moment from 'moment'
+
 const styles = {
   modal: {
     display: 'flex',
@@ -166,6 +169,117 @@ function Detail(props) {
             <h4 className={classes.cardTitleWhite}>Chi tiết yêu cầu</h4>
           </CardHeader>
           <CardBody>
+          <CardBody>
+              {/* <GridContainer>
+                
+              </GridContainer> */}
+              <GridContainer>
+              
+                <GridItem xs={12} sm={12} md={4}>
+                <CustomInput
+                    labelText="Tên yêu cầu"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={(event) => {
+                      // setDepartment(event.target.value)
+                    }}
+                    value={requirementtInfo && requirementtInfo.myc ? requirementtInfo.myc : ''}
+                    inputProps={{
+                      disabled: true
+                    }}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={4}>
+                  
+                  <CustomInput
+                    labelText="Bộ phận"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={(event) => {
+                      // setDepartment(event.target.value)
+                    }}
+                    value={authen.userInfo.bp}
+                    inputProps={{
+                      disabled: true
+                    }}
+                  />
+                </GridItem>
+                <GridItem xs={12} sm={12} md={4}>
+                <CustomInput
+                    labelText="Loại yêu cầu"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={(event) => {
+                      // setDepartment(event.target.value)
+                    }}
+                    value={requirementtInfo && requirementtInfo.myc? requirementtInfo.myc.substring(0, 3) : ''}
+                    inputProps={{
+                      disabled: true
+                    }}
+                  />
+                </GridItem>
+              </GridContainer>
+              <GridContainer>
+                {/* <GridItem xs={12} sm={12} md={4}>
+                  
+                </GridItem> */}
+                <GridItem xs={12} sm={12} md={4}>                  
+                  <CustomInput
+                    labelText="Dự án"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={(event) => {
+                      // setDepartment(event.target.value)
+                    }}
+                    value={requirementtInfo && requirementtInfo.dayc ? requirementtInfo.dayc : ''}
+                    inputProps={{
+                      disabled: true
+                    }}
+                  />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                  <CustomInput
+                    labelText="Mức yêu tiên"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={(event) => {
+                      // setDepartment(event.target.value)
+                    }}
+                    value={requirementtInfo && requirementtInfo.mutyc ? requirementtInfo.mutyc : ''}
+
+                    inputProps={{
+                      disabled: true
+                    }}
+                  />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                  <CustomInput
+                    labelText="Ngày cần"
+                    id="department"
+                    formControlProps={{
+                      fullWidth: true
+                    }}
+                    onChange={(event) => {
+                      // setDepartment(event.target.value)
+                    }}
+                    value={requirementtInfo && requirementtInfo.nyc ? moment(requirementtInfo.nyc).format('DD-MM-YYYY') : ''}
+                    inputProps={{
+                      disabled: true
+                    }}
+                  />                  
+                </GridItem>
+              </GridContainer>
+            </CardBody>
             <DetailTable
               tableHeaderColor="primary"
               tableHead={["STT", "Tên", "Mã", "Thông số", 'Hãng sản xuất', 'Đơn vị', 'Số lượng', 'Lần sửa', 'Lý do từ chối']}

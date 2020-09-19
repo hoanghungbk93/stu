@@ -195,7 +195,7 @@ function Detail(props) {
                   
                   <CustomInput
                     labelText="Bộ phận"
-                    id="department"
+                    id="department1"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -211,7 +211,7 @@ function Detail(props) {
                 <GridItem xs={12} sm={12} md={4}>
                 <CustomInput
                     labelText="Loại yêu cầu"
-                    id="department"
+                    id="department2"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -232,7 +232,7 @@ function Detail(props) {
                 <GridItem xs={12} sm={12} md={4}>                  
                   <CustomInput
                     labelText="Dự án"
-                    id="department"
+                    id="departmen3t"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -248,7 +248,7 @@ function Detail(props) {
                   <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
                     labelText="Mức yêu tiên"
-                    id="department"
+                    id="department4"
                     formControlProps={{
                       fullWidth: true
                     }}
@@ -265,7 +265,7 @@ function Detail(props) {
                   <GridItem xs={12} sm={12} md={4}>
                   <CustomInput
                     labelText="Ngày cần"
-                    id="department"
+                    id="department5"
                     formControlProps={{
                       fullWidth: true
                     }}

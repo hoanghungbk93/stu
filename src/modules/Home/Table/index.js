@@ -220,10 +220,10 @@ function Requirements(props) {
         </GridItem>
       </GridContainer>
       <CardFooter>
-      <Button color="primary" onClick={() => { 
+      {userInfo.loai !== 'Trưởng phòng' ? <Button color="primary" onClick={() => { 
         resetDeleteRequirementSuccess()
         history.push('/admin/addNewRequirement') 
-        }}>Thêm yêu cầu</Button>
+        }}>Thêm yêu cầu</Button>: null}
       </CardFooter>
     </div>
   );
